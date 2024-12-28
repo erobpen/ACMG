@@ -1,0 +1,73 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "Solution(Baker=3, Cooper=2, Fletcher=4, Miller=5, Smith=1, _checker='')"}]
+
+None
+___________
+int: Baker;  % Floor where Baker lives
+int: Cooper; % Floor where Cooper lives
+int: Fletcher; % Floor where Fletcher lives
+int: Miller; % Floor where Miller lives
+int: Smith;  % Floor where Smith lives
+
+% Constraint 1: Baker does not live on the 5th floor
+constraint Baker != 5;
+
+% Constraint 2: Cooper does not live on the 1st floor
+constraint Cooper != 1;
+
+% Constraint 3: Fletcher does not live on the 1st or 5th floor
+constraint Fletcher != 1 /\ Fletcher != 5;
+
+% Constraint 4: Miller lives on a higher floor than Cooper
+constraint Miller > Cooper;
+
+% Constraint 5: Smith does not live on a floor adjacent to Fletcher's
+constraint abs(Smith - Fletcher) != 1;
+
+% Constraint 6: Fletcher does not live on a floor adjacent to Cooper's
+constraint abs(Fletcher - Cooper) != 1;
+
+% Constraint 7: Everyone lives on different floors
+constraint all_different([Baker, Cooper, Fletcher, Miller, Smith]);
+
+solve satisfy;
+
+output["Baker lives on floor: \(Baker)\n"];
+output["Cooper lives on floor: \(Cooper)\n"];
+output["Fletcher lives on floor: \(Fletcher)\n"];
+output["Miller lives on floor: \(Miller)\n"];
+output["Smith lives on floor: \(Smith)\n"];
+___________
+Baker = 2;
+Cooper = 3;
+Fletcher = 4;
+Miller = 5;
+Smith = 1;
+==============================Solution(Baker=3, Cooper=2, Fletcher=4, Miller=5, Smith=1, _checker='')
+___________
+% Define decision variables representing the floor each person lives on
+var 1..5: Baker;
+var 1..5: Cooper;
+var 1..5: Fletcher;
+var 1..5: Miller;
+var 1..5: Smith;
+
+% Constraints
+constraint Baker != 5; % Baker does not live on the 5th floor
+constraint Cooper != 1; % Cooper does not live on the 1st floor
+constraint Fletcher != 1 /\ Fletcher != 5; % Fletcher does not live on the 1st or 5th floor
+constraint Miller > Cooper; % Miller lives on a higher floor than Cooper
+constraint abs(Smith - Fletcher) != 1; % Smith does not live on a floor adjacent to Fletcher's
+constraint abs(Fletcher - Cooper) != 1; % Fletcher does not live on a floor adjacent to Cooper's
+constraint all_different([Baker, Cooper, Fletcher, Miller, Smith]); % All people live on different floors
+
+solve satisfy;
+
+% Output the floors where each person lives
+output ["Baker: " ++ show(Baker) ++ "\n" ++
+        "Cooper: " ++ show(Cooper) ++ "\n" ++
+        "Fletcher: " ++ show(Fletcher) ++ "\n" ++
+        "Miller: " ++ show(Miller) ++ "\n" ++
+        "Smith: " ++ show(Smith)];
+___________
+% No additional data is needed for this problem. The initial model has all constraints and variables defined explicitly. No additional input data is required.
+==============================

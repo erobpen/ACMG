@@ -1,0 +1,54 @@
+% Parameters
+int: n;  % Total number of classrooms
+int: m;  % Maximum hours per classroom per day
+int: school_hours_per_day = 3;  % Total school hours per day
+int: days_in_week = 5;  % Total days in the week
+int: subjects = 4;  % Subjects (A, B, C, D)
+int: k;  % Total classes
+int: z;  % Maximum subjects per class
+
+% Sessions required by class for each subject over the week
+array[1..k, 1..subjects] of int: ClassSubjectQty;
+
+% Decision variables: class assigned to room at a given time
+array[1..k, 1..days_in_week, 1..school_hours_per_day] of var 1..n: schedule;
+
+% Constraints
+constraint forall(d in 1..days_in_week, t in 1..school_hours_per_day) (
+    sum(c in 1..k)(schedule[c, d, t]) <= n
+);  % At most n classes at the same time on each day
+
+constraint forall(c in 1..k, d in 1..days_in_week) (
+    sum(t in 1..school_hours_per_day)(schedule[c, d, t]) <= z
+);  % Each class has at most z subjects per day
+
+constraint forall(c in 1..k, s in 1..subjects) (
+    sum(d in 1..days_in_week, t in 1..school_hours_per_day)(
+        schedule[c, d, t] * (if ClassSubjectQty[c, s] > 0 then 1 else 0 endif)
+    ) <= ClassSubjectQty[c, s]
+);  % Ensure the required sessions are met for each subject
+
+solve satisfy;  % There is no specific optimization objective
+
+% Output
+output [
+    "Schedule for Class ", show(c), " on Day ", show(d), ":\n",
+    "\tA: ", sum(t in 1..school_hours_per_day)(if schedule[c, d, t] > 0 /\ ClassSubjectQty[c, 1] > 0 then 1 else 0 endif), " sessions\n",
+    "\tB: ", sum(t in 1..school_hours_per_day)(if schedule[c, d, t] > 0 /\ ClassSubjectQty[c, 2] > 0 then 1 else 0 endif), " sessions\n",
+    "\tC: ", sum(t in 1..school_hours_per_day)(if schedule[c, d, t] > 0 /\ ClassSubjectQty[c, 3] > 0 then 1 else 0 endif), " sessions\n",
+    "\tD: ", sum(t in 1..school_hours_per_day)(if schedule[c, d, t] > 0 /\ ClassSubjectQty[c, 4] > 0 then 1 else 0 endif), " sessions\n"
+    | c in 1..k, d in 1..days_in_week
+];
+
+n = 3;  % Total number of classrooms
+m = 3;  % Maximum hours per classroom per day
+k = 4;  % Total classes
+z = 4;  % Maximum subjects per class
+
+% Sessions required by class for each subject over the week
+ClassSubjectQty = array2d(1..k, 1..4, [
+    2, 2, 1, 3,
+    1, 4, 3, 4,
+    1, 2, 4, 5,
+    4, 2, 3, 6
+]);

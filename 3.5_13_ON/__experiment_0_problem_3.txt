@@ -1,0 +1,18 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(total_apples=6, _checker='')"}]
+
+Solution(total_apples=6, _checker='')
+___________
+int: gates;
+int: apples_given;
+
+var 0..100: total_apples;
+
+constraint total_apples - gates - apples_given == 0;
+
+output [total_apples];
+
+solve satisfy;
+___________
+gates = 5;
+apples_given = 1;
+==============================

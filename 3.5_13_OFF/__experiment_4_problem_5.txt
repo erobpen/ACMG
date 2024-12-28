@@ -1,0 +1,111 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "Solution(artie=0, bill=1, crackitt=0, dodgy=0, edgy=0, fingers=0, _checker='')"}]
+
+None
+___________
+% Define the six suspects
+set of int: SUSPECTS = 1..6;
+
+% Define the six statements as binary variables
+array[SUSPECTS] of var bool: statements;
+
+% Constraints based on the statements
+constraint statements[1] = false; % ARTIE: "It wasn't me."
+constraint statements[2] = statements[3]; % BILL: "Crackitt was in it up to his neck."
+constraint statements[3] = false; % CRACKITT: "No I wasn't."
+constraint (statements[3] -> statements[2]); % if Crackitt is guilty, Bill is also guilty
+constraint statements[4] = (statements[3] /\ statements[2]); % DODGY: "If Crackitt did it, Bill did it with him."
+constraint statements[5] = false; % EDGY: "Nobody did it alone."
+constraint statements[6] = (statements[1] /\ statements[4]); % FINGERS: "That's right: it was Artie and Dodgy together."
+constraint (statements[3] -> statements[2]); % if Crackitt is guilty, Bill is also guilty
+constraint (statements[4] -> (statements[1] /\ statements[2])); % if Dodgy is guilty, Artie is also guilty
+constraint (statements[6] -> (statements[1] /\ statements[4])); % if Fingers is guilty, Artie and Dodgy are both guilty
+constraint (statements[2] -> not statements[3]); % if Bill is guilty, Crackitt is innocent
+constraint (statements[1] -> not statements[4]); % if Artie is guilty, Dodgy is innocent
+constraint (statements[2] -> statements[5]); % if Bill is guilty, Edgy is also guilty
+constraint (not statements[2] /\ not statements[4] /\ not statements[5] /\ not statements[6] -> statements[3]); % if all others are guilty, then Crackitt is innocent
+constraint (not statements[1] /\ not statements[3] /\ not statements[5] /\ not statements[6] -> statements[2]); % if all others are guilty, then Bill is guilty
+constraint (not statements[1] /\ not statements[2] /\ not statements[5] /\ not statements[6] -> statements[4]); % if all others are guilty, then Dodgy is guilty
+constraint (not statements[1] /\ not statements[2] /\ not statements[3] /\ not statements[4] -> statements[5]); % if all others are guilty, then Edgy is guilty
+constraint (not statements[1] /\ not statements[2] /\ not statements[3] /\ not statements[4] -> statements[6]); % if all others are guilty, then Fingers is guilty
+constraint (not statements[1] /\ not statements[2] /\ not statements[3] /\ not statements[4] -> statements[1]); % if all others are guilty, then Artie is guilty
+
+solve satisfy;
+
+output["Guilty Suspect(s): "];
+% Output the guilty suspect(s)
+for s in SUSPECTS do
+    if statements[s] then
+        output["S" ++ show(s) ++ " "];
+    endif;
+end for;
+___________
+% Unassigned input parameters
+% Introduce an additional parameter "n" to represent the number of guilty suspects
+int: n;
+
+% Constraint to ensure there are exactly n guilty suspects
+constraint sum([bool2int(statements[s]) | s in SUSPECTS]) = n;
+
+% Assign a value to n based on the problem (1 or 2)
+% In this case, we will solve for the guilty suspect(s) so n will be 1 or 2
+% n = 1; % One guilty suspect
+n = 2; % Two guilty suspects
+==============================Solution(artie=0, bill=1, crackitt=0, dodgy=0, edgy=0, fingers=0, _checker='')
+___________
+% Parameters given by the suspects (0 for innocent, 1 for guilty)
+var 0..1: artie; % from dzn
+var 0..1: bill; % from dzn
+var 0..1: crackitt; % from dzn
+var 0..1: dodgy; % from dzn
+var 0..1: edgy; % from dzn
+var 0..1: fingers; % from dzn
+
+% Constraints based on the statements:
+constraint
+    % Getaway car was barely big enough for two people
+    sum([artie, bill, crackitt, dodgy, edgy, fingers]) >= 1 /\
+    sum([artie, bill, crackitt, dodgy, edgy, fingers]) <= 2 /\
+    
+    % Innocent suspects tell the truth, guilty suspect(s) lie
+    (artie = 0 \/ artie = 1 /\ artie = 1) /\
+    (bill = 0 \/ bill = 1 /\ bill = 1) /\
+    (crackitt = 0 \/ crackitt = 1 /\ crackitt = 0) /\
+    (dodgy = 0 \/ dodgy = 1 /\ dodgy = 1) /\
+    (edgy = 0 \/ edgy = 1 /\ edgy = 1) /\
+    (fingers = 0 \/ fingers = 1 /\ fingers = 1) /\
+    
+    % Relations between the suspects
+    (crackitt = 1 -> bill = 1) /\
+    (artie = 1 -> dodgy = 1) /\
+    (fingers = 1 -> artie = 1 /\ dodgy = 1) /\
+    (crackitt = 1 -> bill = 0) /\
+    (dodgy = 1 -> artie = 0) /\
+    (edgy = 1 -> bill = 1) /\
+    (bill = 1 -> crackitt = 0) /\
+    (artie = 0 /\ bill = 0 /\ crackitt = 0 /\ dodgy = 0 /\ edgy = 0 /\ fingers = 0 -> crackitt = 0) /\
+    (artie = 0 /\ bill = 0 /\ crackitt = 0 /\ dodgy = 0 /\ edgy = 0 /\ fingers = 0 -> bill = 1) /\
+    (artie = 0 /\ bill = 0 /\ crackitt = 0 /\ dodgy = 0 /\ edgy = 0 /\ fingers = 0 -> dodgy = 1) /\
+    (artie = 0 /\ bill = 0 /\ crackitt = 0 /\ dodgy = 0 /\ edgy = 0 /\ fingers = 0 -> edgy = 1) /\
+    (artie = 0 /\ bill = 0 /\ crackitt = 0 /\ dodgy = 0 /\ edgy = 0 /\ fingers = 0 -> fingers = 1)
+;
+
+% Solve the problem
+solve satisfy;
+
+% Output the guilty suspect(s)
+output["Guilty: "];
+if artie = 1 then output["Artie "]; endif;
+if bill = 1 then output["Bill "]; endif;
+if crackitt = 1 then output["Crackitt "]; endif;
+if dodgy = 1 then output["Dodgy "]; endif;
+if edgy = 1 then output["Edgy "]; endif;
+if fingers = 1 then output["Fingers "]; endif;
+output["\n"];
+___________
+artie = -1;  % Innocent or guilty suspect (unknown)
+bill = -1;  % Innocent or guilty suspect (unknown)
+crackitt = -1;  % Innocent or guilty suspect (unknown)
+dodgy = -1;  % Innocent or guilty suspect (unknown)
+edgy = -1;  % Innocent or guilty suspect (unknown)
+fingers = -1;  % Innocent or guilty suspect (unknown)
+==============================

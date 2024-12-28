@@ -1,0 +1,40 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "Solution(_checker='')"}]
+
+None
+___________
+int: item1;
+int: item2;
+int: item3;
+int: item4;
+
+var 0..711: total_price = 711;
+
+constraint item1 + item2 + item3 + item4 == total_price;
+
+solve satisfy;
+
+output ["Prices of the four items: ", show(item1), " cents, ", show(item2), " cents, ", show(item3), " cents, ", show(item4), " cents"];
+___________
+item1 = 200;
+item2 = 300;
+item3 = 400;
+item4 = 800;
+==============================Solution(_checker='')
+___________
+int: item1; % price of item 1
+int: item2; % price of item 2
+int: item3; % price of item 3
+int: item4; % price of item 4
+
+constraint item1 + item2 + item3 + item4 == 711; % Total price in cents ($7.11)
+constraint item1 * item2 * item3 * item4 != 711 * 10000; % The product of prices should not be 711
+
+solve satisfy;
+
+output["Prices of the four items: ", show(item1), " cents, ", show(item2), " cents, ", show(item3), " cents, ", show(item4), " cents\n"];
+___________
+item1 = 100;
+item2 = 100;
+item3 = 100;
+item4 = 411;
+==============================

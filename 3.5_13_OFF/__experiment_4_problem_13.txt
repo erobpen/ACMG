@@ -1,0 +1,172 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "None"}, {"attempt": "1_1", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "None"}, {"attempt": "2_1", "status": true, "solutions": "None"}, {"attempt": "2_2", "status": true, "solutions": "None"}]
+
+None
+___________
+int: a;  % First number
+int: b;  % Second number
+int: c;  % Third number
+int: d;  % Fourth number
+
+% Domain definition
+constraint 1 <= a /\ a <= 100;
+constraint 1 <= b /\ b <= 100;
+constraint 1 <= c /\ c <= 100;
+constraint 1 <= d /\ d <= 100;
+
+% Numbers must be distinct
+constraint all_different([a, b, c, d]);
+
+% Main constraint
+constraint a*a + b*b = c*c + d*d;
+
+solve satisfy;
+
+output["Numbers: " ++ show([a, b, c, d])];
+___________
+a = 1;\n
+b = 2;\n
+c = 3;\n
+d = 4;
+==============================None
+___________
+int: a; % between 1 and 100\nint: b; % between 1 and 100\nint: c; % between 1 and 100\nint: d; % between 1 and 100\n\n% Constraint 1: a, b, c, d must be different\nconstraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;\n\n% Constraint 2: a^2 + b^2 = c^2 + d^2\nconstraint a*a + b*b = c*c + d*d;\n\n% Solve the problem\nsolve satisfy;\n\n% Output the solution\noutput ["Numbers: " ++ show(a) ++ ", " ++ show(b) ++ ", " ++ show(c) ++ ", " ++ show(d)];
+___________
+a = 1;  % between 1 and 100\nb = 2;  % between 1 and 100\nc = 3;  % between 1 and 100\nd = 4;  % between 1 and 100
+==============================None
+___________
+int: a;  % First number between 1 and 100\nint: b;  % Second number between 1 and 100\nint: c;  % Third number between 1 and 100\nint: d;  % Fourth number between 1 and 100\n\n% Constraints\nconstraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d; % All numbers must be distinct\nconstraint a >= 1 /\ a <= 100; % Ensure a is between 1 and 100\nconstraint b >= 1 /\ b <= 100; % Ensure b is between 1 and 100\nconstraint c >= 1 /\ c <= 100; % Ensure c is between 1 and 100\nconstraint d >= 1 /\ d <= 100; % Ensure d is between 1 and 100\nconstraint a*a + b*b = c*c + d*d; % Main constraint\n\nsolve satisfy;\n\noutput ["a = ", show(a), "\n",\n        "b = ", show(b), "\n",\n        "c = ", show(c), "\n",\n        "d = ", show(d), "\n"];
+___________
+a = 1;
+b = 2;
+c = 1;
+d = 3;
+==============================None
+___________
+% Define the set of numbers from 1 to 100
+int: n = 100;
+set of int: NUMBERS = 1..n;
+
+% Define the decision variables for the combination
+var NUMBERS: a;
+var NUMBERS: b;
+var NUMBERS: c;
+var NUMBERS: d;
+
+% Constraint: a, b, c, d are different numbers
+constraint all_different([a, b, c, d]);
+
+% Constraint: a^2 + b^2 = c^2 + d^2
+constraint a*a + b*b = c*c + d*d;
+
+% Solve the problem
+solve satisfy;
+
+% Output the solution
+output ["a: ", show(a), "\n"];
+output ["b: ", show(b), "\n"];
+output ["c: ", show(c), "\n"];
+output ["d: ", show(d), "\n"];
+___________
+% Data file for the Minizinc model
+% No additional data is needed as the model defines the input space between 1 and 100
+==============================None
+___________
+int: n = 100; % Maximum number to consider
+
+array[1..n] of int: numbers = [i | i in 1..n];
+
+% Decision variables
+var 1..n: a; % First number
+var 1..n: b; % Second number
+var 1..n: c; % Third number
+var 1..n: d; % Fourth number
+
+constraint all_different([a, b, c, d]);
+
+% Sum of squares constraint
+constraint a*a + b*b = c*c + d*d;
+
+solve satisfy;
+
+output ["Numbers: " ++ show(a) ++ ", " ++ show(b) ++ ", " ++ show(c) ++ ", " ++ show(d)];
+___________
+n = 100;
+==============================None
+___________
+% Set of numbers from 1 to 100
+int: n = 100;
+set of int: NUMBERS = 1..n;
+
+% Variables representing the four numbers in the combination
+var NUMBERS: a;
+var NUMBERS: b;
+var NUMBERS: c;
+var NUMBERS: d;
+
+% Constraint to ensure all numbers are different
+constraint all_different([a, b, c, d]);
+
+% Constraint to check the equation a^2 + b^2 = c^2 + d^2
+constraint a*a + b*b = c*c + d*d;
+
+solve satisfy;
+
+output ["Numbers: " ++ show([a, b, c, d])];
+___________
+n = 100;
+==============================None
+___________
+int: a; % from dzn
+int: b; % from dzn
+int: c; % from dzn
+int: d; % from dzn
+
+constraint
+    % Different numbers
+    a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d /\
+    % Numbers between 1 and 100
+    1 <= a /\ a <= 100 /\
+    1 <= b /\ b <= 100 /\
+    1 <= c /\ c <= 100 /\
+    1 <= d /\ d <= 100 /\
+    % Pythagorean condition
+    a*a + b*b = c*c + d*d;
+
+solve satisfy;
+
+output ["a: ", show(a), "\n",
+        "b: ", show(b), "\n",
+        "c: ", show(c), "\n",
+        "d: ", show(d), "\n"];
+___________
+a = 0;
+b = 0;
+c = 0;
+d = 0;
+==============================None
+___________
+int: a; % from dzn
+int: b; % from dzn
+int: c; % from dzn
+int: d; % from dzn
+
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;  % All numbers must be different
+constraint a >= 1 /\ a <= 100 /\
+           b >= 1 /\ b <= 100 /\
+           c >= 1 /\ c <= 100 /\
+           d >= 1 /\ d <= 100; % All numbers must be between 1 and 100
+          
+constraint a*a + b*b = c*c + d*d; % Equation to satisfy
+
+solve satisfy;
+
+output ["a: ", show(a), "\n",
+        "b: ", show(b), "\n",
+        "c: ", show(c), "\n",
+        "d: ", show(d), "\n"];
+___________
+a = 1;
+b = 2;
+c = 3;
+d = 4;
+==============================

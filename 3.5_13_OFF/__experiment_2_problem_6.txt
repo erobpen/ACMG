@@ -1,0 +1,44 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(stolen_16=2, stolen_17=4, stolen_23=0, stolen_24=0, stolen_39=0, stolen_40=0, _checker='')"}]
+
+Solution(stolen_16=2, stolen_17=4, stolen_23=0, stolen_24=0, stolen_39=0, stolen_40=0, _checker='')
+___________
+% Parameters
+int: bags_16;  % Bags of 16 coins
+int: bags_17;  % Bags of 17 coins
+int: bags_23;  % Bags of 23 coins
+int: bags_24;  % Bags of 24 coins
+int: bags_39;  % Bags of 39 coins
+int: bags_40;  % Bags of 40 coins
+
+% Decision variables
+var 0..min(bags_16, 100 div 16): stolen_16;  % Bags of 16 coins stolen
+var 0..min(bags_17, 100 div 17): stolen_17;  % Bags of 17 coins stolen
+var 0..min(bags_23, 100 div 23): stolen_23;  % Bags of 23 coins stolen
+var 0..min(bags_24, 100 div 24): stolen_24;  % Bags of 24 coins stolen
+var 0..min(bags_39, 100 div 39): stolen_39;  % Bags of 39 coins stolen
+var 0..min(bags_40, 100 div 40): stolen_40;  % Bags of 40 coins stolen
+
+% Constraints
+constraint 16 * stolen_16 + 17 * stolen_17 + 23 * stolen_23 + 24 * stolen_24 + 39 * stolen_39 + 40 * stolen_40 == 100;  % Total coins stolen
+constraint stolen_16 <= bags_16 /\ stolen_17 <= bags_17 /\ stolen_23 <= bags_23 /\ stolen_24 <= bags_24 /\ stolen_39 <= bags_39 /\ stolen_40 <= bags_40;  % Cannot steal more bags than available
+
+% Objective (Not required for this case as it is a feasibility problem)
+
+% Solve the problem
+solve satisfy;
+
+% Output
+output["Bags of 16 coins stolen: \(stolen_16)\n"];
+output["Bags of 17 coins stolen: \(stolen_17)\n"];
+output["Bags of 23 coins stolen: \(stolen_23)\n"];
+output["Bags of 24 coins stolen: \(stolen_24)\n"];
+output["Bags of 39 coins stolen: \(stolen_39)\n"];
+output["Bags of 40 coins stolen: \(stolen_40)\n"];
+___________
+bags_16 = 10;
+bags_17 = 5;
+bags_23 = 3;
+bags_24 = 2;
+bags_39 = 2;
+bags_40 = 5;
+==============================

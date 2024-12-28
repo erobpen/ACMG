@@ -1,0 +1,138 @@
+[{"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "Solution(bags_stolen16=2, bags_stolen17=4, bags_stolen23=0, bags_stolen24=0, bags_stolen39=0, bags_stolen40=0, _checker='')"}]
+
+None
+___________
+% Data
+int: totalCoins = 100; % from dzn
+int: totalBags16; % from dzn
+int: totalBags17; % from dzn
+int: totalBags23; % from dzn
+int: totalBags24; % from dzn
+int: totalBags39; % from dzn
+int: totalBags40; % from dzn
+
+% Variables for the bags stolen per each type of coin bag
+var 0..totalBags16: bagsStolen16; 
+var 0..totalBags17: bagsStolen17;
+var 0..totalBags23: bagsStolen23;
+var 0..totalBags24: bagsStolen24;
+var 0..totalBags39: bagsStolen39;
+var 0..totalBags40: bagsStolen40;
+
+% Constraints based on the information provided
+constraint bagsStolen16 * 16 + bagsStolen17 * 17 + bagsStolen23 * 23 + bagsStolen24 * 24 + bagsStolen39 * 39 + bagsStolen40 * 40 == totalCoins; % Total coins stolen should be 100
+constraint bagsStolen16 <= totalBags16;
+constraint bagsStolen17 <= totalBags17;
+constraint bagsStolen23 <= totalBags23;
+constraint bagsStolen24 <= totalBags24;
+constraint bagsStolen39 <= totalBags39;
+constraint bagsStolen40 <= totalBags40;
+
+solve satisfy;
+
+output ["Bags of 16 coins stolen: ", show(bagsStolen16), "\n",
+        "Bags of 17 coins stolen: ", show(bagsStolen17), "\n",
+        "Bags of 23 coins stolen: ", show(bagsStolen23), "\n",
+        "Bags of 24 coins stolen: ", show(bagsStolen24), "\n",
+        "Bags of 39 coins stolen: ", show(bagsStolen39), "\n",
+        "Bags of 40 coins stolen: ", show(bagsStolen40), "\n"];
+___________
+totalBags16 = 5; 
+totalBags17 = 3; 
+totalBags23 = 2; 
+totalBags24 = 1; 
+totalBags39 = 4; 
+totalBags40 = 6;
+==============================None
+___________
+int: totalBags16; % from dzn
+int: totalBags17; % from dzn
+int: totalBags23; % from dzn
+int: totalBags24; % from dzn
+int: totalBags39; % from dzn
+int: totalBags40; % from dzn
+
+array[1..6] of int: coins = [16, 17, 23, 24, 39, 40];
+
+% Variables representing the stolen bags for each type
+var 0..totalBags16: stolenBags16;
+var 0..totalBags17: stolenBags17;
+var 0..totalBags23: stolenBags23;
+var 0..totalBags24: stolenBags24;
+var 0..totalBags39: stolenBags39;
+var 0..totalBags40: stolenBags40;
+
+constraint
+  % The sum of stolen bags across all types is 100 bags
+  stolenBags16 + stolenBags17 + stolenBags23 + stolenBags24 + stolenBags39 + stolenBags40 == 100 /\
+  
+  % The total number of bags for each type is the sum of the stolen bags and the remaining bags
+  totalBags16 == stolenBags16 + (if totalBags16 - stolenBags16 >= 0 then totalBags16 - stolenBags16 else 0 endif) /\
+  totalBags17 == stolenBags17 + (if totalBags17 - stolenBags17 >= 0 then totalBags17 - stolenBags17 else 0 endif) /\
+  totalBags23 == stolenBags23 + (if totalBags23 - stolenBags23 >= 0 then totalBags23 - stolenBags23 else 0 endif) /\
+  totalBags24 == stolenBags24 + (if totalBags24 - stolenBags24 >= 0 then totalBags24 - stolenBags24 else 0 endif) /\
+  totalBags39 == stolenBags39 + (if totalBags39 - stolenBags39 >= 0 then totalBags39 - stolenBags39 else 0 endif) /\
+  totalBags40 == stolenBags40 + (if totalBags40 - stolenBags40 >= 0 then totalBags40 - stolenBags40 else 0 endif);
+
+solve satisfy;
+
+output [
+  "Bags of 16 coins stolen: \(stolenBags16)\n",
+  "Bags of 17 coins stolen: \(stolenBags17)\n",
+  "Bags of 23 coins stolen: \(stolenBags23)\n",
+  "Bags of 24 coins stolen: \(stolenBags24)\n",
+  "Bags of 39 coins stolen: \(stolenBags39)\n",
+  "Bags of 40 coins stolen: \(stolenBags40)\n"
+];
+___________
+totalBags16 = 10;
+totalBags17 = 10;
+totalBags23 = 10;
+totalBags24 = 10;
+totalBags39 = 10;
+totalBags40 = 10;
+==============================Solution(bags_stolen16=2, bags_stolen17=4, bags_stolen23=0, bags_stolen24=0, bags_stolen39=0, bags_stolen40=0, _checker='')
+___________
+% Parameters
+int: total_bags;  % Total number of bags
+int: coins_per_bag16;  % Number of coins in bag type 16
+int: coins_per_bag17;  % Number of coins in bag type 17
+int: coins_per_bag23;  % Number of coins in bag type 23
+int: coins_per_bag24;  % Number of coins in bag type 24
+int: coins_per_bag39;  % Number of coins in bag type 39
+int: coins_per_bag40;  % Number of coins in bag type 40
+int: total_coins_stolen = 100;  % Total number of coins stolen
+
+% Decision variables
+var 0..total_bags: bags_stolen16;  % Bags of type 16 stolen
+var 0..total_bags: bags_stolen17;  % Bags of type 17 stolen
+var 0..total_bags: bags_stolen23;  % Bags of type 23 stolen
+var 0..total_bags: bags_stolen24;  % Bags of type 24 stolen
+var 0..total_bags: bags_stolen39;  % Bags of type 39 stolen
+var 0..total_bags: bags_stolen40;  % Bags of type 40 stolen
+
+% Constraints
+constraint bags_stolen16 + bags_stolen17 + bags_stolen23 + bags_stolen24 + bags_stolen39 + bags_stolen40 <= total_bags;
+
+constraint coins_per_bag16 * bags_stolen16 + coins_per_bag17 * bags_stolen17 + coins_per_bag23 * bags_stolen23 +
+           coins_per_bag24 * bags_stolen24 + coins_per_bag39 * bags_stolen39 + coins_per_bag40 * bags_stolen40 = total_coins_stolen;
+
+% Solve
+solve satisfy;
+
+% Output
+output ["Bags of type 16 stolen: \(bags_stolen16)\n",
+        "Bags of type 17 stolen: \(bags_stolen17)\n",
+        "Bags of type 23 stolen: \(bags_stolen23)\n",
+        "Bags of type 24 stolen: \(bags_stolen24)\n",
+        "Bags of type 39 stolen: \(bags_stolen39)\n",
+        "Bags of type 40 stolen: \(bags_stolen40)\n"];
+___________
+total_bags = 100;
+coins_per_bag16 = 16;
+coins_per_bag17 = 17;
+coins_per_bag23 = 23;
+coins_per_bag24 = 24;
+coins_per_bag39 = 39;
+coins_per_bag40 = 40;
+==============================

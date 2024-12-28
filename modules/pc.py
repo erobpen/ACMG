@@ -39,13 +39,13 @@ class pc:
         if messages is None:
             messages = [{"role": "user", "content": prompt}]
         else:
-            messages = messages[-22:]
             messages.append({"role": "user", "content": prompt})
         response = gpt_new(messages, model=model, n=1, stop=None)[0]
         messages.append({"role": "assistant", "content": response})
-        print("-"*10, len(messages), "-"*40)
-        print(prompt, "... \n", "-"*50)
-        print(response, "... \n")
+        # messages = messages[:-22]
+        # print("-"*10, len(messages), "-"*40)
+        # print(prompt, "... \n", "-"*50)
+        # print(response, "... \n")
 
         return response, messages
 

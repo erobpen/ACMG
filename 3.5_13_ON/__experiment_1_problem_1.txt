@@ -1,0 +1,70 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "Solution(Baker=[5, 4, 3, 2, 1], Cooper=[2, 1, 5, 4, 3], Fletcher=[2, 4, 5, 3, 1], Miller=[5, 2, 4, 3, 1], Smith=[5, 4, 3, 2, 1], _checker='')"}]
+
+None
+___________
+int: Baker; % Floor where Baker lives (1-5)
+int: Cooper; % Floor where Cooper lives (1-5)
+int: Fletcher; % Floor where Fletcher lives (1-5)
+int: Miller; % Floor where Miller lives (1-5)
+int: Smith; % Floor where Smith lives (1-5)
+
+% Constraints
+constraint
+    Baker != 5 /\
+    Cooper != 1 /\
+    Fletcher != 1 /\ Fletcher != 5 /\
+    Miller > Cooper /\
+    abs(Smith - Fletcher) != 1 /\
+    abs(Fletcher - Cooper) != 1 /\
+    all_different([Baker, Cooper, Fletcher, Miller, Smith]);
+
+solve satisfy;
+
+output["Baker lives on floor: " ++ show(Baker) ++ "\n"];
+output["Cooper lives on floor: " ++ show(Cooper) ++ "\n"];
+output["Fletcher lives on floor: " ++ show(Fletcher) ++ "\n"];
+output["Miller lives on floor: " ++ show(Miller) ++ "\n"];
+output["Smith lives on floor: " ++ show(Smith) ++ "\n"];
+___________
+Baker = 0;
+Cooper = 0;
+Fletcher = 0;
+Miller = 0;
+Smith = 0;
+==============================Solution(Baker=[5, 4, 3, 2, 1], Cooper=[2, 1, 5, 4, 3], Fletcher=[2, 4, 5, 3, 1], Miller=[5, 2, 4, 3, 1], Smith=[5, 4, 3, 2, 1], _checker='')
+___________
+% Residents living on floors 1-5
+array[1..5] of var 1..5: Baker;
+array[1..5] of var 1..5: Cooper;
+array[1..5] of var 1..5: Fletcher;
+array[1..5] of var 1..5: Miller;
+array[1..5] of var 1..5: Smith;
+
+% Constraints
+constraint all_different(Baker) /\ all_different(Cooper) /\
+          all_different(Fletcher) /\ all_different(Miller) /\
+          all_different(Smith);
+
+constraint Baker[5] != 5; % Baker does not live on the fifth floor
+constraint Cooper[1] != 1; % Cooper does not live on the first floor
+constraint Fletcher[1] != 1 /\ Fletcher[5] != 5; % Fletcher does not live on the first or fifth floor
+constraint Miller[2] > Cooper[2]; % Miller lives on a higher floor than Cooper
+constraint abs(Smith[Fletcher[1]] - Fletcher[1]) > 1; % Smith does not live on a floor adjacent to Fletcher
+constraint abs(Fletcher[Cooper[1]] - Cooper[1]) > 1; % Fletcher does not live on a floor adjacent to Cooper
+
+% Solve
+solve satisfy;
+
+% Output
+output["Miller: " ++ show(Miller) ++ "\n"];
+output["Fletcher: " ++ show(Fletcher) ++ "\n"];
+output["Baker: " ++ show(Baker) ++ "\n"];
+output["Smith: " ++ show(Smith) ++ "\n"];
+output["Cooper: " ++ show(Cooper) ++ "\n"];
+___________
+Baker = [1, 2, 3, 4, 5];\n
+Cooper = [1, 2, 3, 4, 5];\n
+Fletcher = [1, 2, 3, 4, 5];\n
+Miller = [1, 2, 3, 4, 5];\n
+Smith = [1, 2, 3, 4, 5];
+==============================

@@ -1,0 +1,55 @@
+{
+    "0": {
+        "STEP": "0",
+        "STEP_DESCRIPTION": "LLM COMPLETION",
+        "LLM_INSTRUCTION": "Bot: Ask me any questions about the MiniZinc. MiniZinc is a high-level constraint programming language used for modelling and solving combinatorial optimisation problems. Me: Can I ask you about codes written in MiniZinc as an example? Can you show only the source code? Bot: Yes. Tell me what kind of language optimization problems MiniZinc would like me to generate for you. Me: A source code in minizinc that resolve: A source code with 10 discrete variables without domain and with constraints. Put the Bot comments with % symbol.Bot:",
+        "LLM_RESPONSE": {
+            "id": "cmpl-72r1w1YOsQCvndEFAhjPMLGhBH3nd",
+            "object": "text_completion",
+            "created": 1680914860,
+            "model": "text-davinci-003",
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for solving a problem with 10 discrete variables without domain and with constraints. \n\nint: x1;\nint: x2;\nint: x3;\nint: x4;\nint: x5;\nint: x6;\nint: x7;\nint: x8;\nint: x9;\nint: x10;\n\n% Constraints\nconstraint x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 = 10;",
+                    "index": 0,
+                    "logprobs": null,
+                    "finish_reason": "stop"
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 118,
+                "completion_tokens": 126,
+                "total_tokens": 244
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for solving a problem with 10 discrete variables without domain and with constraints. \n\nint: x1;\nint: x2;\nint: x3;\nint: x4;\nint: x5;\nint: x6;\nint: x7;\nint: x8;\nint: x9;\nint: x10;\n\n% Constraints\nconstraint x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 = 10;"
+    },
+    "1": {
+        "STEP": "1",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for solving a problem with 10 discrete variables without domain and with constraints. \n\nint: x1;\nint: x2;\nint: x3;\nint: x4;\nint: x5;\nint: x6;\nint: x7;\nint: x8;\nint: x9;\nint: x10;\n\n% Constraints\nconstraint x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 = 10;",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\n  symbol error: variable `x1' must be defined (did you forget to specify a data file?)\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680914864,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for solving a problem with 10 discrete variables without domain and with constraints. \n\nvar int: x1;\nvar int: x2;\nvar int: x3;\nvar int: x4;\nvar int: x5;\nvar int: x6;\nvar int: x7;\nvar int: x8;\nvar int: x9;\nvar int: x10;\n\n% Constraints\nconstraint x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 = 10;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 182,
+                "completion_tokens": 158,
+                "total_tokens": 340
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for solving a problem with 10 discrete variables without domain and with constraints. \n\nvar int: x1;\nvar int: x2;\nvar int: x3;\nvar int: x4;\nvar int: x5;\nvar int: x6;\nvar int: x7;\nvar int: x8;\nvar int: x9;\nvar int: x10;\n\n% Constraints\nconstraint x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 = 10;\n"
+    },
+    "2": {
+        "STEP": "2",
+        "STEP_DESCRIPTION": "OPTIMISATION FINISHED",
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for solving a problem with 10 discrete variables without domain and with constraints. \n\nvar int: x1;\nvar int: x2;\nvar int: x3;\nvar int: x4;\nvar int: x5;\nvar int: x6;\nvar int: x7;\nvar int: x8;\nvar int: x9;\nvar int: x10;\n\n% Constraints\nconstraint x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 = 10;\n",
+        "OPTIMISATION_SOLUTION": "{'x1': 2147483646, 'x2': 2147483646, 'x3': 2147483646, 'x4': 2147483646, 'x5': 2147483646, 'x6': -2147483636, 'x7': -2147483646, 'x8': -2147483646, 'x9': -2147483646, 'x10': -2147483646}"
+    }
+}

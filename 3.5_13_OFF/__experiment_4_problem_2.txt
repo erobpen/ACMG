@@ -1,0 +1,123 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "Solution(a=2, b=1, c=6, d=3, _checker='')"}]
+
+None
+___________
+int: a; % First digit of the pin (1-9)
+int: b; % Second digit of the pin (1-9)
+int: c; % Third digit of the pin (1-9)
+int: d; % Fourth digit of the pin (1-9)
+
+% Constraints
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d; % All digits are different
+
+% Define the 2-digit numbers
+var int: ab = 10 * a + b;
+var int: cd = 10 * c + d;
+var int: da = 10 * d + a;
+var int: bc = 10 * b + c;
+
+constraint cd == 3 * ab; % The 2-digit number cd is 3 times the 2-digit number ab
+constraint da == 2 * bc; % The 2-digit number da is 2 times the 2-digit number bc
+
+% Solve for the pin number
+solve satisfy;
+
+output ["The pin is: " ++ show(a) ++ show(b) ++ show(c) ++ show(d)];
+___________
+a = 1; % First digit of the pin (1-9)
+b = 2; % Second digit of the pin (1-9)
+c = 6; % Third digit of the pin (1-9)
+d = 5; % Fourth digit of the pin (1-9)
+==============================None
+___________
+% Define the four digits of the pin (a, b, c, d)
+% Each digit must be unique (1-9)
+int: a; % (1-9)
+int: b; % (1-9)
+int: c; % (1-9)
+int: d; % (1-9)
+
+constraint all_different([a, b, c, d]);
+
+% Define the two 2-digit numbers
+var 1..99: ab = 10 * a + b;
+var 1..99: cd = 10 * c + d;
+var 1..99: da = 10 * d + a;
+var 1..99: bc = 10 * b + c;
+
+% Add the constraints based on the relationships
+constraint cd == 3 * ab;
+constraint da == 2 * bc;
+
+solve satisfy;
+
+output ["Pin: " ++ show(a) ++ show(b) ++ show(c) ++ show(d) ++ "\n"];
+___________
+a = 1;  % (1-9)
+b = 2;  % (1-9)
+c = 6;  % (1-9)
+d = 4;  % (1-9)
+==============================None
+___________
+% Define the 4-digit pin number as abcd with unique digits from 1 to 9
+int: a; int: b; int: c; int: d;
+
+% Ensure that the digits are unique
+constraint all_different([a, b, c, d]);
+
+% Define the 2-digit components
+int: ab = 10*a + b;
+int: cd = 10*c + d;
+int: bc = 10*b + c;
+int: da = 10*d + a;
+
+% The 2-digit number cd is 3 times the 2-digit number ab
+constraint cd == 3 * ab;
+% The 2-digit number da is 2 times the 2-digit number bc
+constraint da == 2 * bc;
+
+% Solve for the pin number
+solve satisfy;
+
+% Output the pin number
+output["The pin number is: " ++ show(a) ++ show(b) ++ show(c) ++ show(d)];
+___________
+a = 1;
+b = 2;
+c = 3;
+d = 6;
+==============================Solution(a=2, b=1, c=6, d=3, _checker='')
+___________
+% Define the digits of the pin (4 unique digits from 1 to 9)
+var 1..9: a; 
+var 1..9: b; 
+var 1..9: c; 
+var 1..9: d; 
+
+% Constraints based on the given information
+constraint all_different([a, b, c, d]);
+
+% Form the 4-digit pin number
+var 1000..9999: pin = 1000*a + 100*b + 10*c + d;
+
+% Form the 2-digit numbers from the pin digits
+var 10..99: ab = 10*a + b;
+var 10..99: cd = 10*c + d;
+var 10..99: bc = 10*b + c;
+var 10..99: da = 10*d + a;
+
+% Additional constraints based on the given information
+constraint cd == 3*ab;  % The 2-digit number cd is 3 times the 2-digit number ab
+constraint da == 2*bc;  % The 2-digit number da is 2 times the 2-digit number bc
+
+solve satisfy;
+
+% Output the pin and the corresponding 2-digit numbers
+output["Pin: " ++ show(pin) ++ "\n"];
+output["ab: " ++ show(ab) ++ "\n"];
+output["cd: " ++ show(cd) ++ "\n"];
+output["bc: " ++ show(bc) ++ "\n"];
+output["da: " ++ show(da) ++ "\n"];
+___________
+a=1; b=2; c=3; d=4;
+==============================

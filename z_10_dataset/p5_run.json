@@ -1,0 +1,247 @@
+{
+    "0": {
+        "STEP": "0",
+        "STEP_DESCRIPTION": "LLM COMPLETION",
+        "LLM_INSTRUCTION": "Bot: Ask me any questions about the MiniZinc. MiniZinc is a high-level constraint programming language used for modelling and solving combinatorial optimisation problems. Me: Can I ask you about codes written in MiniZinc as an example? Can you show only the source code? Bot: Yes. Tell me what kind of language optimization problems MiniZinc would like me to generate for you. Me: A source code in minizinc that resolve: A source code with 10 discrete variables with domain and with the constraint all_different. Put the Bot comments with % symbol.Bot:",
+        "LLM_RESPONSE": {
+            "id": "cmpl-72rNOMpkKpAPn1AasbN8ZW5LXduTo",
+            "object": "text_completion",
+            "created": 1680916190,
+            "model": "text-davinci-003",
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different. \n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;",
+                    "index": 0,
+                    "logprobs": null,
+                    "finish_reason": "stop"
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 122,
+                "completion_tokens": 67,
+                "total_tokens": 189
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different. \n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;"
+    },
+    "1": {
+        "STEP": "1",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different. \n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\nno function or predicate with name `all_different' found\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680916192,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 113,
+                "completion_tokens": 94,
+                "total_tokens": 207
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n"
+    },
+    "2": {
+        "STEP": "2",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\nno function or predicate with name `all_different_int' found\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680916194,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 116,
+                "completion_tokens": 32,
+                "total_tokens": 148
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n"
+    },
+    "3": {
+        "STEP": "3",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\nno function or predicate with name `all_different' found\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680916195,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 112,
+                "completion_tokens": 32,
+                "total_tokens": 144
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n"
+    },
+    "4": {
+        "STEP": "4",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\nno function or predicate with name `all_different_int' found\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680916197,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 116,
+                "completion_tokens": 32,
+                "total_tokens": 148
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n"
+    },
+    "5": {
+        "STEP": "5",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\nno function or predicate with name `all_different' found\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680916198,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 112,
+                "completion_tokens": 32,
+                "total_tokens": 144
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n"
+    },
+    "6": {
+        "STEP": "6",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\nno function or predicate with name `all_different_int' found\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680916199,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 116,
+                "completion_tokens": 32,
+                "total_tokens": 148
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n"
+    },
+    "7": {
+        "STEP": "7",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\nno function or predicate with name `all_different' found\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680916200,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 112,
+                "completion_tokens": 32,
+                "total_tokens": 144
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n"
+    },
+    "8": {
+        "STEP": "8",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\nno function or predicate with name `all_different_int' found\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680916202,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 116,
+                "completion_tokens": 32,
+                "total_tokens": 148
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n"
+    },
+    "9": {
+        "STEP": "9",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\nno function or predicate with name `all_different' found\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680916203,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 112,
+                "completion_tokens": 32,
+                "total_tokens": 144
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n"
+    },
+    "10": {
+        "STEP": "10",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different_int(x);\n\nsolve satisfy;\n",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\nno function or predicate with name `all_different_int' found\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680916204,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 116,
+                "completion_tokens": 32,
+                "total_tokens": 148
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for a problem with 10 discrete variables with domain and with the constraint all_different.\n\nint: n = 10;\n\narray[1..n] of var 1..n: x;\n\nconstraint all_different(x);\n\nsolve satisfy;\n"
+    }
+}

@@ -1,0 +1,24 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(a=[17, 14, 13, 12], b=[11, 10, 9, 8], c=[32, 7, 6, 5], d=[4, 3, 2, 1], _checker='')"}]
+
+Solution(a=[17, 14, 13, 12], b=[11, 10, 9, 8], c=[32, 7, 6, 5], d=[4, 3, 2, 1], _checker='')
+___________
+int: n = 4; % Number of numbers
+set of int: NUMS = 1..100; % Set of numbers [1, 2, ..., 100]
+
+% Decision variables
+array[1..n] of var NUMS: a; % First number
+array[1..n] of var NUMS: b; % Second number
+array[1..n] of var NUMS: c; % Third number
+array[1..n] of var NUMS: d; % Fourth number
+
+% Constraints: Distinct numbers and sum of squares condition
+constraint all_different(a ++ b ++ c ++ d);
+constraint sum(i in 1..n)(a[i]*a[i]) + sum(i in 1..n)(b[i]*b[i]) == sum(i in 1..n)(c[i]*c[i]) + sum(i in 1..n)(d[i]*d[i]);
+
+solve satisfy;
+
+% Output the combination that satisfies the condition
+output ["Numbers: " ++ show(a) ++ ", " ++ show(b) ++ ", " ++ show(c) ++ ", " ++ show(d) ++ "\n"];
+___________
+n = 4;
+==============================

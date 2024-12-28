@@ -1,0 +1,14 @@
+% The MiniZinc code can be generated given the model description and semantic entities. If you provide the model description and the semantic entities, I can create the MiniZinc code for you.
+
+
+
+
+
+
+
+
+
+--------------
+
+
+% In order to generate the data.dzn file, we will need the model description and the specific parameters. Once you provide those, I can help generate the data.dzn file for the model to run.

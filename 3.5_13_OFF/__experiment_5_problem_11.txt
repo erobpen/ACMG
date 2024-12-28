@@ -1,0 +1,8 @@
+[{"attempt": "0_1", "status": true, "solutions": "Solution(_checker='')"}]
+
+Solution(_checker='')
+___________
+int: a; % from dzn\nint: b; % from dzn\nint: c; % from dzn\nint: d; % from dzn\n\narray[1..4] of var 1..711: prices = [a, b, c, d]; % prices in cents\nvar int: total = sum(prices);\n\nconstraint total == 711;\n\nsolve satisfy;\n\noutput [\n  "The prices of the four items are: ", show(a), ", ", show(b), ", ", show(c), ", ", show(d), "\n"\n];
+___________
+a = 100; % from dzn\nb = 200; % from dzn\nc = 300; % from dzn\nd = 111; % from dzn
+==============================

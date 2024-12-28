@@ -1,0 +1,75 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "Solution(a=2, b=1, c=6, d=3, _checker='')"}]
+
+None
+___________
+int: a;  % Thousands digit
+int: b;  % Hundreds digit
+int: c;  % Tens digit
+int: d;  % Units digit
+
+% Constraints based on the relationships between the 2-digit numbers
+constraint c * 10 + d == 3 * (a * 10 + b);  % cd = 3 * ab
+constraint d * 10 + a == 2 * (b * 10 + c);  % da = 2 * bc
+
+% No two digits can be the same
+constraint all_different([a, b, c, d]);
+
+solve satisfy;
+
+output ["The PIN is: " ++ show(a) ++ show(b) ++ show(c) ++ show(d)];
+___________
+a = 0;
+b = 0;
+c = 0;
+d = 0;
+==============================None
+___________
+% Four-digit PIN numbers are represented as: abcd
+% Each digit ranges from 0 to 9
+
+int: a;  % Digit a
+int: b;  % Digit b
+int: c;  % Digit c
+int: d;  % Digit d
+
+% Constraints based on relationships between the 2-digit numbers
+constraint 10*a + b < 100 /\ 10*c + d < 100; % Ensure both 2-digit numbers are represented correctly
+constraint 10*c + d = 3 * (10*a + b); % cd = 3 * ab
+constraint 10*d + a = 2 * (10*b + c); % da = 2 * bc
+
+% Additional constraints to ensure no two digits are the same
+constraint all_different([a, b, c, d]);
+
+solve satisfy;
+
+output [
+    "PIN: ", show(a), show(b), show(c), show(d), "\n"
+];
+___________
+a = 1;
+b = 2;
+c = 6;
+d = 3;
+==============================Solution(a=2, b=1, c=6, d=3, _checker='')
+___________
+% Define the 4-digit PIN as abcd
+var 0..9: a;  % Thousands place
+var 0..9: b;  % Hundreds place
+var 0..9: c;  % Tens place
+var 0..9: d;  % Units place
+
+% Constraints based on the relationships between the 2-digit numbers
+constraint 10 * c + d == 3 * (10 * a + b);  % cd = 3 * ab
+constraint 10 * d + a == 2 * (10 * b + c);  % da = 2 * bc
+
+% No two digits are the same
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+
+% Solve for the unique 4-digit PIN
+solve satisfy;
+
+% Output the PIN
+output ["The 4-digit PIN is: " ++ show(a) ++ show(b) ++ show(c) ++ show(d)];
+___________
+% No additional input data is required as the problem is fully defined in the model.
+==============================

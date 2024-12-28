@@ -1,0 +1,37 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(matrix=[[16, 2, 9, 7], [3, 13, 6, 12], [5, 11, 4, 14], [10, 8, 15, 1]], _checker='')"}]
+
+Solution(matrix=[[16, 2, 9, 7], [3, 13, 6, 12], [5, 11, 4, 14], [10, 8, 15, 1]], _checker='')
+___________
+int: n;  % Size of the magic square
+
+% Decision variables: the values in each cell of the matrix
+array[1..n, 1..n] of var 1..n*n: matrix;
+
+% Constraints:
+constraint all_different(matrix);  % Each cell must contain a distinct integer
+constraint forall(i in 1..n) (
+    sum(j in 1..n)(matrix[i,j]) == n * (n*n + 1) / 2  % Rows sum to the magic constant
+);
+constraint forall(j in 1..n) (
+    sum(i in 1..n)(matrix[i,j]) == n * (n*n + 1) / 2  % Columns sum to the magic constant
+);
+constraint sum(i in 1..n)(matrix[i,i]) == n * (n*n + 1) / 2;  % Main diagonal
+constraint sum(i in 1..n)(matrix[i,n-i+1]) == n * (n*n + 1) / 2;  % Other diagonal
+
+solve satisfy;  % Find any solution, not necessarily the first one found
+
+% Output the matrix
+output [
+  "Magic square of size " ++ show(n) ++ ":\n"
+] ++
+[
+  concat([
+    if j > 1 then " " else "" endif,
+    show(matrix[i,j])
+  | j in 1..n
+  ]) ++ "\n"
+| i in 1..n
+];
+___________
+n = 4;
+==============================

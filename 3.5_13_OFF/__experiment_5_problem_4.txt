@@ -1,0 +1,8 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(square=[[16, 2, 9, 7], [3, 13, 6, 12], [5, 11, 4, 14], [10, 8, 15, 1]], _checker='')"}]
+
+Solution(square=[[16, 2, 9, 7], [3, 13, 6, 12], [5, 11, 4, 14], [10, 8, 15, 1]], _checker='')
+___________
+int: n = 4;  % Size of the magic square\nint: target_sum = n * (n * n + 1) div 2;  % Expected sum in each row, column, and diagonal\n\n% Each cell of the magic square is represented by an array\narray[1..n, 1..n] of var 1..n*n: square;\n\n% Constraints: all numbers must be different\nconstraint alldifferent(square);\n\n% Constraints: row sums\nconstraint forall(i in 1..n)(\n    sum(j in 1..n)(square[i, j]) == target_sum\n);\n\n% Constraints: column sums\nconstraint forall(j in 1..n)(\n    sum(i in 1..n)(square[i, j]) == target_sum\n);\n\n% Constraint: diagonal sum (top-left to bottom-right)\nconstraint sum(i in 1..n)(square[i, i]) == target_sum;\n\n% Constraint: diagonal sum (top-right to bottom-left)\nconstraint sum(i in 1..n)(square[i, n - i + 1]) == target_sum;\n\nsolve satisfy;  % Find any solution\n\n% Output the magic square\noutput [\n    "Magic Square (n = ", show(n), "):\n"\n] ++\n[\n    if j == 1 then "\n" else " " endif ++ show(square[i, j])\n    | i in 1..n, j in 1..n\n];
+___________
+n = 4;
+==============================

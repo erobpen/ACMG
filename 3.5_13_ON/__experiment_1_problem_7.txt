@@ -1,0 +1,59 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "Solution(S=[1, 0, 0, 0], values=[2147483646, 2147483646, -2147483641, -2147483646], _checker='')"}]
+
+None
+___________
+% MiniZinc model for solving the partition problem
+% Given a set of integers A, find two disjoint non-empty subsets S and T such that Sum(S) = Sum(T)
+
+% Input: Set of integers A
+set of int: A;
+array[1..card(A)] of var 0..1: selected;  % 1 if element is in S, 0 if in T
+
+% Constraints: S and T are disjoint, non-empty, with equal sums
+constraint sum(i in 1..card(A))(selected[i]) > 0;  % S non-empty
+constraint sum(i in 1..card(A))(selected[i]) < card(A);  % T non-empty
+constraint sum(i in 1..card(A))(selected[i] * A[i]) = sum(i in 1..card(A))(A[i]) / 2;  % Sum(S) = Sum(T)
+
+solve satisfy;  % Find any solution
+
+% Output: Elements in S and T
+var int: sumS = sum(i in 1..card(A))(selected[i] * A[i]);
+array[1..card(A)] of var 0..1: inS = [selected[i] | i in 1..card(A)];
+
+output ["S: " ++ show([A[i] | i in 1..card(A) where inS[i] = 1]) ++ "\n"] ++
+       ["T: " ++ show([A[i] | i in 1..card(A) where inS[i] = 0]) ++ "\n"] ++
+       ["Sum: " ++ show(sumS) ++ "\n"];
+___________
+A = {81, 21, 79, 4, 29, 70, 28, 20, 14, 7};
+==============================None
+___________
+int: n; % from dzn\narray[1..n] of int: nums; % from dzn\n\n% Decision variables to represent which elements belong to set S or T\narray[1..n] of var 0..1: s; % s[i]=1 means nums[i] is in set S, s[i]=0 means nums[i] is in set T\n\n% Constraints for partitioning the set into S and T\nconstraint\n  sum(i in 1..n)(s[i] * nums[i]) = sum(i in 1..n)( (1-s[i]) * nums[i]) / 2;\n\n% Symmetry breaking constraint to ensure that T is not empty\nconstraint sum(i in 1..n)(1 - s[i]) > 0;\n\n% Symmetry breaking constraint to ensure that S and T are disjoint\nconstraint forall(i, j in 1..n where i < j)(s[i] + s[j] <= 1);\n\nsolve satisfy;\n\n% Output the partition\noutput ["S: " ++ show([nums[i] | i in 1..n where s[i] == 1]) ++ "\n"] ++ ["T: " ++ show([nums[i] | i in 1..n where s[i] == 0]) ++ "\n"];
+___________
+n = 10;\nnums = [81, 21, 79, 4, 29, 70, 28, 20, 14, 7];
+==============================Solution(S=[1, 0, 0, 0], values=[2147483646, 2147483646, -2147483641, -2147483646], _checker='')
+___________
+% Extracted semantic entities:
+% Input: Set of integers
+% Constraints: Disjoint, non-empty subsets S and T, Sum(S) = Sum(T)
+
+int: n; % from dzn
+set of int: DATA = 1..n;
+
+array[DATA] of var 0..1: S; % S[i] = 1 if i in S, 0 otherwise
+array[DATA] of var int: values; % values[i] = i * S[i]
+var int: sum_S = sum(i in DATA)(values[i]);
+var int: sum_T = sum(i in DATA)(i - values[i]);
+
+% Constraints:
+constraint sum(S) > 0 /\ sum(S) < n; % Non-empty subsets
+constraint sum_S == sum_T; % Equal sums
+
+solve satisfy;
+
+output ["S: "];
+output [show(i) | i in DATA where S[i] = 1];
+output ["\nT: "];
+output [show(i) | i in DATA where S[i] = 0];
+___________
+n = 10;
+==============================

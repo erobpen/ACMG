@@ -1,0 +1,61 @@
+int: total_slots = 36; \n\n% Quantities of each board type\nint: quantity_board1; \nint: quantity_board2; \nint: quantity_board3; \nint: quantity_lboard1; \nint: quantity_lboard2; \n\n% Board slot occupancy\nint: board1_slots = 1; \nint: board2_slots = 1; \nint: board3_slots = 1; \nint: lboard1_slots = 2; \nint: lboard2_slots = 2; \n\n% Constraint: Total allocation must not exceed the 36 slots\nconstraint quantity_board1 * board1_slots + quantity_board2 * board2_slots + quantity_board3 * board3_slots + quantity_lboard1 * lboard1_slots + quantity_lboard2 * lboard2_slots <= total_slots; \n\n% Constraint: Slot restrictions for specific board types\nconstraint forall(i in 0..quantity_lboard1) (\n  if (quantity_lboard1 >= i) then\n    (i * lboard1_slots) mod 2 = 1\n  else\n    true\n  endif\n);\nconstraint forall(j in 0..quantity_lboard2) (\n  if (quantity_lboard2 >= j) then\n    (j * lboard2_slots) in {1, 2, 4, 8, 16}\n  else\n    true\n  endif\n);\n\n% Objective: Maximize the number of boards allocated\nvar int: boards_allocated = quantity_board1 + quantity_board2 + quantity_board3 + quantity_lboard1 + quantity_lboard2; \nsolve maximize boards_allocated; \n\noutput [\n  "Board1 (1 slot): ", show(quantity_board1), "\n",\n  "Board2 (1 slot): ", show(quantity_board2), "\n",\n  "Board3 (1 slot): ", show(quantity_board3), "\n",\n  "LBoard1 (2 slots): ", show(quantity_lboard1), "\n",\n  "LBoard2 (2 slots): ", show(quantity_lboard2), "\n",\n  "Total boards: ", show(boards_allocated), " (Maximum)\n"\n];
+
+quantity_board1 = 5;\nquantity_board2 = 5;\nquantity_board3 = 6;\nquantity_lboard1 = 4;\nquantity_lboard2 = 4;int: total_slots = 36;
+int: single_slot = 1;  % Single slot boards
+int: double_slot = 2;  % Double slot boards
+int: min_lboard_qty = 2;  % Minimum quantity for LBOARD
+int: odd_slots = 18;  % Half of the total slots
+int: even_slots = 18;  % Half of the total slots
+
+% Quantities of each board type
+int: qty_board1;  % 5
+int: qty_board2;  % 5
+int: qty_board3;  % 6
+int: qty_lboard1;  % 4
+int: qty_lboard2;  % 4
+
+% Variables to represent the count of each board type
+var 0..total_slots: count_board1;
+var 0..total_slots: count_board2;
+var 0..total_slots: count_board3;
+var 0..total_slots: count_lboard1;
+var 0..total_slots: count_lboard2;
+
+% Restrictions on where each type of board can be placed
+constraint count_board1 mod 2 == 1;  % BOARD1 can only occupy odd-numbered slots
+constraint count_board3 mod 2 == 0;  % BOARD3 can only occupy even-numbered slots
+
+% BOARD2 can occupy specific slots: 1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31
+constraint count_board2 <= sum([1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]);
+
+% LBOARD2 can only occupy slots that are powers of 2: 1, 2, 4, 8, 16
+constraint count_lboard2 <= sum([1, 2, 4, 8, 16]);
+
+% Ensure that LBOARD comes in a minimum quantity of 2
+constraint count_lboard1 >= min_lboard_qty /\ count_lboard2 >= min_lboard_qty;
+
+% Quantities of each board type constraints
+constraint count_board1 <= qty_board1 /\
+            count_board2 <= qty_board2 /\
+            count_board3 <= qty_board3 /\
+            count_lboard1 <= qty_lboard1 /\
+            count_lboard2 <= qty_lboard2;
+
+% Total quantities constraint
+constraint count_board1 + count_board2 + count_board3 + count_lboard1 + count_lboard2 == total_slots;
+
+solve satisfy;
+
+output [
+    "BOARD1: ", show(count_board1), "\n",
+    "BOARD2: ", show(count_board2), "\n",
+    "BOARD3: ", show(count_board3), "\n",
+    "LBOARD1: ", show(count_lboard1), "\n",
+    "LBOARD2: ", show(count_lboard2), "\n"
+];
+
+qty_board1 = 5;\nqty_board2 = 5;\nqty_board3 = 6;\nqty_lboard1 = 4;\nqty_lboard2 = 4;\n% Parameters\nint: n; % Number of board types\nint: m; % Number of slots\n\narray[1..n] of int: board_quantities; % Quantity of each board type\n\nint: board1_limit; % Maximum number of BOARD1 boards\nint: board2_limit; % Maximum number of BOARD2 boards\nint: board3_limit; % Maximum number of BOARD3 boards\nint: lboard1_limit; % Maximum number of LBOARD1 boards\nint: lboard2_limit; % Maximum number of LBOARD2 boards\n\narray[1..n] of int: board_slots; % Number of slots each board type takes\n\nvar 0..board1_limit: board1_count; % Number of BOARD1 boards\nvar 0..board2_limit: board2_count; % Number of BOARD2 boards\nvar 0..board3_limit: board3_count; % Number of BOARD3 boards\nvar 0..lboard1_limit: lboard1_count; % Number of LBOARD1 boards\nvar 0..lboard2_limit: lboard2_count; % Number of LBOARD2 boards\n\n% Objective: Maximize the total boards\nvar int: total_boards = board1_count + board2_count + board3_count + lboard1_count + lboard2_count;\n\n% Constraint: Consider only valid quantities of each board\nconstraint board1_count * board_slots[1] + board2_count * board_slots[2] + board3_count * board_slots[3] + lboard1_count * board_slots[4] + lboard2_count * board_slots[5] <= m;\n\n% Constraint: Ensure we don't use more boards than available\nconstraint board1_count <= board1_limit /\\n           board2_count <= board2_limit /\\n           board3_count <= board3_limit /\\n           lboard1_count <= lboard1_limit /\\n           lboard2_count <= lboard2_limit;\n\n% Objective: Maximize the number of boards used\nsolve maximize total_boards;\n\n% Output the board allocation\noutput ["Optimal Allocation:\n"] ++\n       ["BOARD1: " ++ show(board1_count) ++ "\n"] ++\n       ["BOARD2: " ++ show(board2_count) ++ "\n"] ++\n       ["BOARD3: " ++ show(board3_count) ++ "\n"] ++\n       ["LBOARD1: " ++ show(lboard1_count) ++ "\n"] ++\n       ["LBOARD2: " ++ show(lboard2_count) ++ "\n"] ++\n       ["Total boards: " ++ show(total_boards) ++ "\n"];
+
+n = 5;\n% Number of board types (e.g., 3 single-slot and 2 double-slot boards)\n\nm = 36;\n% Number of available slots\n\nboard_quantities = [5, 5, 6, 4, 4];\n% Quantity of each board type: BOARD1, BOARD2, BOARD3, LBOARD1, LBOARD2\n\nboard1_limit = 5;\n% Maximum number of BOARD1 boards\nboard2_limit = 5;\n% Maximum number of BOARD2 boards\nboard3_limit = 6;\n% Maximum number of BOARD3 boards\nlboard1_limit = 4;\n% Maximum number of LBOARD1 boards\nlboard2_limit = 4;\n% Maximum number of LBOARD2 boards\n\nboard_slots = [1, 1, 1, 2, 2];\n% Number of slots each board type takes (single or double slot)\n\n% Slot restrictions are automatically enforced in the Minizinc model\n% Only odd for BOARD1, only even for BOARD3, specific slots for BOARD2, and powers of 2 for LBOARD2int: board1;   % Quantity of board type 1\nint: board2;   % Quantity of board type 2\nint: board3;   % Quantity of board type 3\nint: lboard1;  % Quantity of board type 1 (double slot)\nint: lboard2;  % Quantity of board type 2 (double slot)\n\n% Constants for slots\nset of int: odd_slots = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35};\nset of int: even_slots = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36};\nset of int: board2_slots = {1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31};\nset of int: lboard2_slots = {1, 2, 4, 8, 16};  % Powers of 2\n\n% Decision variables: Number of boards of each type to use\nvar 0..board1: n_board1;\nvar 0..board2: n_board2;\nvar 0..board3: n_board3;\nvar 0..lboard1: n_lboard1;\nvar 0..lboard2: n_lboard2;\n\n% Constraints\nconstraint n_board1 + 2 * n_lboard1 <= 36 /\\n           n_board2 + 2 * n_lboard2 <= 36 /\\n           n_board1 * 1 in odd_slots /\\n           n_board2 * 1 in board2_slots /\\n           n_board3 * 1 in even_slots /\\n           n_lboard1 * 2 in odd_slots /\\n           n_lboard2 * 2 in lboard2_slots;\n\n% Objective: Maximize the total number of boards used\nvar int: total_boards = n_board1 + n_board2 + n_board3 + n_lboard1 + n_lboard2;\nsolve maximize total_boards;\n\n% Output\noutput ["BOARD1: " ++ show(n_board1) ++ "\n" ++\n        "BOARD2: " ++ show(n_board2) ++ "\n" ++\n        "BOARD3: " ++ show(n_board3) ++ "\n" ++\n        "LBOARD1: " ++ show(n_lboard1) ++ "\n" ++\n        "LBOARD2: " ++ show(n_lboard2) ++ "\n" ++\n        "Total boards used: " ++ show(total_boards) ++ "\n"];
+
+board1 = 5;\nboard2 = 5;\nboard3 = 6;\nlboard1 = 4;\nlboard2 = 4;

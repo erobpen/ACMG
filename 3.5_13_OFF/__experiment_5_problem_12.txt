@@ -1,0 +1,87 @@
+[{"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "None"}]
+
+None
+___________
+int: n; % Total number of steps to climb (% from dzn)
+array[1..2] of int: steps_m; % Steps that can be taken at a time (m1, m2) (% from dzn)
+array[1..2] of var 0..10: steps_m1 = [steps_m[1], steps_m[2]]; % Steps that can be taken at a time
+
+% Decision variable: number of steps taken for each step size
+var 0..10: count_m1; % Number of steps taken with m1
+var 0..10: count_m2; % Number of steps taken with m2
+
+% Constraint: the total steps taken must sum up to n
+constraint count_m1 * steps_m1[1] + count_m2 * steps_m1[2] == n;
+
+% Objective: minimize the total number of steps taken
+solve minimize count_m1 + count_m2;
+
+output ["Steps of " ++ show(steps_m1[1]) ++ ": " ++ show(count_m1) ++ "\n" ++
+        "Steps of " ++ show(steps_m1[2]) ++ ": " ++ show(count_m2) ++ "\n"];
+___________
+n = 20;
+steps_m = [3, 5];
+==============================None
+___________
+% Parameters
+int: n; % from dzn
+array[1..2] of int: steps = [3, 5]; % Steps that can be taken
+
+% Decision variables
+array[0..n] of var 0..max(steps): steps_m1; % Number of steps taken in m1 steps
+array[0..n] of var 0..max(steps): steps_m2; % Number of steps taken in m2 steps
+
+% Ensure the steps are in correct ranges
+constraint forall(i in 0..n)(steps_m1[i] <= max(steps) /\ steps_m2[i] <= max(steps));
+
+% Constraints to ensure correct number of steps
+constraint steps_m1[0] = 0 /\ steps_m2[0] = 0; % Initial state
+constraint steps_m1[n] + steps_m2[n] = n; % Total number of steps constraint
+
+constraint forall(i in 1..n)(
+    steps_m1[i] = max([steps_m1[i - steps[1]], steps_m1[i - steps[2]]])
+/\  steps_m2[i] = max([steps_m2[i - steps[1]], steps_m2[i - steps[2]]])
+);
+
+% Objective: Minimize the total number of steps
+solve satisfy; % The problem is to find a valid path, not to minimize anything
+
+% Output the results
+output [
+    "Step 3: " ++ show(steps_m1[n]) ++ "\n" ++
+    "Step 5: " ++ show(steps_m2[n]) ++ "\n"
+];
+___________
+n = 20;  % Number of steps to climb
+==============================None
+___________
+int: n; % total number of steps\nint: m1; % number of steps possible to take at a time\nint: m2; % number of steps possible to take at a time\nvar 0..n: steps_m1; % number of steps taken with m1 at a time\nvar 0..n: steps_m2; % number of steps taken with m2 at a time\n\nconstraint steps_m1 * m1 + steps_m2 * m2 == n; % total steps must be n\n\nsolve satisfy;\n\noutput [\n  "Number of steps with m1 (", show(m1), "): ", show(steps_m1), "\n",\n  "Number of steps with m2 (", show(m2), "): ", show(steps_m2), "\n"\n];
+___________
+n = 20; % total number of steps\nm1 = 3; % number of steps possible to take at a time\nm2 = 5; % number of steps possible to take at a time\n
+==============================None
+___________
+int: n; % from dzn
+int: m1; % from dzn
+int: m2; % from dzn
+
+array[1..n] of var 0..max(m1, m2): steps; % Individual steps at each position on the stair
+
+constraint
+  % The first step can be either m1 or m2
+  steps[1] in {m1, m2} /\
+  % Subsequent steps are determined by the previous two
+  forall(i in 2..n) (
+    steps[i] = if i < m1 then steps[i-1]
+               else max(steps[i-m1], steps[i-m2])
+               endif
+  );
+
+solve satisfy;
+
+% Output
+output ["Steps: ", show(steps)];
+___________
+n = 20;
+m1 = 3;
+m2 = 5;
+==============================

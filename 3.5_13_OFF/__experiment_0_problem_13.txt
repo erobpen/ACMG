@@ -1,0 +1,214 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "None"}, {"attempt": "1_1", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "None"}, {"attempt": "2_0", "status": true, "solutions": "None"}, {"attempt": "2_1", "status": true, "solutions": "None"}, {"attempt": "2_2", "status": true, "solutions": "None"}]
+
+None
+___________
+int: a;
+int: b;
+int: c;
+int: d;
+
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+constraint 1 <= a /\ a <= 100;
+constraint 1 <= b /\ b <= 100;
+constraint 1 <= c /\ c <= 100;
+constraint 1 <= d /\ d <= 100;
+
+constraint a*a + b*b = c*c + d*d;
+
+output [a, b, c, d];
+
+solve satisfy;
+___________
+a = 0;
+b = 0;
+c = 0;
+d = 0;
+==============================None
+___________
+int: a;
+int: b;
+int: c;
+int: d;
+
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+constraint a >= 1 /\ a <= 100 /\ b >= 1 /\ b <= 100 /\ c >= 1 /\ c <= 100 /\ d >= 1 /\ d <= 100;
+
+constraint a*a + b*b = c*c + d*d;
+
+output [a, b, c, d];
+
+solve satisfy;
+___________
+a = 0;
+b = 0;
+c = 0;
+d = 0;
+==============================None
+___________
+int: a;
+int: b;
+int: c;
+int: d;
+
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+constraint 1 <= a /\ a <= 100;
+constraint 1 <= b /\ b <= 100;
+constraint 1 <= c /\ c <= 100;
+constraint 1 <= d /\ d <= 100;
+
+constraint a^2 + b^2 = c^2 + d^2;
+
+output [a, b, c, d];
+
+solve satisfy;
+___________
+a = 0;
+b = 0;
+c = 0;
+d = 0;
+==============================None
+___________
+```minizinc
+int: a;
+int: b;
+int: c;
+int: d;
+
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+constraint 1 <= a /\ a <= 100;
+constraint 1 <= b /\ b <= 100;
+constraint 1 <= c /\ c <= 100;
+constraint 1 <= d /\ d <= 100;
+
+constraint a*a + b*b = c*c + d*d;
+
+output [a, b, c, d];
+solve satisfy;
+```
+___________
+a = 1;
+b = 2;
+c = 3;
+d = 4;
+==============================None
+___________
+int: a;
+int: b;
+int: c;
+int: d;
+
+constraint a > 0 /\ a < 100;
+constraint b > 0 /\ b < 100;
+constraint c > 0 /\ c < 100;
+constraint d > 0 /\ d < 100;
+
+constraint all_different([a, b, c, d]);
+
+constraint a^2 + b^2 = c^2 + d^2;
+
+output [a, b, c, d];
+
+solve satisfy;
+___________
+a = 0;
+b = 0;
+c = 0;
+d = 0;
+==============================None
+___________
+int: a;
+int: b;
+int: c;
+int: d;
+
+constraint 1 <= a /\ a <= 100;
+constraint 1 <= b /\ b <= 100;
+constraint 1 <= c /\ c <= 100;
+constraint 1 <= d /\ d <= 100;
+
+constraint all_different([a, b, c, d]);
+
+constraint a*a + b*b = c*c + d*d;
+
+output [a, b, c, d];
+
+solve satisfy;
+___________
+a = 0;
+b = 0;
+c = 0;
+d = 0;
+==============================None
+___________
+```minizinc
+int: a;
+int: b;
+int: c;
+int: d;
+
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+constraint 1 <= a /\ a <= 100;
+constraint 1 <= b /\ b <= 100;
+constraint 1 <= c /\ c <= 100;
+constraint 1 <= d /\ d <= 100;
+
+constraint a*a + b*b = c*c + d*d;
+
+output [a, b, c, d];
+
+solve satisfy;
+```
+___________
+a = 1;
+b = 2;
+c = 3;
+d = 4;
+==============================None
+___________
+int: a;
+int: b;
+int: c;
+int: d;
+
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+constraint 1 <= a /\ a <= 100;
+constraint 1 <= b /\ b <= 100;
+constraint 1 <= c /\ c <= 100;
+constraint 1 <= d /\ d <= 100;
+
+constraint a^2 + b^2 = c^2 + d^2;
+
+output [a, b, c, d];
+
+solve satisfy;
+___________
+a = 0;
+b = 0;
+c = 0;
+d = 0;
+==============================None
+___________
+```minizinc
+int: a;
+int: b;
+int: c;
+int: d;
+
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+constraint a >= 1 /\ a <= 100;
+constraint b >= 1 /\ b <= 100;
+constraint c >= 1 /\ c <= 100;
+constraint d >= 1 /\ d <= 100;
+
+constraint a^2 + b^2 = c^2 + d^2;
+
+output [a, b, c, d];
+
+solve satisfy;
+```
+___________
+a = 1;
+b = 2;
+c = 3;
+d = 4;
+==============================

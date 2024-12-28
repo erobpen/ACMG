@@ -1,0 +1,42 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(square=[[4, 5, 11, 14], [9, 16, 2, 7], [6, 3, 13, 12], [15, 10, 8, 1]], _checker='')"}]
+
+Solution(square=[[4, 5, 11, 14], [9, 16, 2, 7], [6, 3, 13, 12], [15, 10, 8, 1]], _checker='')
+___________
+int: n; % Size of the magic square
+
+% Constraint: n must not be 2
+constraint n != 2;
+
+% Introduce 2D array to represent the square
+array[1..n, 1..n] of var 1..n*n: square;
+
+% Constraints to ensure that each cell contains a different integer from 1 to n^2
+constraint alldifferent(square);
+
+% Calculate the expected sum
+int: expected_sum = n * (n * n + 1) div 2;
+
+% Constraints for rows and columns
+constraint
+    forall(i in 1..n) (
+        sum(j in 1..n)(square[i, j]) == expected_sum /\
+        sum(j in 1..n)(square[j, i]) == expected_sum
+    );
+
+% Constraint for the main diagonal
+constraint sum(i in 1..n)(square[i, i]) == expected_sum;
+
+% Constraint for the secondary diagonal (from top-right to bottom-left)
+constraint sum(i in 1..n)(square[i, n - i + 1]) == expected_sum;
+
+solve satisfy;
+
+% Output the magic square
+output [
+    "Magic Square of size " ++ show(n) ++ ":\n" ++
+    concat(["  |" ++ show(square[i, j]) ++ if j == n then "|\n" else "" | i, j in 1..n]) ++
+    "Sum: " ++ show(expected_sum) ++ "\n"
+];
+___________
+n = 4;
+==============================

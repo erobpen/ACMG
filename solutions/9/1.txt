@@ -1,0 +1,155 @@
+int: total_seats = 1000; % total number of seats
+int: vip_seats = 200; % number of VIP seats
+int: free_special_seats = 400; % number of free seats for special guests
+int: vip_ticket_price = 170; % price of a VIP ticket
+int: regular_ticket_price = 60; % price of a regular ticket
+int: total_price_goal = 50000; % goal total price to reach
+int: total_expenses = 45000; % total expenses for the concert
+int: required_free_special_seats = 400; % required seats for special guests
+% Calculate the maximum revenue from VIP and regular ticket sales
+int: max_vip_revenue = vip_seats * vip_ticket_price;
+int: max_regular_revenue = (total_seats - vip_seats) * regular_ticket_price;
+% Calculate the maximum total revenue
+int: max_total_revenue = max_vip_revenue + max_regular_revenue;
+% Calculate the profit target
+int: profit_target = total_price_goal - total_expenses;
+% Ensure that the VIP seats sold do not exceed available
+constraint max_vip_revenue >= 0 /\ max_vip_revenue <= (vip_seats * vip_ticket_price);
+% Ensure that the total revenue goal is met
+constraint max_total_revenue >= total_price_goal;
+% Ensure that the profit target is reached
+constraint max_total_revenue - total_expenses >= profit_target;
+% Ensure that the free special seats are available
+constraint total_seats - vip_seats >= required_free_special_seats;
+% Ensure that we are not overselling seats
+constraint required_free_special_seats + vip_seats + (total_seats - vip_seats) = total_seats;
+% The model will output the number of VIP tickets sold and the number of regular tickets sold
+var 0..vip_seats: vip_tickets_sold; % number of VIP tickets sold
+var 0..(total_seats - vip_seats): regular_tickets_sold; % number of regular tickets sold
+% The total revenue is the sum of the VIP and regular ticket sales
+var int: total_revenue = vip_tickets_sold * vip_ticket_price + regular_tickets_sold * regular_ticket_price;
+% The profit is the revenue minus the total expenses
+var int: profit = total_revenue - total_expenses;
+solve maximize profit;
+output ["VIP Tickets Sold: ", show(vip_tickets_sold), "
+",
+  "Regular Tickets Sold: ", show(regular_tickets_sold), "
+",
+  "Total Revenue: ", show(total_revenue), "
+",
+  "Profit: ", show(profit), "
+"];
+
+total_seats = 1000;
+vip_seats = 200;
+free_special_seats = 400;
+vip_ticket_price = 170;
+regular_ticket_price = 60;
+total_price_goal = 50000;
+total_expenses = 45000;
+
+required_free_special_seats = 400;% Concert Ticket Selling Problem
+
+
+
+
+
+
+
+
+% Parameters
+int: total_seats;  % Total number of seats
+int: vip_seats;  % Number of VIP seats
+int: free_seats; % Number of free seats for special guests
+int: vip_price;  % Price of a VIP ticket
+int: regular_price;  % Price of a regular ticket
+int: total_goal;  % Total revenue goal
+int: expenses;  % Total expenses, including staff salary and concert fund
+
+% Variables
+var 0..vip_seats: vip_sold;  % Number of VIP seats sold
+var 0..free_seats: free_sold;  % Number of free seats sold
+
+% Constraints
+constraint vip_sold * vip_price + (total_seats - vip_sold - free_sold) * regular_price >= total_goal /\
+  vip_sold <= vip_seats /\
+  free_sold <= free_seats /\
+  vip_sold + free_sold <= total_seats;  % Ensure seats sold do not exceed available seats
+
+% Objective: Maximize profit
+var int: revenue = vip_sold * vip_price + (total_seats - vip_sold - free_sold) * regular_price;
+var int: profit = revenue - expenses;
+
+solve maximize profit;
+
+
+
+
+
+% Output
+output ["VIP Seats Sold: " ++ show(vip_sold) ++ "
+" ++
+        "Free Seats for Special Guests Sold: " ++ show(free_sold) ++ "
+" ++
+        "Total Revenue: " ++ show(revenue) ++ "
+" ++
+        "Profit: " ++ show(profit) ++ "
+"];
+
+total_seats = 1000;
+vip_seats = 200;
+free_seats = 400;
+vip_price = 170;
+regular_price = 60;
+total_goal = 50000;
+expenses = 45000;
+
+int: VIPseats;  % Seats for VIP customers, maximum 200
+
+
+
+int: Regularseats;  % Seats for regular customers, maximum 800
+int: VIPprice;    % Ticket price for VIP customers
+int: Regularprice; % Ticket price for regular customers
+int: TotalRevenue = VIPseats * VIPprice + Regularseats * Regularprice;
+
+constraint
+    % Ensure the total number of seats used does not exceed the available seats
+    VIPseats <= 200 /\
+    Regularseats <= 800 /\
+    VIPseats + Regularseats <= 1000 /\
+    % Ensure the total price goal of $50,000 is met
+    TotalRevenue >= 50000;
+
+solve maximize TotalRevenue;
+
+VIPseats = 200;  % from dzn
+Regularseats = 800; % from dzn
+VIPprice = 170; % from dzn
+Regularprice = 60; % from dzn
+TotalRevenue = 50000;int: totalSeats; % totalSeats = 1000;
+int: vipSeats; % vipSeats = 200;
+int: regularSeats = totalSeats - vipSeats;
+int: vipPrice; % vipPrice = 170;
+int: regularPrice; % regularPrice = 60;
+int: totalGoal; % totalGoal = 50000;
+
+% Decision Variables
+var 0..vipSeats: vipSold;
+var 0..regularSeats: regularSold;
+
+constraint vipSold * vipPrice + regularSold * regularPrice == totalGoal;
+constraint vipSold <= vipSeats;
+constraint regularSold <= regularSeats;
+
+% Objective: Maximize profit
+var int: profit = (vipSold * vipPrice + regularSold * regularPrice) - 45000; % 45000 is total expenses
+solve maximize profit;
+
+output [profit, vipSold, regularSold];
+
+totalSeats = 1000;
+vipSeats = 200;
+vipPrice = 170;
+regularPrice = 60;
+totalGoal = 50000;

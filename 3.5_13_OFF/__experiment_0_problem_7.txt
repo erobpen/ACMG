@@ -1,0 +1,55 @@
+[{"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "Solution(A=[45, 9, 8, 7, 6, 5, 4, 3, 2, 1], inS=[0, 1, 1, 1, 1, 1, 1, 1, 1, 1], inT=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0], _checker='')"}]
+
+None
+___________
+```minizinc
+int: n = 100; % from dzn
+set of int: SET = 1..n;
+array[1..10] of var SET: A; % from dzn
+
+constraint alldifferent(A);
+
+array[1..10] of var 0..1: inS;
+array[1..10] of var 0..1: inT;
+
+constraint forall(i in 1..10)(
+    inS[i] + inT[i] = 1
+);
+
+var int: sumS = sum(i in 1..10)(inS[i]*A[i]);
+var int: sumT = sum(i in 1..10)(inT[i]*A[i]);
+
+constraint sumS = sumT;
+
+solve satisfy;
+
+output["A: ", show(A)];
+output["S: ", show(inS)];
+output["T: ", show(inT)];
+```
+___________
+n = 100;
+A = [_, _, _, _, _, _, _, _, _, _]; % Fill in values for A from 1 to 100.
+==============================Solution(A=[45, 9, 8, 7, 6, 5, 4, 3, 2, 1], inS=[0, 1, 1, 1, 1, 1, 1, 1, 1, 1], inT=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0], _checker='')
+___________
+```minizinc
+% Input parameters
+int: n; % from dzn
+set of int: SET = 1..100;
+array[1..10] of var SET: A; 
+
+% Constraints
+constraint alldifferent(A);
+
+% Find subsets S and T
+array[1..10] of var 0..1: inS;
+array[1..10] of var 0..1: inT;
+constraint forall(i in 1..10)(inS[i] + inT[i] = 1);
+constraint sum(i in 1..10)(A[i]*inS[i]) = sum(i in 1..10)(A[i]*inT[i]);
+
+output["A = \(A)"];
+solve satisfy;
+```
+___________
+n = 10;
+==============================

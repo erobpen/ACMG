@@ -1,0 +1,32 @@
+[{"attempt": "0_2", "status": true, "solutions": "Solution(statements=[False, True, False, False, False, True], _checker='')"}]
+
+Solution(statements=[False, True, False, False, False, True], _checker='')
+___________
+% Declaration of the suspects
+enum Suspects = {Artie, Bill, Crackitt, Dodgy, Edgy, Fingers};
+
+% Declaration of the statements made by each suspect
+array[Suspects] of var bool: statements;
+
+% Constraint: At least four of them are innocent
+constraint count(statements, true) >= 2 /\ count(statements, false) >= 4;
+
+% Constraints based on the statements
+constraint statements[Artie] = false; % Artie: "It wasn't me."
+constraint (statements[Bill] = true) = (statements[Crackitt] = false); % Bill: "Crackitt was in it up to his neck."
+constraint statements[Crackitt] = false; % Crackitt: "No I wasn't."
+constraint (statements[Dodgy] = false) \/ ((statements[Crackitt] = false) <-> (statements[Bill] = false)); % Dodgy: "If Crackitt did it, Bill did it with him."
+constraint statements[Edgy] = false; % Edgy: "Nobody did it alone."
+constraint (statements[Fingers] = true) <-> ((statements[Artie] = false) /\ (statements[Dodgy] = false)); % Fingers: "That’s right: it was Artie and Dodgy together."
+
+solve satisfy;
+
+output ["Guilty: "];
+array[Suspects] of string: guilty = ["Artie", "Bill", "Crackitt", "Dodgy", "Edgy", "Fingers"];
+array[Suspects] of string: guilty_suspects = [if statements[s] then guilty[enum2int(s)] else "" endif | s in Suspects];
+output [s | s in guilty_suspects where s != ""];
+  
+___________
+% Number of innocent suspects
+int: num_innocent = 4;
+==============================

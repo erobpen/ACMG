@@ -1,0 +1,163 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "None"}, {"attempt": "1_1", "status": true, "solutions": "Solution(enter=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], _checker='')"}]
+
+None
+___________
+int: n = 13; % Total number of people
+int: males = 4; % Number of males
+int: females = n - males; % Number of females
+
+array[1..n] of var 0..1: presence; % 1 if person i enters, 0 otherwise
+
+% Constraint: Males should enter first
+constraint presence[1] = 1 /\ presence[2] = 1 /\ presence[3] = 1 /\ presence[4] = 1;
+
+% Constraint: At any point, the ratio of females to males should not be greater than 7/3
+constraint
+  forall(i in 5..n) (
+    sum(j in 1..i) (presence[j] * (1 - presence[j])) <= 4 * (7 * (i - 4) div 3) / 3
+  );
+
+solve satisfy;
+
+% Output the order of entry (1 for male, 0 for female)
+output [show(presence)];
+___________
+presence = [1, 1, 1, 1, _, _, _, _, _, _, _, _, _];
+==============================None
+___________
+int: n = 13; % Total number of people
+int: males = 4; % Number of males
+int: females = n - males; % Number of females
+int: room_size = 1; % Room size (one person at a time)
+float: max_ratio = 7.0 / 3.0; % Desired maximum ratio of females to males
+
+% Decision variables
+array[1..n] of var 0..1: gender; % 0 for male, 1 for female
+
+% Constraint: Males should enter first
+constraint gender[1] = 0; % First person must be male
+
+% Constraint: Ratio of females to males should not exceed 7/3
+constraint
+  forall(i in 2..n) (
+    let {
+      var 0..1: current_females = sum([gender[j] | j in 1..i]) - sum([gender[j] | j in 1..i-1]),
+      var 0..1: current_males = room_size - current_females
+    } in
+    current_males * max_ratio >= current_females
+  );
+
+% Solve the model
+solve satisfy;
+
+% Output the order of people entering the room
+array[1..n] of var 1..n: order = [sum([gender[j] | j in 1..i]) | i in 1..n];
+
+output["Order of people entering the room: "] ++ [show(order)];
+___________
+gender = array1d(1..13, [_, _, _, _, _, _, _, _, _, _, _, _, _]);
+==============================None
+___________
+int: total_people = 13; % Total number of people
+int: males = 4; % Number of males
+int: max_ratio_females = 7; % Maximum ratio of females to males (7/3)
+
+int: females = total_people - males; % Calculate the total number of females
+
+% The maximum number of females in the room at any one time is 7
+constraint females >= 7*(ceil((total_people/2)/7));
+% The minimum number of females in the room at any one time is 2
+constraint females <= 2*(floor((total_people/2)/2));
+
+% The number of males in the room at any one time can range from 1 to 4
+var 1..4: males_in_room;
+var 2..7: females_in_room;
+
+% Ensure the ratio constraint is satisfied
+constraint females_in_room / males_in_room <= max_ratio_females;
+
+% Define the order of entry
+array[1..total_people] of var bool: order;
+
+% Constraints to ensure the order is correct
+constraint
+    % First four are males
+    order[1] /\ order[2] /\ order[3] /\ order[4] /\
+    % The rest are females
+    (forall(i in 5..total_people) (
+        if order[i] then
+            order[i-1]
+        else
+            not order[i-1]
+        endif
+    ));
+
+% Calculate the number of females and males in the room at each point
+array[1..total_people] of var 0..7: females_in_room_count;
+array[1..total_people] of var 0..4: males_in_room_count;
+
+constraint
+    males_in_room_count[1] = males_in_room /\
+    females_in_room_count[1] = females_in_room;
+
+constraint
+    males_in_room_count[total_people] = 0 /\
+    females_in_room_count[total_people] = 0;
+
+constraint
+    forall(i in 2..total_people) (
+        males_in_room_count[i] = males_in_room_count[i-1] + (if order[i] then 0 else 1 endif) - (if order[i-1] then 0 else 1 endif) /\
+        females_in_room_count[i] = females_in_room_count[i-1] + (if order[i] then 1 else 0 endif) - (if order[i-1] then 1 else 0 endif)
+    );
+
+solve satisfy;
+
+output["Order of entry:"] = [show(i) | i in 1..total_people] + "\n";
+output["Number of females in the room at each point:"] = show(females_in_room_count) + "\n";
+output["Number of males in the room at each point:"] = show(males_in_room_count) + "\n";
+___________
+% Data file for the gender ratio problem
+% Assign values to the remaining parameters total_people, males, and max_ratio_females
+
+total_people = 13;
+males = 4;
+max_ratio_females = 7;
+==============================Solution(enter=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], _checker='')
+___________
+int: total = 13; % Total number of people
+int: males = 4; % Total number of males
+float: max_ratio = 7.0 / 3.0; % Maximum ratio of females to males
+
+% Calculate the number of females
+int: females = total - males;
+
+% Constraint: There must be 9 females in total
+constraint females = 9;
+
+% Define the minimum and maximum number of females in the room at any one time
+int: min_females = 2;
+int: max_females = 7;
+
+% Solve the problem by checking all possible combinations of entering people
+array[1..total] of var 0..1: enter; % 1 for female, 0 for male
+
+% Constraint: The ratio of females to males in the room at any one time must not exceed 7/3
+constraint
+    forall(i in 1..total) (
+        sum(j in 1..i) (enter[j]) / i <= max_ratio
+    );
+
+solve satisfy;
+
+% Print the order in which people enter the room
+output["Order of entry:\n"];
+for i in 1..total do
+    if enter[i] = 1 then
+        output["Female enters at time " ++ show(i) ++ "\n"];
+    else
+        output["Male enters at time " ++ show(i) ++ "\n"];
+    endif;
+end for;
+___________
+total = 13;
+==============================

@@ -1,0 +1,117 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "2_1", "status": true, "solutions": "None"}, {"attempt": "2_2", "status": true, "solutions": "None"}]
+
+None
+___________
+```minizinc
+int: n = 100; % maximum integer value
+set of int: SET = 1..n; % set of integers 1 to 100
+
+array[1..10] of var SET: A; % array of ten different integers
+
+constraint forall(i in 1..10)(A[i] in SET);
+
+array[1..10] of var 0..1: inS; % indicator array for elements in subset S
+array[1..10] of var 0..1: inT; % indicator array for elements in subset T
+
+constraint sum([A[i]*inS[i] | i in 1..10]) = sum([A[j]*inT[j] | j in 1..10]);
+
+solve satisfy;
+
+output [A[i] | i in 1..10];
+```
+___________
+```minizinc
+% Input data for the given Minizinc model
+
+n = 100;
+A = [_, _, _, _, _, _, _, _, _, _]; % Unassigned values for the array A
+```
+==============================None
+___________
+```minizinc
+int: n = 10; % from dzn
+set of int: A = 1..100;
+array[1..n] of var A: set_elements;
+array[1..n] of var 0..1: selected;
+
+constraint forall(i in 1..n)(
+    selected[i] = 1
+);
+
+constraint sum(i in 1..n)(set_elements[i]*selected[i]) = sum(i in 1..n)(set_elements[i]*(1-selected[i]));
+
+solve satisfy;
+
+output [set_elements[i] | i in 1..n];
+```
+___________
+n = 10;
+==============================None
+___________
+```minizinc
+int: n = 10; % from dzn
+set of int: A = 1..100;
+
+array[1..n] of var A: elements;
+array[1..n] of var 0..1: selected;
+
+constraint
+   sum(i in 1..n)(selected[i]) = 5;
+
+var A: sumS = sum(i in 1..n where selected[i] = 1)(elements[i]);
+
+var A: sumT = sum(i in 1..n where selected[i] = 0)(elements[i]);
+
+solve satisfy;
+
+output["Sum of elements in S: \(sumS)"];
+output["Sum of elements in T: \(sumT)"];
+```
+___________
+n = 10;
+==============================None
+___________
+```minizinc
+int: n = 10; % from dzn
+set of int: NUMBERS = 1..100;
+
+array[1..n] of var NUMBERS: A;
+
+constraint forall(i, j in 1..n where i < j)(
+    A[i] != A[j]
+);
+
+var int: sumS = sum(i in 1..n div 2)(A[i]);
+var int: sumT = sum(i in n div 2 + 1..n)(A[i]);
+
+constraint sumS = sumT;
+
+solve satisfy;
+
+output [A];
+```
+___________
+n = 10;
+==============================None
+___________
+```minizinc
+int: n = 10; % from dzn
+set of int: SET = 1..100;
+
+array[1..n] of var SET: A;
+array[1..n] of var 0..1: x;
+
+constraint forall(i in 1..n)(x[i] >= 0);
+
+constraint sum(i in 1..n)(x[i]*A[i]) = sum(i in 1..n)(A[i]*x[i]);
+
+constraint sum(i in 1..n)(x[i]) > 0;
+
+solve satisfy;
+
+output [A[i] | i in 1..n];
+```
+___________
+n = 10; 
+A = [_, _, _, _, _, _, _, _, _, _];  % Specify the values for the set A in this array.
+==============================

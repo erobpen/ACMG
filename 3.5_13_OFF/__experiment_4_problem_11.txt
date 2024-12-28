@@ -1,0 +1,20 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(price=[2.09, 5.0, 0.01, 0.01], _checker='')"}]
+
+Solution(price=[2.09, 5.0, 0.01, 0.01], _checker='')
+___________
+int: n = 4;  % Number of items
+float: total_price = 7.11;  % Total price
+array[1..n] of var 0.01..5.0: price;  % Price of each item
+
+constraint
+    sum(i in 1..n)(price[i]) = total_price;
+
+solve satisfy;
+
+output [
+    "The prices of the four items are: ",
+    show(price[1]), ", ", show(price[2]), ", ", show(price[3]), ", ", show(price[4])
+];
+___________
+price = [0.67, 1.05, 3.97, 1.42];  % Prices of the four items
+==============================

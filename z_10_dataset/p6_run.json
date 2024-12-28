@@ -1,0 +1,55 @@
+{
+    "0": {
+        "STEP": "0",
+        "STEP_DESCRIPTION": "LLM COMPLETION",
+        "LLM_INSTRUCTION": "Bot: Ask me any questions about the MiniZinc. MiniZinc is a high-level constraint programming language used for modelling and solving combinatorial optimisation problems. Me: Can I ask you about codes written in MiniZinc as an example? Can you show only the source code? Bot: Yes. Tell me what kind of language optimization problems MiniZinc would like me to generate for you. Me: A source code in minizinc that resolve: A source code with an array of discrete variables without domain and without constraints. Put the Bot comments with % symbol.Bot:",
+        "LLM_RESPONSE": {
+            "id": "cmpl-72r3CYrgyn67HXl3GThxP0iEOiCcI",
+            "object": "text_completion",
+            "created": 1680914938,
+            "model": "text-davinci-003",
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for an array of discrete variables without domain and without constraints. \n\nint: n;\narray[1..n] of var 0..n: x;\n\nsolve satisfy;",
+                    "index": 0,
+                    "logprobs": null,
+                    "finish_reason": "stop"
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 120,
+                "completion_tokens": 48,
+                "total_tokens": 168
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for an array of discrete variables without domain and without constraints. \n\nint: n;\narray[1..n] of var 0..n: x;\n\nsolve satisfy;"
+    },
+    "1": {
+        "STEP": "1",
+        "STEP_DESCRIPTION": "LLM EDIT",
+        "LLM_INPUT": " % This is a MiniZinc model for an array of discrete variables without domain and without constraints. \n\nint: n;\narray[1..n] of var 0..n: x;\n\nsolve satisfy;",
+        "LLM_INSTRUCION": "Me: Fix the minizinc code. The Error code is :\n\n\"\"\"\n  symbol error: variable `n' must be defined (did you forget to specify a data file?)\n\"\"\"Bot:",
+        "LLM_RESPONSE": {
+            "object": "edit",
+            "created": 1680914940,
+            "choices": [
+                {
+                    "text": " % This is a MiniZinc model for an array of discrete variables without domain and without constraints. \n\nint: n = 3;\narray[1..n] of var 0..n: x;\n\nsolve satisfy;\n",
+                    "index": 0
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 103,
+                "completion_tokens": 22,
+                "total_tokens": 125
+            }
+        },
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for an array of discrete variables without domain and without constraints. \n\nint: n = 3;\narray[1..n] of var 0..n: x;\n\nsolve satisfy;\n"
+    },
+    "2": {
+        "STEP": "2",
+        "STEP_DESCRIPTION": "OPTIMISATION FINISHED",
+        "OPTIMISATION_MODEL": " % This is a MiniZinc model for an array of discrete variables without domain and without constraints. \n\nint: n = 3;\narray[1..n] of var 0..n: x;\n\nsolve satisfy;\n",
+        "OPTIMISATION_SOLUTION": "{'x': [0, 0, 0]}"
+    }
+}

@@ -1,0 +1,113 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "1_1", "status": true, "solutions": "None"}, {"attempt": "2_1", "status": true, "solutions": "None"}]
+
+None
+___________
+int: total = 13; % Total number of people
+int: males = 4; % Number of males
+int: females = total - males; % Number of females
+
+% Maximum ratio of females to males in the room at any one time
+% Females should not exceed 7/3 times the number of males
+constraint females <= 7 * males / 3;
+
+% Decision variables representing the order of entry for males (1) and females (0)
+array[1..total] of var 0..1: order;
+
+% Constraints to enforce the order of entry for males and females
+constraint sum([order[i] | i in 1..total]) == total / 2; % Only half of the people enter
+constraint forall(i in 1..total-1) (
+    (order[i] == 1 /\ order[i+1] == 1) \/ (order[i] == 0 /\ order[i+1] == 0)
+); % Males and females enter one at a time
+
+solve satisfy;
+
+output["Order of entry for males (1) and females (0): "];
+output[show([order[i] | i in 1..total])];
+___________
+\ 
+
+total = 13;  % Total number of people 
+males = 4;   % Number of males
+==============================None
+___________
+int: n = 13; % Total number of people
+int: males = 4; % Number of males
+int: females = n - males; % Calculate the number of females
+
+array[1..n] of var bool: isMale; % Boolean array to indicate if a person is male
+
+% Variables to count the number of people in the room at any point
+array[1..n] of var 0..n: peopleInRoom;
+
+% Constraint to ensure that at any point, the ratio of females to males is at most 7/3
+constraint
+    forall(t in 1..n) (
+        peopleInRoom[t] <= males /\ peopleInRoom[t] * 7 >= females
+    );
+
+% Constraint to ensure that the total number of people in the room does not exceed 13
+constraint
+    forall(t in 1..n) (
+        peopleInRoom[t] <= t
+    );
+
+% Constraint to maintain the count of males and females in the room as people enter
+constraint
+    forall(t in 1..n) (
+        peopleInRoom[t] = sum([if isMale[i] then 1 else 0 endif | i in 1..t])
+    );
+
+% Ensure that the total number of males is 4
+constraint
+    sum([isMale[i] | i in 1..n]) == males;
+
+% Symmetry breaking constraint: fix the first male to be the first person to enter
+constraint
+    isMale[1] == true;
+
+% Symmetry breaking constraint: the second male should enter before the third male
+constraint
+    isMale[2] == true /\ isMale[3] == true;
+
+% Lexicographic ordering of males and females
+solve satisfy;
+
+% Output the order in which males and females enter the room
+output["Order of people entering the room:\n"] ++
+[
+    if isMale[i] then "Male " else "Female " endif ++ show(i) ++ "\n"
+    | i in 1..n
+];
+___________
+isMale = array1d(1..13, [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+==============================None
+___________
+int: n = 13; % Total number of people
+int: males = 4; % Number of males
+int: females = n - males; % Number of females
+float: ratio = 7.0 / 3.0; % Maximum ratio of females to males
+
+array[1..n] of var bool: entered; % Boolean array to track who has entered
+
+% Constraint to ensure the ratio of females to males does not exceed 7/3 at any time
+constraint
+    forall(i in 1..n) (
+        let {
+            var int: current_males = sum(j in 1..i where entered[j])(bool2int(j <= males)),
+            var int: current_females = i - current_males
+        } in
+        current_females <= ratio * current_males
+    );
+
+% Constraint to ensure all people are accounted for
+constraint sum(i in 1..n)(bool2int(entered[i])) == n;
+
+solve satisfy;
+
+% Output the order in which people entered the room
+array[1..n] of var 1..n: entry_order = [if entered[i] then fix(i) else -1 endif | i in 1..n];
+output ["Entry order: " ++ show(entry_order)];
+___________
+n = 13;  % Total number of people
+males = 4;  % Number of males
+==============================

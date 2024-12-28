@@ -1,0 +1,22 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(items=[708, 1, 1, 1], _checker='')"}]
+
+Solution(items=[708, 1, 1, 1], _checker='')
+___________
+int: total = 711;  % Total in cents (711 cents = $7.11)
+
+% Prices of the four items
+array[1..4] of var 1..711: items;
+
+% The sum of the prices must be equal to the total
+constraint items[1] + items[2] + items[3] + items[4] == total;
+
+% The prices must be positive
+constraint forall(i in 1..4)(items[i] > 0);
+
+solve satisfy;
+
+output["Prices of the four items: "];
+output[show(items)];
+___________
+total = 711;
+==============================

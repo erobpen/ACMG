@@ -1,0 +1,23 @@
+[{"attempt": "0_1", "status": true, "solutions": "Solution(boy_initial_apples=-2147483646, apples_given_to_guard=[-1073741822, -1073741822, -1073741822, -1073741822, -1073741822], _checker='')"}]
+
+Solution(boy_initial_apples=-2147483646, apples_given_to_guard=[-1073741822, -1073741822, -1073741822, -1073741822, -1073741822], _checker='')
+___________
+```minizinc
+int: num_guards = 5; % from dzn
+var int: boy_initial_apples; % from dzn
+array[1..num_guards] of var int: apples_given_to_guard; 
+
+constraint forall(i in 1..num_guards)(
+    apples_given_to_guard[i] = boy_initial_apples div 2 + 1
+);
+
+var int: total_apples_given_away = sum(i in 1..num_guards)(apples_given_to_guard[i]);
+
+solve satisfy;
+
+output ["The boy initially had: ", show(boy_initial_apples)];
+```
+___________
+num_guards = 5;
+boy_initial_apples = 31; % unknown initial number of apples for the boy
+==============================

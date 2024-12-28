@@ -1,0 +1,33 @@
+% Parameters
+int: VIP_price;          % VIP ticket price
+int: REG_price;          % Regular ticket price
+int: VIP_seats;          % Total VIP seats
+int: FREE_seats;         % Total free seats
+int: total_price_goal;   % Total revenue goal
+int: total_expenses;     % Total expenses
+
+% Variables
+var 0..VIP_seats: VIP_sold;   % Number of VIP seats sold
+var 0..FREE_seats: FREE_sold; % Number of free seats used
+
+% Constraints
+constraint VIP_sold * VIP_price + FREE_sold * REG_price >= total_price_goal;
+constraint VIP_sold <= VIP_seats /\ FREE_sold <= FREE_seats;
+
+% Objective
+var int: total_revenue = VIP_sold * VIP_price + FREE_sold * REG_price;
+var int: profit = total_revenue - total_expenses;
+
+solve satisfy;
+
+output["Total VIP tickets sold: " ++ show(VIP_sold) ++ "\n" ++
+       "Total free tickets distributed: " ++ show(FREE_sold) ++ "\n" ++
+       "Total revenue: $" ++ show(total_revenue) ++ "\n" ++
+       "Profit: $" ++ show(profit)];
+
+VIP_price = 170;
+REG_price = 60;
+VIP_seats = 200;
+FREE_seats = 400;
+total_price_goal = 50000;
+total_expenses = 45000;

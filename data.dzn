@@ -1,0 +1,12 @@
+int: n = 4;
+int: width = 3;
+int: height = 3;
+
+array[1..n, 1..n] of int: adjacency = [| 1, 0, 2, 1
+                                        | 0, 1, 1, 0
+                                        | 2, 1, 1, 0
+                                        | 1, 0, 0, 1
+                                        |];
+
+% Unassigned input parameters:
+% No unassigned input parameters.

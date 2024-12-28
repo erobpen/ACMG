@@ -1,0 +1,25 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(num3=0, _checker='')"}]
+
+Solution(num3=0, _checker='')
+___________
+int: steps = 20; % Number of steps in the staircase (fixed at 20)
+
+% Decision variable: number of 3-step climbs
+var 0..steps div 3: num3;
+
+% Calculate the number of ways using 3-step climbs
+var int: num5 = (steps - 3 * num3) div 5;
+
+% Constraint: Total steps taken must be equal to 20
+constraint 3 * num3 + 5 * num5 == steps;
+
+% Objective: Count the total number of ways
+var int: totalWays = num3 + num5;
+
+% Output the number of ways to reach the top
+output["Number of ways to reach the top: " ++ show(totalWays) ++ "\n"];
+
+solve satisfy;
+___________
+steps = 20;  % Number of steps in the staircase (fixed at 20)
+==============================

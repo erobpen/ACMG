@@ -1,0 +1,40 @@
+int: rows; % from dzn
+int: cols; % from dzn
+int: n_furniture; % from dzn
+
+array[1..n_furniture, 1..n_furniture] of int: compatibility; % from dzn
+
+% Decision variables: position of each furniture piece
+array[1..n_furniture] of var 1..(rows*cols): position; 
+
+% Ensure no two furniture pieces occupy the same position
+constraint forall(i, j in 1..n_furniture where i != j) (
+    position[i] != position[j]
+);
+
+% Ensure adjacency based on compatibility matrix
+constraint
+    forall(i, j in 1..n_furniture where i < j) (
+        % Same row or same column and not diagonally adjacent
+        (abs((position[i] - 1) div cols - (position[j] - 1) div cols) +
+         abs((position[i] - 1) mod cols - (position[j] - 1) mod cols) > 1) \/ compatibility[i, j] > 0
+    );
+
+solve satisfy;
+
+% Output
+output ["Result: \n"] ++ [
+    "Furniture " ++ show(i) ++ " at position " ++ show(position[i]) ++ "\n"
+    | i in 1..n_furniture
+];
+
+rows = 3;
+cols = 3;
+n_furniture = 4;
+
+compatibility = array2d(1..n_furniture, 1..n_furniture, [
+    0, 1, 2, 0,
+    1, 0, 1, 0,
+    2, 1, 0, 2,
+    0, 0, 2, 0
+]);

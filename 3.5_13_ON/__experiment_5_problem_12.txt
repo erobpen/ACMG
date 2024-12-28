@@ -1,0 +1,116 @@
+[{"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "None"}, {"attempt": "1_1", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "None"}, {"attempt": "2_0", "status": true, "solutions": "None"}, {"attempt": "2_1", "status": true, "solutions": "None"}, {"attempt": "2_2", "status": true, "solutions": "None"}]
+
+None
+___________
+int: n; % from dzn
+int: m1; % from dzn
+int: m2; % from dzn
+
+constraint m1 != m2 /\ m1 > 0 /\ m2 > 0;
+
+% Decision variables: number of steps taken using m1 and m2 steps
+var 0..n div m1: x1; % Number of m1 steps
+var 0..n div m2: x2; % Number of m2 steps
+
+% Objective: Minimize the total number of steps taken
+solve satisfy;
+
+% Constraint: The total number of steps must be n
+constraint m1 * x1 + m2 * x2 = n;
+
+% Output the number of steps taken using m1 and m2
+output ["Steps of size " ++ show(m1) ++ ": " ++ show(x1) ++ "\n"] ++
+       ["Steps of size " ++ show(m2) ++ ": " ++ show(x2) ++ "\n"];
+___________
+n = 20;
+m1 = 3;
+m2 = 5;
+==============================None
+___________
+int: n;  % Total number of steps\nint: m1 = 3;  % Size of step 1\nint: m2 = 5;  % Size of step 2\n\n% Decision variable: Number of steps of each type\nvar 0..n div m1: steps_m1;  % Only multiples of m1\nvar 0..n div m2: steps_m2;  % Only multiples of m2\n\n% Objective: Minimize the total number of steps\nsolve minimize steps_m1 + steps_m2;\n\n% Constraints to ensure the total number of steps\nconstraint steps_m1 * m1 + steps_m2 * m2 = n;\n\noutput ["Number of steps of size " ++ show(m1) ++ ": " ++ show(steps_m1) ++ "\n"] ++ ["Number of steps of size " ++ show(m2) ++ ": " ++ show(steps_m2) ++ "\n"];
+___________
+n = 20;  % Total steps to climb\nm1 = 3;   % Size of step 1\nm2 = 5;   % Size of step 2
+==============================None
+___________
+int: n;  % Total number of steps
+int: m1 = 3;  % Step size 1
+int: m2 = 5;  % Step size 2
+
+% Decision variables
+var 0..n div m1: x1;  % Number of m1 steps
+var 0..n div m2: x2;  % Number of m2 steps
+
+% Objective: minimize the number of steps taken
+solve minimize x1 + x2;
+
+% Constraints
+constraint x1 * m1 + x2 * m2 == n;  % Total steps must sum up to n
+constraint x1 * m1 <= n;  % x1 * m1 should not exceed n
+constraint x2 * m2 <= n;  % x2 * m2 should not exceed n
+
+output ["Number of m1 steps: " ++ show(x1) ++ "\n"] ++
+       ["Number of m2 steps: " ++ show(x2) ++ "\n"];
+___________
+n = 20;
+==============================None
+___________
+int: n; % Total number of steps (e.g., 20)\nint: m1; % Step size 1 (e.g., 3)\nint: m2; % Step size 2 (e.g., 5)\n\n% Decision variable: number of m1 steps\nvar 0..n div m1: x1;\n\n% Calculate the remaining steps after x1 m1 steps\nvar 0..n: x2 = n - x1 * m1;\n\n% Constraint: the total number of steps must be reached\nconstraint x1 * m1 + x2 * m2 == n;\n\n% Solve the problem\nsolve satisfy;\n\n% Output the solution\noutput ["Number of " ++ show(m1) ++ "-step moves: " ++ show(x1) ++ "\nNumber of " ++ show(m2) ++ "-step moves: " ++ show(x2)];
+___________
+n = 20;\nm1 = 3; % Step size 1\nm2 = 5; % Step size 2
+==============================None
+___________
+int: n; % Total number of steps\nint: m1; % Possible steps to take 1\nint: m2; % Possible steps to take 2\n\narray[1..n] of var 0..n: ways; % ways[i] stores the number of ways to reach step i\n\nconstraint ways[1] = 1; % Base case: 1 way to reach step 1\n\nconstraint\n    forall(i in 2..n) (\n        ways[i] =\n            if i - m1 >= 0 /\ i - m2 >= 0 then ways[i - m1] + ways[i - m2]\n            elseif i - m1 >= 0 then ways[i - m1]\n            elseif i - m2 >= 0 then ways[i - m2]\n            else 0\n            endif\n    ); % Recursive relation to calculate the number of ways\n\nsolve satisfy;\n\noutput["Total ways to climb the stair of " ++ show(n) ++ " steps with steps " ++ show(m1) ++ " and " ++ show(m2) ++ ": " ++ show(ways[n])];
+___________
+n = 20;  % Total number of steps
+m1 = 3;   % Possible steps to take 1
+m2 = 5;   % Possible steps to take 2
+==============================None
+___________
+int: n;  % Total number of steps
+int: m1; % Possible steps to take 1
+int: m2; % Possible steps to take 2
+
+array[1..n] of var int: dp;  % Dynamic programming array to store the number of ways to reach each step
+
+constraint dp[1] = 1;
+constraint dp[2] = (2 mod m1 = 0 \/ 2 mod m2 = 0)  /\
+                  (2 div m1 + 2 div m2 > 1);
+
+constraint forall(i in 3..n)(
+    dp[i] = (if i mod m1 = 0 then dp[i-m1] else 0 endif) +
+            (if i mod m2 = 0 then dp[i-m2] else 0 endif)
+);
+
+solve satisfy;
+
+output["Total ways to climb the stairs of " ++ show(n) ++ " steps with " ++ show(m1) ++ " and " ++ show(m2) ++ " steps at a time: " ++ show(dp[n])];
+___________
+n = 20;  % Total number of steps
+m1 = 3;    % Possible steps to take 1
+m2 = 5;    % Possible steps to take 2
+==============================None
+___________
+% Parameters
+int: n; % Total number of steps
+int: m1; % Possible steps to take 1
+int: m2; % Possible steps to take 2
+
+% Decision variables: number of steps of m1 and m2 to take
+var 0..n: steps_m1;
+var 0..n: steps_m2;
+
+% Constraints
+constraint steps_m1 * m1 + steps_m2 * m2 == n; % Total steps constraint
+
+% Objective: Minimize the total number of steps (optional, we can also search for a solution without optimizing)
+% Solve for the minimum number of steps by summing the steps of m1 and m2
+solve minimize steps_m1 + steps_m2;
+
+% Output: Number of steps of m1 and m2 to take to climb the stairs
+output ["Steps of " ++ show(m1) ++ " : " ++ show(steps_m1) ++ "\n"
+        ++ "Steps of " ++ show(m2) ++ " : " ++ show(steps_m2) ++ "\n"];
+___________
+n = 20;
+m1 = 3;
+m2 = 5;
+==============================

@@ -1,0 +1,32 @@
+[{"attempt": "0_2", "status": true, "solutions": "Solution(A=[-2147483646, -2147483646, -2147483646, -2147483646, -2147483646, -2147483646, -2147483646, -2147483646, -2147483646, -2147483646], S=[0, 1, 0, 0, 0, 0, 0, 0, 0, 0], T=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0], S_=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], _checker='')"}]
+
+Solution(A=[-2147483646, -2147483646, -2147483646, -2147483646, -2147483646, -2147483646, -2147483646, -2147483646, -2147483646, -2147483646], S=[0, 1, 0, 0, 0, 0, 0, 0, 0, 0], T=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0], S_=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], _checker='')
+___________
+% Set A of ten integers
+array[1..10] of var int: A; % from dzn
+
+% Variables for the subsets S and T (binary decision variables)
+array[1..10] of var 0..1: S;
+array[1..10] of var 0..1: T;
+
+% Constraint: S and T must be disjoint and non-empty
+constraint sum(i in 1..10)(S[i]) > 0 /\ sum(i in 1..10)(T[i]) > 0 /\
+  forall(i, j in 1..10 where i != j)(S[i] + T[i] <= 1);
+
+% Constraint: The sum of elements in S must equal the sum of elements in T
+constraint sum(i in 1..10)(S[i] * A[i]) = sum(i in 1..10)(T[i] * A[i]);
+
+solve satisfy;
+
+% Output the subsets S and T
+array[1..10] of var 0..1: S_output = [S[i] | i in 1..10];
+array[1..10] of var 0..1: T_output = [T[i] | i in 1..10];
+
+output["S = "];
+output [show(S_output)];
+output["\n"];
+output["T = "];
+output [show(T_output)];
+___________
+A = [81, 21, 79, 4, 29, 70, 28, 20, 14, 7];
+==============================

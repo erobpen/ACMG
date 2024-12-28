@@ -1,0 +1,109 @@
+[{"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "None"}]
+
+None
+___________
+% Define the children, ages, origins, and story parts
+set of int: Ages = 3..10;
+set of int: StoryParts = 1..5;
+set of int: Origins = 1..5;
+set of int: Children = 1..5;
+
+% Parameters for the ages, origins, and story parts of each child
+array[Children] of var Ages: age; % from dzn
+array[Children] of var Origins: origin; % from dzn
+array[Children] of var StoryParts: storyPart; % from dzn
+
+% Constraints based on the textual description
+constraint age[3] = 3; % Sammy is 3 years older than the child who told the story of Moses's youth
+constraint age[storyPart[3]] + 3 = age[3];
+constraint origin[3] = 3; % Debby's family is from Lithuania
+constraint storyPart[2] = storyPart[1] + 1; % The child who told the story of Passover is 2 years older than Bernice
+constraint origin[4] > origin[5]; % The child from Yemen is younger than the child from Ethiopia
+constraint origin[4] + 3 = age[5]; % The child from Morocco is 3 years older than Ted
+
+% Constraint to ensure that all story parts are unique
+constraint all_different([storyPart[i] | i in Children]);
+
+% Objective: Find the age, origin, and story part for each child
+solve satisfy;
+
+output["Bernice: age = ", show(age[1]), ", origin = ", show(origin[1]), ", story part = ", show(storyPart[1]), "\n"];
+output["Carl: age = ", show(age[2]), ", origin = ", show(origin[2]), ", story part = ", show(storyPart[2]), "\n"];
+output["Debby: age = ", show(age[3]), ", origin = ", show(origin[3]), ", story part = ", show(storyPart[3]), "\n"];
+output["Sammy: age = ", show(age[4]), ", origin = ", show(origin[4]), ", story part = ", show(storyPart[4]), "\n"];
+output["Ted: age = ", show(age[5]), ", origin = ", show(origin[5]), ", story part = ", show(storyPart[5]), "\n"];
+___________
+% The ages of the children are not given, so we'll need to assign them to variables
+% We'll assume that the ages are between 3 and 10 (inclusive), as stated in the problem
+age = [3, 3, 3, 3, 3]; % Initialize all ages to 3
+
+% The origins of the children are not given, so we'll need to assign them to variables
+% We'll assign each origin a number between 1 and 5 to represent a different country
+% We'll assume that each origin is different for each child
+% We'll need to also update the constraints as needed
+origin = [1, 2, 3, 4, 5]; % Initial assignment of origins
+% Origin 1: Israel, 2: Russia, 3: Lithuania, 4: Morocco, 5: Ethiopia
+
+% The story parts associated with each child are not given, so we'll need to assign them to variables
+% We'll assume that each story part is a number between 1 and 5 representing a different part of the Exodus story
+storyPart = [1, 2, 3, 4, 5]; % Initial assignment of story parts
+
+% Input parameters:
+%    age[1] = 3;         % Sammy is 3 years older than the child who told the story of Moses's youth
+%    origin[3] = 3;      % Debby's family is from Lithuania
+%    storyPart[2] = 2;   % The child who told the story of Passover is 2 years older than Bernice
+%    origin[4] > origin[5]; % The child from Yemen is younger than the child from Ethiopia
+%    origin[4] + 3 = age[5]; % The child from Morocco is 3 years older than Ted
+
+% age[2] = 1; % Bernice is younger than the child who told the story of Passover
+% age[4] = 2; % Ted is younger than the child from Morocco
+
+% We have to manually set the ages of Bernice and Ted based on the other constraints
+% We can derive that Bernice is 1 and Ted is 2 based on the given constraints
+
+age[2] = 1; % Bernice
+age[4] = 2; % Ted
+
+% We have manually assigned unique ages for Bernice and Ted to match the constraints
+% We will leave the rest as variables as they do not have any direct constraints based on the provided information.
+==============================None
+___________
+% Five children (Bernice, Carl, Debby, Sammy, Ted) presented different parts of the Exodus story (burning bush, captivity, Moses's youth, Passover, Ten Commandments).
+% Each child is a different age (3, 5, 7, 8, 10) and their family recently made an exodus from a different country (Ethiopia, Kazakhstan, Lithuania, Morocco, Yemen).
+
+% Define variables
+array[1..5] of var 1..5: child_country;  % Country of origin for each child (1=Ethiopia, 2=Kazakhstan, 3=Lithuania, 4=Morocco, 5=Yemen)
+array[1..5] of var 3..10: child_age;      % Age of each child
+array[1..5] of var 1..5: child_story;      % The part of the story each child told (1=Burning bush, 2=Captivity, 3=Moses's youth, 4=Passover, 5=Ten Commandments)
+
+% Constraints
+constraint child_country[3] == 3;  % Debby's family is from Lithuania
+constraint child_story[4] == child_age[1] + 2;  % The child who told Passover is 2 years older than Bernice
+constraint child_country[5] == 5 /\ child_country[1] == 1;  % Yemen is younger than Ethiopia
+constraint child_country[4] == 4 /\ child_age[4] == child_age[5] + 3;  % Morocco is 3 years older than Ted
+constraint child_age[4] == child_age[3] + 3;  % Sammy is 3 years older than the child who told Moses's youth
+
+% All children are of different ages and from different countries
+constraint all_different(child_age);
+constraint all_different(child_country);
+
+solve satisfy;
+
+% Output
+output["Bernice told about the " ++ show(child_story[1]) ++ ". Age: " ++ show(child_age[1]) ++ ". Country: " ++ show(child_country[1]) ++ "\n"];
+output["Carl told about the " ++ show(child_story[2]) ++ ". Age: " ++ show(child_age[2]) ++ ". Country: " ++ show(child_country[2]) ++ "\n"];
+output["Debby told about the " ++ show(child_story[3]) ++ ". Age: " ++ show(child_age[3]) ++ ". Country: " ++ show(child_country[3]) ++ "\n"];
+output["Sammy told about the " ++ show(child_story[4]) ++ ". Age: " ++ show(child_age[4]) ++ ". Country: " ++ show(child_country[4]) ++ "\n"];
+output["Ted told about the " ++ show(child_story[5]) ++ ". Age: " ++ show(child_age[5]) ++ ". Country: " ++ show(child_country[5]) ++ "\n"];
+___________
+% Countries of origin: 1=Ethiopia, 2=Kazakhstan, 3=Lithuania, 4=Morocco, 5=Yemen
+% Ages: 3, 5, 7, 8, 10
+
+% Unassigned input parameters:
+% child_country
+% child_age
+
+% Example data assignment:
+child_country = [1, 2, 3, 4, 5];  % Random assignment, can be changed
+child_age = [3, 5, 7, 8, 10];      % Random assignment, can be changed
+==============================

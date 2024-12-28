@@ -1,0 +1,28 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(floor=[4, 3, 2, 1], _checker='')"}]
+
+Solution(floor=[4, 3, 2, 1], _checker='')
+___________
+int: n; % number of people
+
+array[1..n] of var 1..n: floor; % floor number for each person
+
+% Constraints
+constraint all_different(floor);
+
+% Clues to determine the floor each person lives on
+% Insert clues here
+
+output [show(floor)];
+
+solve satisfy;
+___________
+n = 5;  % number of people
+
+% Unassigned input parameters
+% Insert clues here
+% Baker lives on an odd-numbered floor
+% Cooper lives on a floor that is one more than the floor where Baker lives
+% Fletcher lives on the top floor
+% Miller lives on a floor that is two less than the floor where Cooper lives
+% Smith lives on a floor that is three less than the floor where Fletcher lives
+==============================

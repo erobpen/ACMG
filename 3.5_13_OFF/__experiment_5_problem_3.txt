@@ -1,0 +1,34 @@
+[{"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "Solution(applesGiven=[2, 4, 6, 8, 10], _checker='')"}]
+
+None
+___________
+int: totalApples = 0; % total apples left after passing through all gates (0)
+int: guards = 5; % number of guards
+array[1..guards] of var int: applesGiven; % apples given to each guard
+
+constraint
+  forall(i in 1..guards) (
+    applesGiven[i] = (totalApples div 2) + 1 /\
+    applesGiven[i] mod 1 == 0
+  );
+
+constraint
+  totalApples = sum(applesGiven) + 1; % The boy must have 1 apple in the end
+
+solve satisfy;
+
+output ["The boy started with " ++ show(totalApples) ++ " apples.\n"];
+output ["Apples given to each guard: " ++ show(applesGiven) ++ "\n"];
+___________
+totalApples = 0; % total apples left after passing through all gates (0)
+==============================None
+___________
+int: n_gates = 5;  % Number of gates to pass through\nint: apples_after_girl = 0;  % Number of apples remaining after giving one to the girl\n\n% Decision variable: number of apples initially possessed by the boy\nvar 1..100: initial_apples;\n\n% Calculate the number of apples the boy has to give to each guard\nconstraint\n    forall(i in 1..n_gates) (\n        initial_apples = 2*(initial_apples - (initial_apples div 2) - 1)  % Give half and one to the guard\n    );\n\n% The boy has no apples left after giving one to the girl\nconstraint\n    initial_apples - (initial_apples div 2) - 1 = apples_after_girl;\n\nsolve satisfy;\n\noutput [\n    "The boy started with ", show(initial_apples), " apples.\n"\n];
+___________
+int: n_gates = 5;  % Number of gates to pass through\nint: apples_after_girl = 0;  % Number of apples remaining after giving one to the girl\n\n% Decision variable: number of apples initially possessed by the boy\nvar 1..100: initial_apples;\n\n% Calculate the number of apples the boy has to give to each guard\nconstraint\n    forall(i in 1..n_gates) (\n        initial_apples = 2*(initial_apples - (initial_apples div 2) - 1)  % Give half and one to the guard\n    );\n\n% The boy has no apples left after giving one to the girl\nconstraint\n    initial_apples - (initial_apples div 2) - 1 = apples_after_girl;\n\nsolve satisfy;\n\noutput [\n    "The boy started with ", show(initial_apples), " apples.\n"\n];
+==============================Solution(applesGiven=[2, 4, 6, 8, 10], _checker='')
+___________
+int: nGates = 5; % from dzn\nint: applesLeft = 0; % from dzn\n\narray[1..nGates] of var 0..10000: applesGiven;\n\nconstraint\n  forall(i in 1..nGates) (\n    applesGiven[i] = (applesLeft * 2) + 2 * i\n  );\n\nsolve satisfy;\n\noutput [\n  "The boy started with ", show(sum(i in 1..nGates) (applesGiven[i])), " apples.\n"\n];
+___________
+applesLeft = 1;
+==============================

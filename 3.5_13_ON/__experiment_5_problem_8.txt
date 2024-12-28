@@ -1,0 +1,191 @@
+[{"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "1_1", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "None"}, {"attempt": "2_2", "status": true, "solutions": "None"}]
+
+None
+___________
+% Parameters
+int: n = 5; % Number of children
+
+% Enumerations
+enum CHILDREN = {Bernice, Carl, Debby, Sammy, Ted};
+enum AGES = {Three, Five, Seven, Eight, Ten};
+enum COUNTRIES = {Ethiopia, Kazakhstan, Lithuania, Morocco, Yemen};
+enum STORIES = {BurningBush, Captivity, MosesYouth, Passover, TenCommandments};
+
+% Variables
+array[1..n] of var AGES: ages; % Age of each child
+array[1..n] of var COUNTRIES: countries; % Country of origin for each child
+array[1..n] of var STORIES: stories; % Story told by each child
+
+% Constraints
+constraint all_different(ages) /\ all_different(countries) /\ all_different(stories);
+
+constraint ages[Debby] = Seven; % 1. Debby's family is from Lithuania.
+constraint ages[Passover] = ages[Bernice] + 2; % 2. Passover is two years older than Bernice.
+constraint countries[Yemen] < countries[Ethiopia]; % 3. Yemen is younger than Ethiopia.
+constraint ages[Ted] + 3 = ages[Morocco]; % 4. Morocco is three years older than Ted.
+constraint ages[Sammy] = ages[MosesYouth] + 3; % 5. Sammy is three years older than the child who told Moses's youth.
+
+solve satisfy;
+
+% Output
+output ["Age of Bernice: " ++ show(ages[Bernice]) ++ "\n"] ++
+["Age of Carl: " ++ show(ages[Carl]) ++ "\n"] ++
+["Age of Debby: " ++ show(ages[Debby]) ++ "\n"] ++
+["Age of Sammy: " ++ show(ages[Sammy]) ++ "\n"] ++
+["Age of Ted: " ++ show(ages[Ted]) ++ "\n"] ++
+
+["Country of Bernice: " ++ show(countries[Bernice]) ++ "\n"] ++
+["Country of Carl: " ++ show(countries[Carl]) ++ "\n"] ++
+["Country of Debby: " ++ show(countries[Debby]) ++ "\n"] ++
+["Country of Sammy: " ++ show(countries[Sammy]) ++ "\n"] ++
+["Country of Ted: " ++ show(countries[Ted]) ++ "\n"] ++
+
+["Story told by Bernice: " ++ show(stories[Bernice]) ++ "\n"] ++
+["Story told by Carl: " ++ show(stories[Carl]) ++ "\n"] ++
+["Story told by Debby: " ++ show(stories[Debby]) ++ "\n"] ++
+["Story told by Sammy: " ++ show(stories[Sammy]) ++ "\n"] ++
+["Story told by Ted: " ++ show(stories[Ted]) ++ "\n"];
+___________
+ages = [Three, Five, Seven, Eight, Ten]; 
+countries = [Ethiopia, Kazakhstan, Lithuania, Morocco, Yemen]; 
+stories = [BurningBush, Captivity, MosesYouth, Passover, TenCommandments];
+==============================None
+___________
+% Age-Child-Country-Story
+int: n = 5; % Number of children
+
+% Parameters
+array[1..n] of var 3..10: age; % Age of each child (3, 5, 7, 8, 10)
+array[1..n] of var 1..5: country; % Country of each child (1: Ethiopia, 2: Kazakhstan, 3: Lithuania, 4: Morocco, 5: Yemen)
+array[1..n] of var 1..5: story; % Story assigned to each child (1: burning bush, 2: captivity, 3: Moses’ youth, 4: Passover, 5: Ten Commandments)
+
+% Constraints
+constraint all_different(age); % All ages are unique
+constraint all_different(country); % All countries are unique
+constraint all_different(story); % All stories are unique
+
+constraint age[3] == 3 /\ country[3] == 3; % Debby is from Lithuania
+constraint age[4] == age[1] + 2; % The child who told Passover is 2 years older than Bernice
+constraint country[5] == 5 /\ country[1] == 1; % Yemen is younger than Ethiopia
+constraint age[4] == age[5] + 3; % Moroccan is 3 years older than Ted
+constraint age[4] == age[3] + 3; % Sammy is 3 years older than Moses’ youth
+
+solve satisfy;
+
+output["Bernice: Age = ", show(age[1]), ", Country = ", show(country[1]), ", Story = ", show(story[1]), "\n",
+       "Carl: Age = ", show(age[2]), ", Country = ", show(country[2]), ", Story = ", show(story[2]), "\n",
+       "Debby: Age = ", show(age[3]), ", Country = ", show(country[3]), ", Story = ", show(story[3]), "\n",
+       "Sammy: Age = ", show(age[4]), ", Country = ", show(country[4]), ", Story = ", show(story[4]), "\n",
+       "Ted: Age = ", show(age[5]), ", Country = ", show(country[5]), ", Story = ", show(story[5]), "\n"];
+___________
+% The data.dzn file for the given Hebrew school problem
+% Each child is represented by their position in the arrays:
+% Bernice = 1, Carl = 2, Debby = 3, Sammy = 4, Ted = 5
+% Countries: 1: Ethiopia, 2: Kazakhstan, 3: Lithuania, 4: Morocco, 5: Yemen
+
+% Unassigned parameters:
+% Bernice, Carl, Debby, Sammy, Ted: Age (3, 5, 7, 8, 10)
+% Bernice, Carl, Debby, Sammy, Ted: Country of origin (1: Ethiopia, 2: Kazakhstan, 3: Lithuania, 4: Morocco, 5: Yemen)
+% Bernice, Carl, Debby, Sammy, Ted: Story (1: burning bush, 2: captivity, 3: Moses’ youth, 4: Passover, 5: Ten Commandments)
+==============================None
+___________
+% Bernice, Carl, Debby, Sammy, Ted
+% 3, 5, 7, 8, 10
+% Ethiopia, Kazakhstan, Lithuania, Morocco, Yemen
+% burning bush, captivity, Mosesâ€™s youth, Passover, Ten Commandments
+
+array[1..5] of var 3..10: Ages; % from dzn
+array[1..5] of var 1..5: Children; % from dzn
+array[1..5] of var 1..5: FamilyCountry; % from dzn
+array[1..5] of var 1..5: Story; % from dzn
+
+constraint all_different(Ages);
+constraint all_different(Children);
+constraint all_different(FamilyCountry);
+constraint all_different(Story);
+
+constraint Ages[2] + 2 == Ages[4]; % The child who presented Passover is 2 years older than Bernice.
+constraint Ages[5] - Ages[3] == 3; % Sammy is 3 years older than the child who presented Mosesâ€™s youth.
+
+constraint FamilyCountry[3] == 3; % Debby is from Lithuania.
+constraint FamilyCountry[5] - FamilyCountry[1] == 1; % The child from Yemen is younger than the child from Ethiopia.
+constraint Ages[5] - Ages[1] == 3; % The child from Morocco is 3 years older than Ted.
+
+constraint Children[1] == 1; % Bernice presented the burning bush.
+constraint Children[2] == 2; % Carl presented captivity.
+constraint Children[3] == 3; % Debby presented Mosesâ€™s youth.
+constraint Children[4] == 4; % Sammy presented Passover.
+constraint Children[5] == 5; % Ted presented the Ten Commandments.
+
+solve satisfy;
+
+output ["Child: ", show(Children), "\n"];
+output ["Age: ", show(Ages), "\n"];
+output ["Family Country: ", show(FamilyCountry), "\n"];
+output ["Story: ", show(Story), "\n"];
+___________
+Ages = [3, 5, 7, 8, 10]; % from dzn
+Children = [1, 2, 3, 4, 5]; % from dzn
+FamilyCountry = [1, 2, 3, 4, 5]; % from dzn
+Story = [1, 2, 3, 4, 5]; % from dzn
+==============================None
+___________
+% Variables
+% Age of the children: 3, 5, 7, 8, 10
+% Child: Bernice, Carl, Debby, Sammy, Ted
+% Country: Ethiopia, Kazakhstan, Lithuania, Morocco, Yemen
+% Story: burning bush, captivity, Moses's youth, Passover, Ten Commandments
+
+include "globals.mzn";  % Include the built-in minizinc global constraints
+
+% Define the age, child, country, and story variables
+array[1..5] of var 3..10: age;
+array[1..5] of var 1..5: child;    % 1: Bernice, 2: Carl, 3: Debby, 4: Sammy, 5: Ted
+array[1..5] of var 1..5: country;  % 1: Ethiopia, 2: Kazakhstan, 3: Lithuania, 4: Morocco, 5: Yemen
+array[1..5] of var 1..5: story;    % 1: burning bush, 2: captivity, 3: Moses's youth, 4: Passover, 5: Ten Commandments
+
+% Constraints based on the information given
+constraint age[3] == 3;  % Debby's age is 3
+constraint age[4] == age[1] + 2;  % Passover child is 2 years older than Bernice
+constraint age[5] == age[1] + 3 /\ country[5] == 5;  % Sammy is 3 years older than Moses's youth child
+constraint country[3] == 3;  % Debby's family is from Lithuania
+constraint country[4] == 5;  % Ted's family is from Morocco
+constraint country[5] == 4;  % Sammy's family is from Yemen
+constraint country[1] == 1;  % Bernice's family is from Ethiopia
+
+% Additional constraints based on the relative ages of the children
+constraint age[5] < age[2];  % Yemen child is younger than Ethiopian child
+constraint age[4] == age[5] + 3;  % Moroccan child is 3 years older than Ted
+
+% Ensure that all variables are different
+constraint all_different(age) /\ all_different(child) /\ all_different(country) /\ all_different(story);
+
+% Solve the problem
+solve satisfy;
+
+% Output the results
+output["Bernice's age: ", show(age[1]), "\n"];
+output["Bernice's family from: ", show(country[1]), "\n"];
+output["Bernice told the story of: ", show(story[1]), "\n\n"];
+
+output["Carl's age: ", show(age[2]), "\n"];
+output["Carl's family from: ", show(country[2]), "\n"];
+output["Carl told the story of: ", show(story[2]), "\n\n"];
+
+output["Debby's age: ", show(age[3]), "\n"];
+output["Debby's family from: ", show(country[3]), "\n"];
+output["Debby told the story of: ", show(story[3]), "\n\n"];
+
+output["Sammy's age: ", show(age[4]), "\n"];
+output["Sammy's family from: ", show(country[4]), "\n"];
+output["Sammy told the story of: ", show(story[4]), "\n\n"];
+
+output["Ted's age: ", show(age[5]), "\n"];
+output["Ted's family from: ", show(country[5]), "\n"];
+output["Ted told the story of: ", show(story[5]), "\n"];
+___________
+age = [3, 0, 0, 0, 0];
+child = [0, 0, 0, 0, 0];
+country = [0, 0, 0, 0, 0];
+story = [0, 0, 0, 0, 0];
+==============================

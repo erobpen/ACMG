@@ -1,0 +1,28 @@
+[{"attempt": "0_1", "status": true, "solutions": "Solution(gender=[1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], entry_order=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0], _checker='')"}]
+
+Solution(gender=[1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], entry_order=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0], _checker='')
+___________
+```minizinc
+int: num_people; % from dzn
+int: num_males; % from dzn
+
+array[1..num_people] of var 0..1: gender; % 0 represents female, 1 represents male
+
+constraint sum([gender[i] | i in 1..num_people]) = num_males;
+
+array[1..num_people] of var 0..1: entry_order;
+
+constraint
+    forall(i in 1..num_people-1)(
+        (gender[entry_order[i]] = 0 /\ gender[entry_order[i+1]] = 1) \/
+        (gender[entry_order[i]] = 1)
+    );
+
+solve satisfy;
+
+output[entry_order];
+```
+___________
+num_people = 13;
+num_males = 4;
+==============================

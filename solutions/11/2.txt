@@ -1,0 +1,40 @@
+int: n_BOARD; % Number of single-slot boards
+int: n_LBOARD; % Number of double-slot boards
+int: m;        % Total slots available
+
+% Quantity of each board type
+array[1..n_BOARD] of int: quantity_SINGLE;
+array[1..n_LBOARD] of int: quantity_DOUBLE;
+
+% Each board requires either 1 or 2 slots
+int: BOARD_slots = 1;
+int: LBOARD_slots = 2;
+
+% Decision variables: number of each board type
+var 0..m: BOARD1; % Single-slot boards
+var 0..m: BOARD2; % Single-slot boards
+var 0..m: BOARD3; % Single-slot boards
+var 0..m: LBOARD1; % Double-slot boards
+var 0..m: LBOARD2; % Double-slot boards
+
+% Constraints based on available slots
+constraint BOARD1 * BOARD_slots + BOARD2 * BOARD_slots + BOARD3 * BOARD_slots +
+           LBOARD1 * LBOARD_slots + LBOARD2 * LBOARD_slots <= m;
+
+% Constraints based on available quantities
+constraint sum([BOARD1, BOARD2, BOARD3]) <= sum(quantity_SINGLE) / BOARD_slots;
+constraint sum([LBOARD1, LBOARD2]) <= sum(quantity_DOUBLE) / LBOARD_slots;
+
+% Objective: maximize the number of boards used
+var int: total_boards = BOARD1 + BOARD2 + BOARD3 + LBOARD1 + LBOARD2;
+solve maximize total_boards;
+
+output ["Single slot boards: ", show(BOARD1), ", ", show(BOARD2), ", ", show(BOARD3), "\n",
+        "Double slot boards: ", show(LBOARD1), ", ", show(LBOARD2), "\n",
+        "Total boards used: ", show(total_boards), "\n"];
+
+n_BOARD = 3;
+n_LBOARD = 2;
+m = 36;
+quantity_SINGLE = [5, 5, 6];
+quantity_DOUBLE = [4, 4];

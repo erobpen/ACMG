@@ -1,0 +1,103 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "None"}, {"attempt": "1_1", "status": true, "solutions": "Solution(a=7, b=4, c=8, d=1, _checker='')"}]
+
+None
+___________
+int: a; % Possible values: 1..100
+int: b; % Possible values: 1..100
+int: c; % Possible values: 1..100
+int: d; % Possible values: 1..100
+
+% Constraints to ensure a, b, c, d are different
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+
+% Additional constraint to find a solution where a^2 + b^2 = c^2 + d^2
+constraint a*a + b*b = c*c + d*d;
+
+% Solve
+solve satisfy;
+
+% Print the solution, if found
+output["Solution: a=" ++ show(a) ++ ", b=" ++ show(b) ++ ", c=" ++ show(c) ++ ", d=" ++ show(d)];
+___________
+a = 1; b = 2; c = 3; d = 4;
+==============================None
+___________
+int: a; % from dzn
+int: b; % from dzn
+int: c; % from dzn
+int: d; % from dzn
+
+constraint 1 <= a /\ a <= 100;
+constraint 1 <= b /\ b <= 100;
+constraint 1 <= c /\ c <= 100;
+constraint 1 <= d /\ d <= 100;
+
+constraint all_different([a, b, c, d]);
+
+constraint a*a + b*b = c*c + d*d;
+
+solve satisfy;
+
+output["Numbers: " ++ show(a) ++ " " ++ show(b) ++ " " ++ show(c) ++ " " ++ show(d) ++ "\n"];
+___________
+a = 1;
+b = 2;
+c = 3;
+d = 4;
+==============================None
+___________
+int: n = 100; % maximum number
+set of int: NUMBERS = 1..n; % set of numbers 1 to 100
+
+% Decision variables
+var NUMBERS: a;
+var NUMBERS: b;
+var NUMBERS: c;
+var NUMBERS: d;
+
+% Constraints
+constraint all_different([a, b, c, d]);
+constraint a != b /\ a != c /\ a != d;
+constraint b != c /\ b != d;
+constraint c != d;
+
+constraint a*a + b*b = c*c + d*d; % Pythagorean theorem
+
+output ["Numbers: " ++ show([a, b, c, d]) ++ "\n"]; 
+
+solve satisfy;
+___________
+% Data file for Pythagorean theorem problem
+% Empty since all input parameters are defined in the model
+==============================Solution(a=7, b=4, c=8, d=1, _checker='')
+___________
+% Find a combination of 4 different numbers between 1 and 100
+% such that the sum of the squares of the two first numbers is equal
+% to the sum of the squares of the other two numbers.
+
+% Define the domain
+set of int: Numbers = 1..100;
+
+% Variables
+var Numbers: a; % First number
+var Numbers: b; % Second number
+var Numbers: c; % Third number
+var Numbers: d; % Fourth number
+
+% Constraints
+constraint all_different([a, b, c, d]); % 4 different numbers
+
+% Sum of squares of the first two numbers should be equal to the sum of squares of the other two
+constraint a*a + b*b = c*c + d*d;
+
+% Find the solution
+solve satisfy;
+
+% Output the solution
+output ["a: ", show(a), "\n"];
+output ["b: ", show(b), "\n"];
+output ["c: ", show(c), "\n"];
+output ["d: ", show(d), "\n"];
+___________
+a = 1; b = 2; c = 3; d = 4;
+==============================

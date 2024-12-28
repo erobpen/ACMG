@@ -1,0 +1,110 @@
+[{"attempt": "0_1", "status": true, "solutions": "Solution(objective=21, inS=[0, 1, 0, 0, 0, 0, 0, 0, 0, 0], inT=[0, 0, 0, 0, 0, 0, 0, 0, 1, 1], _checker='')"}, {"attempt": "1_0", "status": true, "solutions": "None"}, {"attempt": "1_1", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "None"}, {"attempt": "2_2", "status": true, "solutions": "None"}]
+
+Solution(objective=21, inS=[0, 1, 0, 0, 0, 0, 0, 0, 0, 0], inT=[0, 0, 0, 0, 0, 0, 0, 0, 1, 1], _checker='')
+___________
+% Given set A of ten integers
+array[1..10] of var 1..100: A = array1d(1..10, [81, 21, 79, 4, 29, 70, 28, 20, 14, 7]);
+
+% Decision variables to represent if an element is in S or T
+array[1..10] of var 0..1: inS;
+array[1..10] of var 0..1: inT;
+
+% Sum of elements in S and T
+var int: sumS = sum(i in 1..10)(inS[i] * A[i]);
+var int: sumT = sum(i in 1..10)(inT[i] * A[i]);
+
+% Constraints ensuring S and T are disjoint, non-empty subsets of A
+constraint sum(i in 1..10)(inS[i] + inT[i]) > 0; % At least one element in S or T
+constraint sum(i in 1..10)(inS[i] * inT[i]) = 0; % Disjoint sets
+constraint sumS = sumT; % Equal sum constraint
+
+% Objective: Minimize the sum of elements in S (or T)
+solve minimize sumS;
+
+% Output the elements of S and T
+array[1..10] of var 0..100: outS = [if inS[i] = 1 then A[i] else 0 endif | i in 1..10];
+array[1..10] of var 0..100: outT = [if inT[i] = 1 then A[i] else 0 endif | i in 1..10];
+
+output["S: "];
+output[show(outS) ++ "\n"];
+output["T: "];
+output[show(outT) ++ "\n"];
+___________
+A = [81, 21, 79, 4, 29, 70, 28, 20, 14, 7];
+==============================None
+___________
+int: n = 10;  % Number of elements in set A\n\n% Set A with the given ten integers\narray[1..n] of int: A;\n\nconstraint\n  % S and T must be disjoint non-empty subsets of A\n  exists(i, j in 1..n where i < j) (\n    sum(k in 1..n where k != i /\ k != j) (if k <= i \/ k <= j then A[k] else 0 endif) =\n    sum(k in 1..n where k != i /\ k != j) (if k > i /\ k > j then A[k] else 0 endif)\n  );\n\nsolve satisfy;\n\noutput [\n  "A: ", show(A), "\n",\n  "S: ", show([A[i] | i in 1..n where i != j /\ i != k]), "\n",\n  "T: ", show([A[i] | i in 1..n where i != j /\ i != k]), "\n"\n];
+___________
+n = 10;\nA = [81, 21, 79, 4, 29, 70, 28, 20, 14, 7];
+==============================None
+___________
+% Define the set of 10 integers
+int: n = 10;
+set of int: NUMBERS = 1..100;
+array[1..n] of var NUMBERS: A;
+
+% The sum of all elements in set A
+var NUMBERS: totalSum = sum(i in 1..n)(A[i]);
+
+% Decision variables: A boolean array to represent whether an element is in S or T
+array[1..n] of var 0..1: inS;
+array[1..n] of var 0..1: inT;
+
+% Constraints: S and T must be disjoint non-empty subsets of A
+constraint sum(i in 1..n)(inS[i]) + sum(i in 1..n)(inT[i]) = n /\
+           sum(i in 1..n)(inS[i]) >= 1 /\
+           sum(i in 1..n)(inT[i]) >= 1 /\
+           forall(i, j in 1..n where i != j)(
+             (inS[i] = 1 /\ inS[j] = 1) -> false /\
+             (inT[i] = 1 /\ inT[j] = 1) -> false
+           );
+
+% Constraint: The sum of elements in S must equal the sum of elements in T
+constraint sum(i in 1..n)(A[i] * inS[i]) = sum(i in 1..n)(A[i] * inT[i]);
+
+solve satisfy;
+
+% Output the sets S and T
+array[1..n] of var 0..100: s;
+array[1..n] of var 0..100: t;
+constraint forall(i in 1..n)(
+    s[i] = A[i] * inS[i] /\
+    t[i] = A[i] * inT[i]
+);
+
+output["S: "];
+output[concat([show(s[i]) ++ " " | i in 1..n where s[i] > 0])];
+output["\nT: "];
+output[concat([show(t[i]) ++ " " | i in 1..n where t[i] > 0])];
+  
+___________
+A = [81, 21, 79, 4, 29, 70, 28, 20, 14, 7];
+==============================None
+___________
+int: n = 10;  % number of elements in set A\n\n% Set A\narray[1..n] of int: A;  % input values\n\n% Decision variables\narray[1..n] of var 0..1: select;  % 1 if element is in set S, 0 if in set T\n\n% Constraint: Disjoint non-empty subsets\nconstraint\n    sum(i in 1..n)(select[i]) > 0 /\\n    sum(i in 1..n)(select[i]) < n;\n\n% Constraint: Sum of elements in S equals sum of elements in T\nconstraint\n    sum(i in 1..n where select[i] = 1)(A[i]) = sum(i in 1..n where select[i] = 0)(A[i]);\n\nsolve satisfy;\n\n% Output\noutput [\n    "Set S: {", show([A[i] | i in 1..n where select[i] = 1]), "}\n",\n    "Set T: {", show([A[i] | i in 1..n where select[i] = 0]), "}\n"\n];
+___________
+n = 10;\nA = array1d(1..n, [81, 21, 79, 4, 29, 70, 28, 20, 14, 7]);
+==============================None
+___________
+int: n = 10;  % Number of items
+int: sum = sum([81, 21, 79, 4, 29, 70, 28, 20, 14, 7]);  % Sum of all items
+
+% Decision variables
+array[1..n] of var 0..1: s;  % Subset S (1 if included, 0 if not)
+
+% Constraints
+constraint sum(i in 1..n)(s[i] * [81, 21, 79, 4, 29, 70, 28, 20, 14, 7][i]) * 2 == sum;
+
+% Find a solution
+solve satisfy;
+
+% Output the subsets
+output["S = {"] ++ 
+    concat([if s[i] == 1 then show([81, 21, 79, 4, 29, 70, 28, 20, 14, 7][i]) ++ " " else "" endif | i in 1..n]) ++
+    "}" ++ "\n" ++
+    "T = {" ++ 
+    concat([if s[i] == 0 then show([81, 21, 79, 4, 29, 70, 28, 20, 14, 7][i]) ++ " " else "" endif | i in 1..n]) ++
+    "}";
+___________
+n = 10;
+==============================

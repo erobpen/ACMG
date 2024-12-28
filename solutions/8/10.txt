@@ -1,0 +1,43 @@
+int: N = 4; % Number of furniture pieces
+int: room_size = 3; % Room dimensions
+array[1..N] of var 1..room_size*room_size: position;
+
+% Compatibility matrix
+array[1..N, 1..N] of int: compatibility = array2d(1..N, 1..N, [
+    0, 1, 2, 0,
+    1, 0, 1, 0,
+    2, 1, 0, 2,
+    0, 0, 2, 0
+]);
+
+% Ensure unique positions
+constraint forall(i, j in 1..N where i != j) (
+    position[i] != position[j]
+);
+
+% Ensure compatibility constraints
+constraint forall(i, j in 1..N where i != j) (
+    abs(position[i] div room_size - position[j] div room_size) +
+    abs(position[i] mod room_size - position[j] mod room_size) > 1 ->
+    compatibility[i, j] > 0
+);
+
+solve satisfy;
+
+% Output the positions of furniture pieces
+output [position[i] | i in 1..N];
+
+% Number of furniture pieces
+N = 4;
+
+% Room dimensions
+room_size = 3;
+
+% Compatibility matrix
+compatibility = array2d(1..N, 1..N, [0, 1, 2, 0, 1, 0, 1, 0, 2, 1, 0, 2, 0, 0, 2, 0]);
+
+
+
+4 2 3
+1 x x
+x x x

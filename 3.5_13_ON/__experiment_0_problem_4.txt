@@ -1,0 +1,28 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(grid=[[4, 5, 11, 14], [9, 16, 2, 7], [6, 3, 13, 12], [15, 10, 8, 1]], _checker='')"}]
+
+Solution(grid=[[4, 5, 11, 14], [9, 16, 2, 7], [6, 3, 13, 12], [15, 10, 8, 1]], _checker='')
+___________
+int: n;
+
+array[1..n, 1..n] of var 1..n*n: grid;
+
+constraint n > 2;
+constraint all_different(grid);
+
+int: magic_sum = n*(n*n + 1) div 2;
+
+constraint
+    forall(i in 1..n)(
+        sum(j in 1..n)(grid[i,j]) == magic_sum /\
+        sum(j in 1..n)(grid[j,i]) == magic_sum
+    );
+
+constraint
+    sum(i in 1..n)(grid[i,i]) == magic_sum /\
+    sum(i in 1..n)(grid[i,n-i+1]) == magic_sum;
+
+output["Grid:"] = [show(grid[i,j]) | i in 1..n, j in 1..n];
+solve satisfy;
+___________
+n = 4;
+==============================

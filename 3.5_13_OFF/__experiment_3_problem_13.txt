@@ -1,0 +1,87 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "Solution(a=[2, 2, 2, 2], b=[1, 1, 1, 1], c=[2, 2, 2, 2], d=[1, 1, 1, 1], _checker='')"}]
+
+None
+___________
+int: a; % 1..100
+int: b; % 1..100
+int: c; % 1..100
+int: d; % 1..100
+
+constraint
+    a != b /\ a != c /\ a != d /\
+    b != c /\ b != d /\
+    c != d /\
+    a^2 + b^2 = c^2 + d^2;
+
+solve satisfy;
+
+output ["The numbers are: " ++ show(a) ++ ", " ++ show(b) ++ ", " ++ show(c) ++ ", " ++ show(d)];
+___________
+a = 1;
+b = 2;
+c = 3;
+d = 4;
+==============================None
+___________
+% Parameters
+int: a;
+int: b;
+int: c;
+int: d;
+
+% Domain definition
+constraint 1 <= a /\ a <= 100;
+constraint 1 <= b /\ b <= 100;
+constraint 1 <= c /\ c <= 100;
+constraint 1 <= d /\ d <= 100;
+
+% All numbers must be different
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+
+% Constraint: a^2 + b^2 = c^2 + d^2
+constraint a*a + b*b = c*c + d*d;
+
+solve satisfy;
+
+% Output the solution
+output ["a: " ++ show(a) ++ "\n"];
+output ["b: " ++ show(b) ++ "\n"];
+output ["c: " ++ show(c) ++ "\n"];
+output ["d: " ++ show(d) ++ "\n"];
+___________
+a = 1;
+b = 2;
+c = 3;
+d = 6;
+==============================None
+___________
+int: a; % between 1 and 100
+int: b; % between 1 and 100
+int: c; % between 1 and 100
+int: d; % between 1 and 100
+
+constraint
+    a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d /\
+    a^2 + b^2 = c^2 + d^2;
+
+solve satisfy;
+
+output ["a: ", show(a), ", b: ", show(b), ", c: ", show(c), ", d: ", show(d)];
+___________
+% Data file for the Pythagorean Quadruple problem
+% Find a combination of 4 different numbers between 1 and 100
+% such that a^2 + b^2 = c^2 + d^2
+
+% Assign values to the variables a, b, c, and d
+% Note: These values are not assigned in the Minizinc model
+
+a = 1;
+b = 1;
+c = 1;
+d = 1;
+==============================Solution(a=[2, 2, 2, 2], b=[1, 1, 1, 1], c=[2, 2, 2, 2], d=[1, 1, 1, 1], _checker='')
+___________
+int: n = 4; % Number of combinations\nint: range = 100; % Range of numbers\n\n% Define the variables for the combinations\narray[1..n] of var 1..range: a; % First number\narray[1..n] of var 1..range: b; % Second number\narray[1..n] of var 1..range: c; % Third number\narray[1..n] of var 1..range: d; % Fourth number\n\n% Constraints to ensure that the numbers are different within each pair\nconstraint forall(i in 1..n) (\n    a[i] != b[i] /\\n    c[i] != d[i]\n);\n\n% Constraint for the sum of squares\nconstraint forall(i in 1..n) (\n    a[i]*a[i] + b[i]*b[i] = c[i]*c[i] + d[i]*d[i]\n);\n\n% Find a solution\nsolve satisfy;\n\n% Output the combinations that satisfy the conditions\noutput [\n    "a: " ++ show(a) ++ "\n" ++\n    "b: " ++ show(b) ++ "\n" ++\n    "c: " ++ show(c) ++ "\n" ++\n    "d: " ++ show(d)\n];
+___________
+n = 4;\nrange = 100;
+==============================

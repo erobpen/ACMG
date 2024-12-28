@@ -1,0 +1,61 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(debby_country=1, carl_country=2, sammy_country=3, bernice_country=4, ted_country=5, debby_story=1, carl_story=2, sammy_story=3, bernice_story=4, ted_story=5, _checker='')"}]
+
+Solution(debby_country=1, carl_country=2, sammy_country=3, bernice_country=4, ted_country=5, debby_story=1, carl_story=2, sammy_story=3, bernice_story=4, ted_story=5, _checker='')
+___________
+% Define the ages of each child
+int: debby_age;
+int: carl_age;
+int: sammy_age;
+int: bernice_age;
+int: ted_age;
+
+% Define the countries of origin of each child's family
+var 1..5: debby_country;  % 1: Lithuania, 2: Ethiopia, 3: Kazakhstan, 4: Yemen, 5: Morocco
+var 1..5: carl_country;
+var 1..5: sammy_country;
+var 1..5: bernice_country;
+var 1..5: ted_country;
+
+% Define the stories each child told
+var 1..5: debby_story;  % 1: Ten Commandments, 2: Moses's youth, 3: Burning bush, 4: Passover, 5: Captivity in Egypt
+var 1..5: carl_story;
+var 1..5: sammy_story;
+var 1..5: bernice_story;
+var 1..5: ted_story;
+
+% Constraints
+constraint debby_age = 10 /\
+          carl_age = 8 /\
+          sammy_age = 7 /\
+          bernice_age = 5 /\
+          ted_age = 3;
+
+constraint debby_country = 1 /\
+          carl_country = 2 /\
+          sammy_country = 3 /\
+          bernice_country = 4 /\
+          ted_country = 5;
+
+constraint debby_story = 1 /\
+          carl_story = 2 /\
+          sammy_story = 3 /\
+          bernice_story = 4 /\
+          ted_story = 5;
+
+% Ensure each story is unique
+constraint all_different([debby_story, carl_story, sammy_story, bernice_story, ted_story]);
+
+solve satisfy;
+
+output["Debby: " ++ show(debby_age) ++ " years old, from " ++ show(debby_country) ++ ", told the story of " ++ show(debby_story) ++ "\n"];
+output["Carl: " ++ show(carl_age) ++ " years old, from " ++ show(carl_country) ++ ", told the story of " ++ show(carl_story) ++ "\n"];
+output["Sammy: " ++ show(sammy_age) ++ " years old, from " ++ show(sammy_country) ++ ", told the story of " ++ show(sammy_story) ++ "\n"];
+output["Bernice: " ++ show(bernice_age) ++ " years old, from " ++ show(bernice_country) ++ ", told the story of " ++ show(bernice_story) ++ "\n"];
+output["Ted: " ++ show(ted_age) ++ " years old, from " ++ show(ted_country) ++ ", told the story of " ++ show(ted_story) ++ "\n"];
+___________
+debby_age = 10;\n
+carl_age = 8;\n
+sammy_age = 7;\n
+bernice_age = 5;\n
+ted_age = 3;\n
+==============================

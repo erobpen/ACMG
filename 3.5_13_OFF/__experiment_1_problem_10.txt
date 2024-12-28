@@ -1,0 +1,123 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "None"}, {"attempt": "2_0", "status": true, "solutions": "None"}, {"attempt": "2_1", "status": true, "solutions": "None"}]
+
+None
+___________
+int: n = 25;  % Total number of cows
+int: k = 5;    % Number of sons
+array[1..n] of var 1..n: cows;  % Assignment of cows to sons
+
+% Constraints to model the distribution of cows to sons
+constraint sum([cows[i] | i in 1..n]) == n;  % Each cow should be assigned once
+constraint forall(j in 1..k) (
+    sum([cows[i] | i in (7*(j-1) + 1)..(7*j)]) == 28  % Total milk produced by each son
+);
+
+solve satisfy;
+
+output["Cows assigned to sons: \(cows)\n"];
+___________
+n = 25;  % Total number of cows
+k = 5;    % Number of sons
+% Assignment of cows to sons (not assigned, will be solved by the model)
+cows = array1d(1..n, 1..5);  % Each cow's assignment to a son
+% No additional data needed as all cows will be assigned once.
+==============================None
+___________
+int: n = 25; % Total number of cows
+int: k = 5; % Number of sons
+int: m = n * (n + 1) div 2; % Total milk produced per day
+
+% Milk produced by each cow
+array[1..n] of var 1..n: milk;
+
+% Decision variables: cows assigned to each son
+array[1..k] of var 0..n: cows;
+
+% Constraints
+constraint sum(cows) == n; % Total cows distributed
+constraint forall(i in 1..n)(milk[i] == i); % Milk per cow
+constraint sum(i in 1..n)(i * milk[i]) == m; % Total milk produced (before distribution)
+
+% Distribute cows and check if total milk the same
+constraint sum(i in 1..k)(sum(j in 1..n)(if j <= cows[i] then j * milk[j] else 0 endif)) == m;
+
+solve satisfy;
+
+output ["Cow " ++ show(i) ++ " to son " ++ show(j) ++ "\n" | i in 1..n, j in 1..k where i <= cows[j] ];
+___________
+% Data file for the cow distribution problem
+milk = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]; % Milk production per cow per day
+==============================None
+___________
+int: n = 25; % Total number of cows
+array[1..n] of int: cows_milk = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]; % Milk that each cow produces
+int: m = sum(cows_milk); % Total milk produced
+
+int: sons = 5; % Number of sons
+array[1..sons] of var 0..25: sons_cows; % Cows assigned to each son
+
+constraint sum(sons_cows) == n; % All cows are assigned
+constraint sum(i in 1..sons)(sons_cows[i] * i) == m; % Total milk distributed is equal to total milk produced
+
+solve satisfy;
+
+output["Cows for each son: "];
+output[show(sons_cows)];
+___________
+n = 25;
+sons = 5;
+==============================None
+___________
+% Parameters
+int: n_cows = 25;  % Total number of cows
+array[1..n_cows] of int: milk_production = [i | i in 1..n_cows];  % Milk production per cow (1 to 25 kg)
+int: n_sons = 5;  % Number of sons
+
+% Variables: Each son's cows
+array[1..n_sons] of var 0..n_cows: sons_cows;
+
+% Constraints: Total milk production must remain the same
+constraint sum(sons_cows) == sum(milk_production);
+
+% Constraints: Distribute cows to sons
+constraint sons_cows[1] == 7;  % First son gets 7 cows
+constraint sons_cows[2] == 6;  % Second son gets 6 cows
+constraint sons_cows[3] == 5;  % Third son gets 5 cows
+constraint sons_cows[4] == 4;  % Fourth son gets 4 cows
+constraint sons_cows[5] == 3;  % Fifth son gets 3 cows
+
+solve satisfy;
+
+% Output
+output["Cows for each son: " ++ show([sons_cows[i] | i in 1..n_sons])];
+___________
+n_cows = 25;
+n_sons = 5;
+==============================None
+___________
+int: n = 25;  % Number of cows
+array[1..n] of var 1..n: cow;  % cow[i] represents the number of kg of milk cow i produces
+
+% Constraints on cow[i] representing milk production
+constraint forall(i in 1..n)(cow[i] = i);
+
+% Number of sons
+int: num_sons = 5;
+
+% Number of cows to distribute to each son
+array[1..num_sons] of int: cows_per_son = [7, 6, 5, 4, 3];
+
+% Variable representing the total milk production
+var 0..n*(n+1) div 2: total_milk = sum(i in 1..n)(cow[i]);
+
+% Distribute cows to sons and ensure the total milk remains the same
+constraint sum(i in 1..num_sons)(sum(j in 1..cows_per_son[i])(cow[j])) = total_milk;
+
+% Output the distribution of cows to sons
+output["Distribution of cows to sons:\n"] ++
+["Son " ++ show(i) ++ ": " ++ show([cow[j] | j in 1..cows_per_son[i]]) ++ "\n"
+| i in 1..num_sons] ++
+["Total milk production: " ++ show(total_milk) ++ " kg\n"];
+___________
+n = 25;  % Number of cows
+==============================

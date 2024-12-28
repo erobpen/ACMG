@@ -1,0 +1,95 @@
+[{"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "Solution(is_male=[1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0], _checker='')"}]
+
+None
+___________
+% The model starts with the number of people and the ratio of females to males, which are given. We generate a list of 13 elements representing the order in which people enter the room.
+int: n = 13; % from dzn
+int: m = 4;  % from dzn
+int: f = n - m; % Calculate the number of females
+
+array[1..n] of var 0..1: order; % 0 for male, 1 for female
+
+% Constraint: The ratio of females to males in the room at any given time must not exceed 7/3
+constraint
+    forall(i in 1..n) (
+        let {
+            var int: males = sum(j in 1..i where order[j] == 0)(1),
+            var int: females = sum(j in 1..i where order[j] == 1)(1)
+        } in
+        females * 3 <= males * 7 /\ females * 7 >= males * 3
+    );
+
+% Solve the model
+solve satisfy;
+
+% Output the order in which people enter the room
+output["Order: "];
+output[show([if order[i] == 1 then "F" else "M" endif | i in 1..n])];
+___________
+n = 13;
+==============================None
+___________
+int: n = 13; % Total number of people
+int: males = 4; % Number of males
+int: females = n - males; % Number of females
+float: max_ratio = 7.0 / 3.0; % Maximum allowed ratio of females to males
+
+array[1..n] of var bool: is_female; % True if the person is female, false if male
+
+% Constraint: The ratio of females to males must not exceed 7/3 at any time
+constraint
+    forall(i in 1..n) (
+        let {
+            var int: females_count = sum(j in 1..i)(bool2int(is_female[j]))
+        } in
+            if females_count = 0 then
+                true
+            else
+                let {
+                    var int: males_count = i - females_count
+                } in
+                    females_count <= max_ratio * males_count
+            endif
+    );
+
+solve satisfy;
+
+% Output the order in which people enter the room
+array[1..n] of var 1..n: order;
+constraint alldifferent(order);
+output["Order of entry: "];
+output[show(order)];
+___________
+% Data file for the Minizinc model to solve the problem of arranging the entry of people into a room such that the ratio of females to males does not exceed 7/3. 
+
+n = 13;  % Total number of people
+males = 4;  % Number of males
+females = n - males;  % Number of females
+
+% The data file does not need to assign values to the boolean array, as it is only used in the model to track female individuals.
+==============================Solution(is_male=[1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0], _checker='')
+___________
+int: total_people = 13;
+int: num_males = 4;  % Given that 4 are male
+float: max_ratio = 7.0 / 3;  % Maximum ratio of females to males
+
+array[1..total_people] of var 0..1: is_male;  % 1 for male, 0 for female
+
+% Constraint: The ratio of females to males in the room at any one time must not exceed 7/3
+constraint
+    forall(i in 1..total_people) (
+        sum(j in 1..i) (1 - is_male[j]) / sum(j in 1..i) (is_male[j] + 1e-6) <= max_ratio
+    );
+
+% Constraint: The total number of people must be 13 and the number of males must be 4
+constraint sum(is_male) == num_males;
+
+% Solve for the order in which 4 males and 9 females enter the room
+solve satisfy;
+
+% Print the result
+output["Order of entry (0 for female, 1 for male): "];
+output[show(is_male)];
+___________
+is_male = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
+==============================

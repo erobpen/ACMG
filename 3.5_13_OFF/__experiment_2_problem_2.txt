@@ -1,0 +1,30 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(a=2, b=1, c=6, d=3, _checker='')"}]
+
+Solution(a=2, b=1, c=6, d=3, _checker='')
+___________
+% Define the digits (a, b, c, d) of the 4-digit PIN as separate variables
+var 0..9: a; var 0..9: b; var 0..9: c; var 0..9: d;
+
+% Constraints to ensure that no two digits are the same
+constraint all_different([a, b, c, d]);
+
+% Calculate the 2-digit numbers 'ab' and 'cd'
+var 0..99: ab = a * 10 + b;
+var 0..99: cd = c * 10 + d;
+
+% Calculate the 2-digit numbers 'bc' and 'da'
+var 0..99: bc = b * 10 + c;
+var 0..99: da = d * 10 + a;
+
+% Additional constraints based on the given relationships
+constraint cd == 3 * ab; % cd is 3 times ab
+constraint da == 2 * bc; % da is 2 times bc
+
+% Solve the puzzle
+solve satisfy;
+
+% Output the PIN
+output["The 4-digit PIN is: " ++ show(a) ++ show(b) ++ show(c) ++ show(d) ++ "\n"];
+___________
+a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+==============================

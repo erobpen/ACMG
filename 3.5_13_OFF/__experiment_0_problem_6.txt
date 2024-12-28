@@ -1,0 +1,48 @@
+[{"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "Solution(bags_stolen=[2, 4, 0, 0, 0, 0], _checker='')"}]
+
+None
+___________
+int: coins16; % from dzn
+int: coins17; % from dzn
+int: coins23; % from dzn
+int: coins24; % from dzn
+int: coins39; % from dzn
+int: coins40; % from dzn
+
+constraint coins16 * 16 + coins17 * 17 + coins23 * 23 + coins24 * 24 + coins39 * 39 + coins40 * 40 = 100;
+
+constraint coins16 >= 0 /\ coins17 >= 0 /\ coins23 >= 0 /\ coins24 >= 0 /\ coins39 >= 0 /\ coins40 >= 0;
+
+solve satisfy;
+
+output["Number of bags stolen for 16 coins: \(coins16)"];
+output["Number of bags stolen for 17 coins: \(coins17)"];
+output["Number of bags stolen for 23 coins: \(coins23)"];
+output["Number of bags stolen for 24 coins: \(coins24)"];
+output["Number of bags stolen for 39 coins: \(coins39)"];
+output["Number of bags stolen for 40 coins: \(coins40)"];
+___________
+coins16 = 0;
+coins17 = 0;
+coins23 = 0;
+coins24 = 0;
+coins39 = 0;
+coins40 = 0;
+==============================Solution(bags_stolen=[2, 4, 0, 0, 0, 0], _checker='')
+___________
+```minizinc
+int: num_bags = 6; % from dzn
+set of int: bags = 1..num_bags;
+array[bags] of int: coins = [16, 17, 23, 24, 39, 40];
+
+array[bags] of var 0..100: bags_stolen;
+
+constraint sum(i in bags)(coins[i] * bags_stolen[i]) == 100;
+
+solve satisfy;
+
+output [ show(bags_stolen) ];
+```
+___________
+num_bags = 6;
+==============================

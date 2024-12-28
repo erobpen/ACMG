@@ -1,0 +1,108 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "Solution(square=[[4, 5, 11, 14], [9, 16, 2, 7], [6, 3, 13, 12], [15, 10, 8, 1]], _checker='')"}]
+
+None
+___________
+% Magic square MiniZinc model
+int: n;                     % Size of the magic square
+
+% Variables
+array[1..n, 1..n] of var 1..n*n: square; % The magic square
+
+% Constraints
+constraint n mod 2 != 0 /\ n >= 3;
+constraint alldifferent(square);
+
+int: magic_sum = n * (n*n + 1) div 2; % Sum of each row, column, and diagonal
+
+% Rows
+constraint forall(i in 1..n) (
+    sum(j in 1..n)(square[i,j]) == magic_sum
+);
+
+% Columns
+constraint forall(j in 1..n) (
+    sum(i in 1..n)(square[i,j]) == magic_sum
+);
+
+% Diagonals
+constraint sum(i in 1..n)(square[i,i]) == magic_sum; % Main diagonal
+constraint sum(i in 1..n)(square[i,n-i+1]) == magic_sum; % Secondary diagonal
+
+solve satisfy;
+
+% Output
+output [show(square)];
+___________
+n = 4;
+==============================None
+___________
+int: n; % size of the magic square
+
+% Constraints
+constraint n mod 2 != 0; % n must be odd
+constraint n >= 3; % n must be at least 3
+
+% Decision variables: the values in the cells of the magic square
+array[1..n, 1..n] of var 1..n*n: square;
+
+% All cells must contain different integers
+constraint alldifferent(square);
+
+% The sum of each row, column, and diagonals must be the same
+int: magic_sum = n * (n*n + 1) div 2;
+constraint
+    forall(i in 1..n) (
+        sum(j in 1..n)(square[i,j]) == magic_sum /\
+        sum(j in 1..n)(square[j,i]) == magic_sum
+    );
+
+% Diagonal sums
+constraint
+    sum(i in 1..n)(square[i,i]) == magic_sum /\
+    sum(i in 1..n)(square[i,n+1-i]) == magic_sum;
+
+% Output
+output[
+    "Magic square of size ", show(n), ":\n",
+    concat([show(square[i,j]) ++ if j = n then "\n" else " " endif | i, j in 1..n])
+];
+
+solve satisfy;
+___________
+n = 4;
+==============================Solution(square=[[4, 5, 11, 14], [9, 16, 2, 7], [6, 3, 13, 12], [15, 10, 8, 1]], _checker='')
+___________
+int: n;  % Size of the magic square (n x n grid), n must be odd and >= 3
+
+% Variables representing the magic square
+array[1..n, 1..n] of var 1..n*n: square;
+
+% Constraints: All integers in the square must be unique
+constraint all_different(array1d(square));
+
+% Constraints: Rows, columns, and diagonals must sum up to the same value
+int: magic_sum = n * (n * n + 1) div 2;
+constraint forall(i in 1..n) (
+    sum(j in 1..n)(square[i, j]) = magic_sum /\  % Rows
+    sum(j in 1..n)(square[j, i]) = magic_sum     % Columns
+);
+constraint sum(i in 1..n)(square[i, i]) = magic_sum /\
+          sum(i in 1..n)(square[i, n - i + 1]) = magic_sum;  % Diagonals
+
+solve satisfy;
+
+% Output the magic square
+output [
+  "Magic square of size: ", show(n), "\n",
+  if n > 9 then " " else "" endif ++
+  concat(["\n"] ++
+         [ if square[r, c] > 9 then " " else "  " endif ++
+           show(square[r, c]) ++
+           if c = n then "\n" else "" endif
+         | r in 1..n, c in 1..n ]
+        ) ++
+  "\nMagic sum: ", show(magic_sum), "\n"
+];
+___________
+n = 4;  % Size of the magic square
+==============================

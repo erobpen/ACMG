@@ -1,0 +1,135 @@
+[{"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_1", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "None"}, {"attempt": "2_1", "status": true, "solutions": "Solution(a=7, b=4, c=8, d=1, _checker='')"}]
+
+None
+___________
+```minizinc
+% Find a combination of 4 different numbers between 1 and 100,
+% such that the sum of the squares of the two first numbers is equal
+% to the sum of the squares of the other two numbers,
+% i.e. a^2 + b^2 = c^2 + d^2 for some a, b, c, d in {1, 100}, a != b != c != d.
+
+int: a; % from dzn
+int: b; % from dzn
+int: c; % from dzn
+int: d; % from dzn
+
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+constraint a >= 1 /\ a <= 100;
+constraint b >= 1 /\ b <= 100;
+constraint c >= 1 /\ c <= 100;
+constraint d >= 1 /\ d <= 100;
+
+constraint a^2 + b^2 = c^2 + d^2;
+
+solve satisfy;
+
+output [a, b, c, d];
+```
+___________
+a = 1;
+b = 2;
+c = 2;
+d = 3;
+==============================None
+___________
+```minizinc
+int: a; % from dzn
+int: b; % from dzn
+int: c; % from dzn
+int: d; % from dzn
+
+constraint 1 <= a /\ a <= 100;
+constraint 1 <= b /\ b <= 100;
+constraint 1 <= c /\ c <= 100;
+constraint 1 <= d /\ d <= 100;
+
+constraint all_different([a, b, c, d]);
+
+constraint a*a + b*b = c*c + d*d;
+
+output [a, b, c, d];
+solve satisfy;
+```
+___________
+a = 1;
+b = 2;
+c = 3;
+d = 4;
+==============================None
+___________
+```minizinc
+int: a; % from dzn
+int: b; % from dzn
+int: c; % from dzn
+int: d; % from dzn
+
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+constraint a >= 1 /\ a <= 100;
+constraint b >= 1 /\ b <= 100;
+constraint c >= 1 /\ c <= 100;
+constraint d >= 1 /\ d <= 100;
+
+constraint a*a + b*b = c*c + d*d;
+
+solve satisfy;
+
+output [a, b, c, d];
+```
+___________
+a = 1;
+b = 2;
+c = 3;
+d = 4;
+==============================None
+___________
+```minizinc
+int: a; % from dzn
+int: b; % from dzn
+int: c; % from dzn
+int: d; % from dzn
+
+constraint 1 <= a /\ a <= 100;
+constraint 1 <= b /\ b <= 100;
+constraint 1 <= c /\ c <= 100;
+constraint 1 <= d /\ d <= 100;
+
+constraint all_different([a, b, c, d]);
+
+constraint a*a + b*b = c*c + d*d;
+
+solve satisfy;
+
+output [a, b, c, d];
+```
+___________
+```dzn
+a = 1;
+b = 2;
+c = 3;
+d = 4;
+```
+==============================Solution(a=7, b=4, c=8, d=1, _checker='')
+___________
+```minizinc
+% Input parameters
+var 1..100: a; % from dzn
+var 1..100: b; % from dzn
+var 1..100: c; % from dzn
+var 1..100: d; % from dzn
+
+% Constraints
+constraint all_different([a, b, c, d]);
+
+% Relations between parameters
+constraint a*a + b*b = c*c + d*d;
+
+% Output
+output["a: \(a), b: \(b), c: \(c), d: \(d)"];
+solve satisfy;
+```
+___________
+a = 1..100;
+b = 1..100;
+c = 1..100;
+d = 1..100;
+==============================

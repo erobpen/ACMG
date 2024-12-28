@@ -1,0 +1,8 @@
+[{"attempt": "0_0", "status": true, "solutions": "Solution(is_male=[True, True, True, True, False, False, False, False, False, False, False, False, False], _checker='')"}]
+
+Solution(is_male=[True, True, True, True, False, False, False, False, False, False, False, False, False], _checker='')
+___________
+int: total_people; % Total number of people (13 in this case)\nint: num_males; % Number of males (4 in this case)\nint: max_females = (total_people - num_males) - (total_people div 3); % Maximum number of females allowed in the room at any one time based on the 7:3 ratio\n\n% Decision variables\narray[1..total_people] of var bool: is_male; % True if person is male, false if female\n\n% Constraints\nconstraint sum([bool2int(is_male[i]) | i in 1..total_people]) == num_males; % Ensure there are exactly num_males males\nconstraint forall(t in 1..total_people) (\n    sum([bool2int(is_male[i]) | i in 1..t]) <= num_males + (t - 1) * 7 div 3 % Check the ratio constraint for each person\n);\n\n% Output the solution\noutput [\n  "Order of entry (1 is male, 0 is female): ", show([bool2int(is_male[i]) | i in 1..total_people]) ++ "\n"\n];\n\nsolve satisfy;
+___________
+total_people = 13;\nnum_males = 4;
+==============================

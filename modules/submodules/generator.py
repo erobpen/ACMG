@@ -27,10 +27,10 @@ class generator:
         response = response.replace("```minizinc", '').replace("```", '').replace("mzn", '')
         return response, messages
     
-    def add_warnings(self, first_prompt, subsequent_prompt, model, recognized, result):
-        if result is None:
+    def add_warnings(self, first_prompt, subsequent_prompt, model, recognized, warnings):
+        if warnings is None:
             return first_prompt
-        return subsequent_prompt.format(model=model, recognized=recognized, warnings=result)
+        return subsequent_prompt.format(model=model, recognized=recognized, warnings=warnings)
          
     
          

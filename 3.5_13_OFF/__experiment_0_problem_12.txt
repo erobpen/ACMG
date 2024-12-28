@@ -1,0 +1,108 @@
+[{"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_1", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "None"}, {"attempt": "2_1", "status": true, "solutions": "None"}, {"attempt": "2_2", "status": true, "solutions": "None"}]
+
+None
+___________
+```minizinc
+int: n; % from dzn
+int: m1; % from dzn
+int: m2; % from dzn
+
+var 0..n: ways;
+
+constraint n > 0;
+constraint m1 > 0;
+constraint m2 > 0;
+
+constraint ways = (n div m1) + (n div m2);
+
+output ["Number of ways to climb the stair: \(ways)"];
+solve satisfy;
+```
+___________
+n = 20; % from task
+m1 = 3; % from task
+m2 = 5; % from task
+==============================None
+___________
+```minizinc
+int: n; % from dzn
+int: m1; % from dzn
+int: m2; % from dzn
+
+array[1..n] of var 0..1: steps;
+
+constraint forall(i in 1..n-1)(
+    steps[i]*m1 + steps[i+1]*m2 != 0
+);
+
+var int: ways = sum(i in 1..n)(steps[i]);
+
+output["Number of ways to climb the stair: \(ways)"];
+solve satisfy;
+```
+___________
+n = 20;
+m1 = 3;
+m2 = 5;
+==============================None
+___________
+```minizinc
+int: n; % from dzn
+int: m1; % from dzn
+int: m2; % from dzn
+
+var 0..n: steps_m1;
+var 0..n: steps_m2;
+
+constraint steps_m1 * m1 + steps_m2 * m2 = n;
+
+solve satisfy;
+
+output [steps_m1, steps_m2];
+```
+___________
+n = 20;
+m1 = 3;
+m2 = 5;
+==============================None
+___________
+int: n; % from dzn
+int: m1; % from dzn
+int: m2; % from dzn
+
+array[1..n] of var 0..1: steps;
+
+constraint forall(i in 1..n-1)(
+    steps[i]*m1 + steps[i+1]*m2 > 0
+);
+
+var int: ways = sum(steps);
+
+output["Number of ways to climb the stair: \(ways)"];
+
+solve satisfy;
+___________
+n = 20;
+m1 = 3;
+m2 = 5;
+==============================None
+___________
+```minizinc
+int: n; % from dzn
+int: m1; % from dzn
+int: m2; % from dzn
+
+var 0..n: ways_m1;
+var 0..n: ways_m2;
+
+constraint ways_m1*m1 + ways_m2*m2 = n;
+
+solve satisfy;
+
+output [ways_m1, ways_m2];
+```
+___________
+n = 20;
+m1 = 3;
+m2 = 5;
+==============================

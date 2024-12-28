@@ -1,0 +1,194 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_2", "status": true, "solutions": "None"}, {"attempt": "2_0", "status": true, "solutions": "Solution(stolen_16=2, stolen_17=4, stolen_23=0, stolen_24=0, stolen_39=0, stolen_40=0, _checker='')"}]
+
+None
+___________
+int: bags16;  % Number of bags containing 16 coins\nint: bags17;  % Number of bags containing 17 coins\nint: bags23;  % Number of bags containing 23 coins\nint: bags24;  % Number of bags containing 24 coins\nint: bags39;  % Number of bags containing 39 coins\nint: bags40;  % Number of bags containing 40 coins\n\nint: totalBags = 6;  % Total number of bags\nint: totalCoinsPerBag = 100;  % Total number of coins per bag\nint: totalCoinsLost = 100;  % Total coins lost\n\n% Decision variables: Number of bags stolen for each type of coins\nvar 0..totalBags: stolen16;  % Bags of 16 coins stolen\nvar 0..totalBags: stolen17;  % Bags of 17 coins stolen\nvar 0..totalBags: stolen23;  % Bags of 23 coins stolen\nvar 0..totalBags: stolen24;  % Bags of 24 coins stolen\nvar 0..totalBags: stolen39;  % Bags of 39 coins stolen\nvar 0..totalBags: stolen40;  % Bags of 40 coins stolen\n\n% Constraints\nconstraint bags16 + bags17 + bags23 + bags24 + bags39 + bags40 == totalBags /\\n            16 * (bags16 - stolen16) + 17 * (bags17 - stolen17) +\n            23 * (bags23 - stolen23) + 24 * (bags24 - stolen24) +\n            39 * (bags39 - stolen39) + 40 * (bags40 - stolen40) ==\n            totalCoinsPerBag * totalBags - totalCoinsLost;\n\nsolve satisfy;\n\n% Output\noutput ["Bags stolen for 16 coins: " ++ show(stolen16) ++ "\\n"\n    ++ "Bags stolen for 17 coins: " ++ show(stolen17) ++ "\\n"\n    ++ "Bags stolen for 23 coins: " ++ show(stolen23) ++ "\\n"\n    ++ "Bags stolen for 24 coins: " ++ show(stolen24) ++ "\\n"\n    ++ "Bags stolen for 39 coins: " ++ show(stolen39) ++ "\\n"\n    ++ "Bags stolen for 40 coins: " ++ show(stolen40) ++ "\\n"];
+___________
+bags16 = 2;\nbags17 = 2;\nbags23 = 2;\nbags24 = 2;\nbags39 = 2;\nbags40 = 2;
+==============================None
+___________
+% Number of bags for each type of coins
+int: bags16; % Number of bags with 16 coins
+int: bags17; % Number of bags with 17 coins
+int: bags23; % Number of bags with 23 coins
+int: bags24; % Number of bags with 24 coins
+int: bags39; % Number of bags with 39 coins
+int: bags40; % Number of bags with 40 coins
+
+% Total number of bags (6 bags in total)
+constraint bags16 + bags17 + bags23 + bags24 + bags39 + bags40 == 6;
+
+% Total number of coins in each bag
+int: coins16 = 16; % Number of coins in a bag with 16 coins
+int: coins17 = 17; % Number of coins in a bag with 17 coins
+int: coins23 = 23; % Number of coins in a bag with 23 coins
+int: coins24 = 24; % Number of coins in a bag with 24 coins
+int: coins39 = 39; % Number of coins in a bag with 39 coins
+int: coins40 = 40; % Number of coins in a bag with 40 coins
+
+% Total number of coins in the stolen bags (100 coins in total)
+constraint bags16 * coins16 + bags17 * coins17 + bags23 * coins23 + bags24 * coins24 + bags39 * coins39 + bags40 * coins40 == 100;
+
+% The number of stolen bags must be a non-negative integer
+constraint bags16 >= 0 /\ bags17 >= 0 /\ bags23 >= 0 /\ bags24 >= 0 /\ bags39 >= 0 /\ bags40 >= 0;
+
+solve satisfy;
+
+% Output
+output["Bags of 16 coins: " ++ show(bags16) ++ "\n" ++
+       "Bags of 17 coins: " ++ show(bags17) ++ "\n" ++
+       "Bags of 23 coins: " ++ show(bags23) ++ "\n" ++
+       "Bags of 24 coins: " ++ show(bags24) ++ "\n" ++
+       "Bags of 39 coins: " ++ show(bags39) ++ "\n" ++
+       "Bags of 40 coins: " ++ show(bags40)];
+___________
+% Number of bags stolen for each type of coins
+bags16 = 0;
+bags17 = 0;
+bags23 = 0;
+bags24 = 0;
+bags39 = 0;
+bags40 = 0;
+
+==============================None
+___________
+int: bags_16; % Number of bags with 16 coins
+int: bags_17; % Number of bags with 17 coins
+int: bags_23; % Number of bags with 23 coins
+int: bags_24; % Number of bags with 24 coins
+int: bags_39; % Number of bags with 39 coins
+int: bags_40; % Number of bags with 40 coins
+
+int: total_bags = 6; % Total number of bags
+int: coins_per_bag = 100; % Total number of coins in each bag
+int: total_coins_lost = 100; % Total coins lost
+
+% Constraints
+constraint bags_16 >= 0 /\ bags_17 >= 0 /\ bags_23 >= 0 /\ bags_24 >= 0 /\ bags_39 >= 0 /\ bags_40 >= 0;
+constraint bags_16 + bags_17 + bags_23 + bags_24 + bags_39 + bags_40 == total_bags;
+constraint bags_16 * 16 + bags_17 * 17 + bags_23 * 23 + bags_24 * 24 + bags_39 * 39 + bags_40 * 40 == coins_per_bag * total_bags - total_coins_lost;
+
+% Solve
+solve satisfy;
+
+output["Bags of 16 coins stolen: \(bags_16)\n"];
+output["Bags of 17 coins stolen: \(bags_17)\n"];
+output["Bags of 23 coins stolen: \(bags_23)\n"];
+output["Bags of 24 coins stolen: \(bags_24)\n"];
+output["Bags of 39 coins stolen: \(bags_39)\n"];
+output["Bags of 40 coins stolen: \(bags_40)\n"];
+___________
+% Input data for the coin bag problem
+
+% Comment: Number of bags for each coin type (16, 17, 23, 24, 39, 40 coins)
+% Comment: These values are unknown and will be used to find the bags that were stolen
+
+% Number of bags for each coin type
+bags_16 = 1; % Unknown, default to 1
+bags_17 = 1; % Unknown, default to 1
+bags_23 = 1; % Unknown, default to 1
+bags_24 = 1; % Unknown, default to 1
+bags_39 = 1; % Unknown, default to 1
+bags_40 = 1; % Unknown, default to 1
+
+% Total bags and coins per bag are constant
+total_bags = 6; % Total number of bags (constant)
+coins_per_bag = 100; % Total number of coins per bag (constant)
+
+% Total coins lost (unknown, will be solved for)
+total_coins_lost = 100; % Total coins lost
+
+% Output:
+% This file will be used to find how many bags were stolen for each type of coin bag
+
+% End of data.dzn
+==============================None
+___________
+% Input Parameters
+int: total_bags16; % from dzn
+int: total_bags17; % from dzn
+int: total_bags23; % from dzn
+int: total_bags24; % from dzn
+int: total_bags39; % from dzn
+int: total_bags40; % from dzn
+int: total_stolen16; % from dzn
+int: total_stolen17; % from dzn
+int: total_stolen23; % from dzn
+int: total_stolen24; % from dzn
+int: total_stolen39; % from dzn
+int: total_stolen40; % from dzn
+
+% Decision Variables
+var 0..total_bags16: stolen16; % Number of bags stolen for 16 coin bags
+var 0..total_bags17: stolen17; % Number of bags stolen for 17 coin bags
+var 0..total_bags23: stolen23; % Number of bags stolen for 23 coin bags
+var 0..total_bags24: stolen24; % Number of bags stolen for 24 coin bags
+var 0..total_bags39: stolen39; % Number of bags stolen for 39 coin bags
+var 0..total_bags40: stolen40; % Number of bags stolen for 40 coin bags
+
+% Constraints
+constraint stolen16 + stolen17 + stolen23 + stolen24 + stolen39 + stolen40 == 100; % Total of 100 coins stolen
+constraint 16 * stolen16 + 17 * stolen17 + 23 * stolen23 + 24 * stolen24 + 39 * stolen39 + 40 * stolen40 == 100; % Total of 100 coins stolen
+constraint stolen16 <= total_bags16 /\ stolen17 <= total_bags17 /\ stolen23 <= total_bags23 /\ stolen24 <= total_bags24 /\ stolen39 <= total_bags39 /\ stolen40 <= total_bags40; % Cannot steal more bags than available
+constraint stolen16 >= 0 /\ stolen17 >= 0 /\ stolen23 >= 0 /\ stolen24 >= 0 /\ stolen39 >= 0 /\ stolen40 >= 0; % Minimum bags stolen is 0
+
+solve satisfy;
+
+% Output
+output ["16: " ++ show(stolen16) ++ "\n" ++
+        "17: " ++ show(stolen17) ++ "\n" ++
+        "23: " ++ show(stolen23) ++ "\n" ++
+        "24: " ++ show(stolen24) ++ "\n" ++
+        "39: " ++ show(stolen39) ++ "\n" ++
+        "40: " ++ show(stolen40) ++ "\n"];
+___________
+total_bags16 = 10;
+total_bags17 = 5;
+total_bags23 = 7;
+total_bags24 = 3;
+total_bags39 = 4;
+total_bags40 = 2;
+total_stolen16 = 0;
+total_stolen17 = 0;
+total_stolen23 = 0;
+total_stolen24 = 0;
+total_stolen39 = 0;
+total_stolen40 = 0;
+==============================Solution(stolen_16=2, stolen_17=4, stolen_23=0, stolen_24=0, stolen_39=0, stolen_40=0, _checker='')
+___________
+int: num_bags; % Total number of bags of coins
+
+% Number of coins in each type of bag
+int: coins_16 = 16;
+int: coins_17 = 17;
+int: coins_23 = 23;
+int: coins_24 = 24;
+int: coins_39 = 39;
+int: coins_40 = 40;
+
+% Number of bags stolen for each type
+% Variables representing the bags stolen for each type
+var 0..num_bags: stolen_16;
+var 0..num_bags: stolen_17;
+var 0..num_bags: stolen_23;
+var 0..num_bags: stolen_24;
+var 0..num_bags: stolen_39;
+var 0..num_bags: stolen_40;
+
+% Total coins stolen
+constraint stolen_16*coins_16 + stolen_17*coins_17 + stolen_23*coins_23 +
+           stolen_24*coins_24 + stolen_39*coins_39 + stolen_40*coins_40 = 100;
+
+% Solve the problem
+solve satisfy;
+
+% Output the number of bags stolen for each type
+output["Bags stolen for 16 coins: " ++ show(stolen_16) ++ "\n"];
+output["Bags stolen for 17 coins: " ++ show(stolen_17) ++ "\n"];
+output["Bags stolen for 23 coins: " ++ show(stolen_23) ++ "\n"];
+output["Bags stolen for 24 coins: " ++ show(stolen_24) ++ "\n"];
+output["Bags stolen for 39 coins: " ++ show(stolen_39) ++ "\n"];
+output["Bags stolen for 40 coins: " ++ show(stolen_40) ++ "\n"];
+___________
+num_bags = 10;
+==============================

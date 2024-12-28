@@ -1,0 +1,37 @@
+[{"attempt": "0_1", "status": true, "solutions": "Solution(Baker=3, Cooper=2, Fletcher=4, Miller=5, Smith=1, _checker='')"}]
+
+Solution(Baker=3, Cooper=2, Fletcher=4, Miller=5, Smith=1, _checker='')
+___________
+% Defining the five people and their corresponding floors
+var 1..5: Baker;  % from dzn
+var 1..5: Cooper; % from dzn
+var 1..5: Fletcher; % from dzn
+var 1..5: Miller; % from dzn
+var 1..5: Smith; % from dzn
+
+% Constraints based on the given information
+constraint 
+    Baker != 5 /\  % Baker does not live on the fifth floor
+    Cooper != 1 /\ % Cooper does not live on the first floor
+    Fletcher != 1 /\ Fletcher != 5 /\  % Fletcher does not live on the first or fifth floor
+    Miller > Cooper /\ % Miller lives on a higher floor than Cooper
+    abs(Fletcher - Smith) != 1 /\  % Smith does not live on a floor adjacent to Fletcher
+    abs(Fletcher - Cooper) != 1 /\ % Fletcher does not live on a floor adjacent to Cooper
+    all_different([Baker, Cooper, Fletcher, Miller, Smith]); % All live on different floors
+
+% Solve the problem
+solve satisfy;
+
+% Output the floors where the people live
+output ["Baker: " ++ show(Baker) ++ "\n" ++
+        "Cooper: " ++ show(Cooper) ++ "\n" ++
+        "Fletcher: " ++ show(Fletcher) ++ "\n" ++
+        "Miller: " ++ show(Miller) ++ "\n" ++
+        "Smith: " ++ show(Smith) ++ "\n"];
+___________
+Baker = 1;
+Cooper = 1;
+Fletcher = 1;
+Miller = 1;
+Smith = 1;
+==============================

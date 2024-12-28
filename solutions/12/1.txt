@@ -1,0 +1,49 @@
+int: total_seats;  % Total seats available
+int: vip_seats;    % VIP seats
+int: regular_seats;    % Regular (non-VIP) seats
+int: special_guest_seats; % Free seats for special guests
+int: vip_ticket_price;    % Price of a VIP ticket
+int: regular_ticket_price;    % Price of a regular ticket
+int: total_price_goal;    % Total amount to be raised
+int: total_expenses;    % Total expenses including staff, fund, etc.
+
+% Constraints
+constraint 0 <= vip_seats /\ vip_seats <= 200;
+constraint 0 <= special_guest_seats /\ special_guest_seats <= 400;
+constraint 0 <= vip_ticket_price;
+constraint 0 <= regular_ticket_price;
+constraint 0 <= total_price_goal;
+constraint 0 <= total_expenses;
+
+% Revenue calculation
+var int: vip_tickets_sold;    % Number of VIP tickets sold
+var int: regular_tickets_sold;    % Number of regular tickets sold
+
+var int: revenue = vip_tickets_sold * vip_ticket_price + regular_tickets_sold * regular_ticket_price;
+var int: expenses = total_expenses;
+var int: profit = revenue - expenses;
+
+% Constraints
+constraint 0 <= vip_tickets_sold /\ vip_tickets_sold <= vip_seats;
+constraint 0 <= regular_tickets_sold /\ regular_tickets_sold <= regular_seats;
+constraint vip_tickets_sold + regular_tickets_sold <= total_seats;
+constraint special_guest_seats == 400;  % Since it's a fixed requirement
+
+% Objective: Meet the price goal and maximize profit
+solve satisfy;
+
+% Output the results
+output["VIP Tickets Sold: \(vip_tickets_sold)\n"];
+output["Regular Tickets Sold: \(regular_tickets_sold)\n"];
+output["Total Revenue: \(revenue)\n"];
+output["Total Expenses: \(expenses)\n"];
+output["Profit: \(profit)\n"];
+
+total_seats = 1000;
+vip_seats = 200;
+regular_seats = 800;  % Calculate regular seats from total seats and VIP seats
+special_guest_seats = 400;
+vip_ticket_price = 170;
+regular_ticket_price = 60;
+total_price_goal = 50000;
+total_expenses = 45000;

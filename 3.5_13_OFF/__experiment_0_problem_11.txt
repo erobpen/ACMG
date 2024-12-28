@@ -1,0 +1,56 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "Solution(item_prices=[2147483646, 2147483646, -2147482935, -2147483646], _checker='')"}]
+
+None
+___________
+int: item1;
+int: item2;
+int: item3;
+int: item4;
+var int: total_cost = 711;
+
+constraint item1 * item2 * item3 * item4 != total_cost / 1000000;
+constraint item1 + item2 + item3 + item4 == total_cost / 100;
+
+output["The prices of the four items are: ", item1, item2, item3, item4];
+
+solve satisfy;
+___________
+item1 = 100;
+item2 = 200;
+item3 = 300;
+item4 = 400;
+==============================None
+___________
+int: item1;
+int: item2;
+int: item3;
+int: item4;
+
+int: total_cost = 711;
+
+constraint item1 * item2 * item3 * item4 != total_cost;
+constraint item1 + item2 + item3 + item4 == total_cost;
+
+output[ "The prices of the four items are: ", show(item1), ", ", show(item2), ", ", show(item3), ", ", show(item4)];
+
+solve satisfy;
+___________
+item1 = 100;
+item2 = 100;
+item3 = 100;
+item4 = 100;
+==============================Solution(item_prices=[2147483646, 2147483646, -2147482935, -2147483646], _checker='')
+___________
+int: total_cost_paid; % Total cost paid by the kid
+int: num_items; % Number of items bought
+array[1..num_items] of var int: item_prices; % Prices of the four items
+
+constraint sum(item_prices) == total_cost_paid;
+
+output["The prices of the four items are: ", show(item_prices)];
+
+solve satisfy;
+___________
+total_cost_paid = 711;
+num_items = 4;
+==============================

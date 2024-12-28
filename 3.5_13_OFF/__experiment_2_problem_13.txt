@@ -1,0 +1,30 @@
+[{"attempt": "0_2", "status": true, "solutions": "Solution(num=[7, 4, 8, 1], _checker='')"}]
+
+Solution(num=[7, 4, 8, 1], _checker='')
+___________
+int: n = 4;  % number of elements
+int: min_val = 1;  % minimum value for elements
+int: max_val = 100;  % maximum value for elements
+
+array[1..n] of var min_val..max_val: num;  % array with n elements
+
+% Constraints to ensure all elements are different
+constraint all_different(num);
+
+% Calculate the sum of the squares of the first two elements
+var int: sum_squares_12 = num[1]*num[1] + num[2]*num[2];
+
+% Calculate the sum of the squares of the last two elements
+var int: sum_squares_34 = num[3]*num[3] + num[4]*num[4];
+
+% Display the combination if the sums are equal
+constraint sum_squares_12 == sum_squares_34;
+
+solve satisfy;
+
+output["Numbers with equal sum of squares: " ++ show(num) ++ "\n"];
+___________
+n = 4;
+min_val = 1;
+max_val = 100;
+==============================

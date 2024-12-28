@@ -1,0 +1,91 @@
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_1", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "None"}, {"attempt": "1_0", "status": true, "solutions": "Solution(a=7, b=4, c=8, d=1, _checker='')"}]
+
+None
+___________
+int: n = 100;            % Maximum value for the numbers
+int: k = 4;                 % Number of selections
+
+% Decision variables
+array[1..k] of var 1..n: nums;
+
+% Constraints
+constraint all_different(nums);  % Numbers must be distinct
+
+% Equation: a^2 + b^2 = c^2 + d^2
+constraint nums[1]^2 + nums[2]^2 = nums[3]^2 + nums[4]^2;
+
+% Output the solution
+output["Numbers: "];
+output[show(nums)];
+
+solve satisfy;
+___________
+n = 100;
+k = 4;
+==============================None
+___________
+int: n = 100;  % Max number
+int: k = 4;  % Number of selections
+
+% Decision variables
+array[1..k] of var 1..n: selection;
+
+% Constraints
+constraint all_different(selection);  % Numbers must be distinct
+
+constraint selection[1]^2 + selection[2]^2 = selection[3]^2 + selection[4]^2;  % Sum of squares constraint
+
+% Solve
+solve satisfy;
+
+% Output
+output["Numbers: "];
+output[show(selection[1]) ++ " " ++ show(selection[2]) ++ " " ++ show(selection[3]) ++ " " ++ show(selection[4]) ++ "\n"];
+___________
+% There are no additional input parameters to be specified in the data.dzn file.
+==============================None
+___________
+int: n = 100;  % Range of numbers
+int: k = 4;   % Number of selections
+
+array[1..k] of var 1..n: selected;
+
+constraint all_different(selected);
+
+constraint selected[1]^2 + selected[2]^2 = selected[3]^2 + selected[4]^2;
+
+solve satisfy;
+
+output["Numbers: " ++ show(selected)];
+___________
+n = 100;
+k = 4;
+==============================Solution(a=7, b=4, c=8, d=1, _checker='')
+___________
+% Set the range for the numbers
+int: lower_bound = 1;
+int: upper_bound = 100;
+
+% Decision variables
+var 1..100: a; % First number
+var 1..100: b; % Second number
+var 1..100: c; % Third number
+var 1..100: d; % Fourth number
+
+% Constraint: Numbers should be different
+constraint a != b /\ a != c /\ a != d /\ b != c /\ b != d /\ c != d;
+
+% Constraint: Sum of the squares of the two first numbers should equal the sum of the squares of the other two numbers
+constraint a*a + b*b = c*c + d*d;
+
+% Solve for the combination of numbers
+solve satisfy;
+
+% Output
+output["Numbers: " ++ show(a) ++ ", " ++ show(b) ++ ", " ++ show(c) ++ ", " ++ show(d) ++ "\n"];
+___________
+% Data file for the MiniZinc model to find a combination of 4 different numbers between 1 and 100
+% such that the sum of the squares of the two first numbers is equal to the sum of the squares of the other two numbers
+
+% No additional data needed as all parameters are already defined in the model. No assignment needed.
+==============================
