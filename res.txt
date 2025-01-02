@@ -1,7 +1,0 @@
-1: correct: Concert Ticket Selling Model --- Solution(VIP_sold=153, FREE_sold=400, _checker='')
-3: correct: Classroom Scheduling Model --- None
-5: correct: 3D_Non_Intersecting_Packing --- Solution(_checker='')
-8: correct: Home_Electricity_Management --- Solution(panels_purchased=0, _checker='')
-1: correct: MiniZinc Code Generation Problem --- Solution(x=0, _checker='')
-1: correct: DiscreteVariableModel --- None
-1: correct: ConcertTicketSellingProblem --- Solution(objective=37000, vip_tickets_sold=200, regular_tickets_sold=800, _checker='')

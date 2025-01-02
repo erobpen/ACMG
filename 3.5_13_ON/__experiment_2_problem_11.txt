@@ -1,8 +1,0 @@
-[{"attempt": "0_0", "status": true, "solutions": "Solution(price=[708, 1, 1, 1], _checker='')"}]
-
-Solution(price=[708, 1, 1, 1], _checker='')
-___________
-int: num_items = 4;  % number of items\nint: total_cost = 711;  % total cost in cents ($7.11)\n\n% Decision variables: price of each item in cents\narray[1..num_items] of var 1..total_cost: price;\n\n% Constraints: the sum of prices should be equal to the total cost\nconstraint sum(price) == total_cost;\n\n% Find a solution\nsolve satisfy;\n\n% Output the prices of the four items\noutput [price[i] | i in 1..num_items];
-___________
-% Assigned values\nnum_items = 4;\ntotal_cost = 711;\n\n% Unassigned values (prices of the four items)\nprice = [0, 0, 0, 0];
-==============================

@@ -53,8 +53,6 @@ def parse_conversation(input_string):
     return sorted(turns, key=lambda x: input_string.index(x['content']))
 
 class acmg:
-
-    # logger nek sprema ukupne tokene
     
     def __init__(self):
         minizinc_solver1 = minizinc_solver()
@@ -118,7 +116,7 @@ class acmg:
         elif provided == 'Both':
             self.subroutine_both()
         elif 'None' in provided or 'none' in provided:
-            # return False
+            # hardcoded for solving the currently set up for solving the APLAI_course problems
             self.task = self.user_input
             self.model = self.user_input
             self.subroutine_both()
@@ -198,7 +196,6 @@ class acmg:
                         except Exception as e:
                             results.append({"attempt" : str(i) + "_" + str(j), "status" : status, "solutions" : "None"})   
 
-                    # provjeri ove uvjete jel se ispunjavaju dobro 
                     if (result != None):
                         print("Satisfiable: ", result.status)
                     if (result != None) and (str(result.status) == 'SATISFIED'):
@@ -230,12 +227,10 @@ class acmg:
         self.pc.minizinc_solver.load_data(self.model_name, minizinc_model, self.task_dzn)
 
         # 6 assign
-        # napraviti da se vrati assignemnt response koji zahtijeva sto manje formatiranja (da se samo popune vrijednosti, gdje je moguce)
-        # prompt = self.pc.fetch_data("assign")
-        # assignment, self.messages = self.pc.get_llm_response(prompt, self.base_model, self.messages)
-
-        # 7 solve
+        # assignment of the input data to the appropriate format is done in every step of the three attempts to generate the minizinc model
         
+        
+        # 7 solve
         status, result, warnings = self.pc.minizinc_solver.solve()
         return status, result
 
@@ -243,7 +238,6 @@ class acmg:
     def subroutine_both(self):
         print("subroutine both")
 
-        # popraviti both prompt, trenutno vraca hardcoded response
         prompt = self.pc.fetch_data("both") # ok
         extracted_data, self.messages = self.pc.get_llm_response(prompt.format(input=self.user_input), self.parser_model, self.messages)
         extracted_data = self.extract_task_model(extracted_data)
@@ -297,8 +291,6 @@ if __name__ == "__main__":
              [r, g, p, g], 
              [r, g, p, b]]
 
-    # messaegs je sada na off u pc module-u
-    # modeli su postavljeni na 4o fine tune-ove
 
     history = "_"
 

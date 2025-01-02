@@ -124,7 +124,6 @@ class minizinc_solver:
 
             model.add_file("zz_data.dzn")
 
-            # trenutno je postavljen defaultni gecode solver
             gecode = Solver.lookup("gecode")
 
             instance = Instance(gecode, model)
