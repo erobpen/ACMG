@@ -1,15 +1,15 @@
 
 
-1. Rješavanje problema / program se pokreće u terminal-u
-    sa py acmg.py
+1. Rješavanje problema / program se pokreće u terminalu
+    sa py acmg.py ili u code editoru sa - run code
 
 2. Prije pokretanja programa mogu se podesiti dvije stvari
-   a) verzija gpt-a (3.5 ili 4o) u ai_models.py file-u
+   a) verzija gpt-a (3.5 ili 4o) u ai_models.py fileu
    b) hoće li se message history koristiti: u models -> pc.py
       messages = none (Neće se koristiti)
       messages = messages[:-22] (koristi se uvijek zadnjih 22 poruka)
 
-3. Trenutno su dva for loop-a postavljeni tako da
+3. Trenutno su dva for loopa postavljeni tako da
    se sa njima riješi svaki zadatak sa svakim eksperimentom
 
    -- bitna je run_tasks metoda
@@ -25,4 +25,4 @@
         četvrti- base model (obićan)
         (npr. ako je b na prvom mjestu, znaći da se base model koristi umjesto recognizera)
     -- ostale stvari koje se daju u run_tasks su za indeksiranje i imenovanje rješenja
-     
+
