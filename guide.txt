@@ -1,0 +1,28 @@
+
+
+1. Rješavanje problema / program se pokreće u terminal-u
+    sa py acmg.py
+
+2. Prije pokretanja programa mogu se podesiti dvije stvari
+   a) verzija gpt-a (3.5 ili 4o) u ai_models.py file-u
+   b) hoće li se message history koristiti: u models -> pc.py
+      messages = none (Neće se koristiti)
+      messages = messages[:-22] (koristi se uvijek zadnjih 22 poruka)
+
+3. Trenutno su dva for loop-a postavljeni tako da
+   se sa njima riješi svaki zadatak sa svakim eksperimentom
+
+   -- bitna je run_tasks metoda
+   -- dvije bitne stvari koje se daju u tu metodu su
+      a) text (problem text)    
+      b) models[j] - određuje eksperiment
+        -- jedan set od cetiri slova, odreduje
+        kako se koji fine-tune koristi umjesto kojeg
+        s time da su po defaultu:
+        prvi   - recognizer
+        drugi  - generator
+        treći  - parser
+        četvrti- base model (obićan)
+        (npr. ako je b na prvom mjestu, znaći da se base model koristi umjesto recognizera)
+    -- ostale stvari koje se daju u run_tasks su za indeksiranje i imenovanje rješenja
+     
