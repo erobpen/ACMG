@@ -53,7 +53,7 @@ def parse_conversation(input_string):
     return sorted(turns, key=lambda x: input_string.index(x['content']))
 
 class acmg:
-    
+
     def __init__(self):
         minizinc_solver1 = minizinc_solver()
         recognizer1 = recognizer()
@@ -116,7 +116,7 @@ class acmg:
         elif provided == 'Both':
             self.subroutine_both()
         elif 'None' in provided or 'none' in provided:
-            # hardcoded for solving the currently set up for solving the APLAI_course problems
+            # return False
             self.task = self.user_input
             self.model = self.user_input
             self.subroutine_both()
@@ -196,6 +196,7 @@ class acmg:
                         except Exception as e:
                             results.append({"attempt" : str(i) + "_" + str(j), "status" : status, "solutions" : "None"})   
 
+                    # provjeri ove uvjete jel se ispunjavaju dobro 
                     if (result != None):
                         print("Satisfiable: ", result.status)
                     if (result != None) and (str(result.status) == 'SATISFIED'):
@@ -227,10 +228,10 @@ class acmg:
         self.pc.minizinc_solver.load_data(self.model_name, minizinc_model, self.task_dzn)
 
         # 6 assign
-        # assignment of the input data to the appropriate format is done in every step of the three attempts to generate the minizinc model
-        
-        
+        # assignment is done in the sequential minizinc code generation attempts
+
         # 7 solve
+        
         status, result, warnings = self.pc.minizinc_solver.solve()
         return status, result
 
@@ -271,8 +272,8 @@ if __name__ == "__main__":
     mem1 = mem()
     acmg1 = acmg()
 
+
     T = 3
-    # acmg1.start_execution()
 
     data = pandas.read_excel("tasks.xlsx", header=None)
     data_array = data.to_numpy()
@@ -294,20 +295,22 @@ if __name__ == "__main__":
 
     history = "_"
 
-    for j in range(1, len(models)):
+    for j in range(len(models)):
 
-        for i in range(1,14):
-            if j == 1 and i <= 9:
-                continue
-            else:
-                path = f"APLAI_course/{i}/description.txt"
-                with open(path, "r") as file:
-                    text = file.read()
-                    print(i, text, '\n\n')
-                    messages = None
-                    acmg1.run_tasks(text, j, models[j], history, messages, i)
-
-
-    
+            for i in range(1,14):
+                if j == 1 and i <= 9:
+                    continue
+                else:
+                    path = f"APLAI_course/{i}/description.txt"
+                    with open(path, "r") as file:
+                        text = file.read()
+                        print(i, text, '\n\n')
+                        messages = None
+                        acmg1.run_tasks(text, j, models[j], history, messages, i)
 
 
+
+
+
+
+         

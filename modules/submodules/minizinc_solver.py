@@ -43,9 +43,6 @@ class minizinc_solver:
 
     def load_data(self, model_id, minizinc_model, task):
 
-        # napraviti da se data loada u data.dz file
-        # i iskoristava pri solving-u
-        # provjeriti flow ako se uvijek radi classify
 
         # self.path = model_id + ".mzn"
         self.path = "zz_minizinc.mzn"
@@ -93,13 +90,16 @@ class minizinc_solver:
             except Exception as e:
                 pass
 
-        with open("zz_data.dzn", "w") as file:
+        with open("zz_data.dzn", "wb") as file:
             task_dzn = task_dzn.replace("\\n", '\n')  
 
             task_dzn = task_dzn.replace("```dzn", "")
             task_dzn = task_dzn.replace("```", "")
 
-            file.write(task_dzn)
+            try:
+                file.write(task_dzn.encode("utf-8"))
+            except Exception as e:
+                pass
         
         status, result, warnings = self.solve()
         return status, result, warnings
@@ -124,6 +124,7 @@ class minizinc_solver:
 
             model.add_file("zz_data.dzn")
 
+            # default solver is set to gecode
             gecode = Solver.lookup("gecode")
 
             instance = Instance(gecode, model)

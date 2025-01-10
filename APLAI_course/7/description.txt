@@ -1,0 +1,23 @@
+Out of the set of integers 1,...,100 you are given ten different integers ([81 21 79  4 29 70 28 20 14  7]). From this set A of ten integers you can always find two disjoint non-empty subsets, S and T, such that the sum of elements in S equals the sum of elements in T. Note: S union T does not need to be all ten elements of A. Find sets S and T for the given set A.
+
+int: a; % from dzn
+int: b; % from dzn
+int: c; % from dzn
+int: d; % from dzn
+
+array[1..4] of var 1..711: prices = [a, b, c, d]; % prices in cents
+var int: total = sum(prices);
+
+constraint total == 711;
+
+solve satisfy;
+
+output [
+  "The prices of the four items are: ", show(a), ", ", show(b), ", ", show(c), ", ", show(d), "
+"
+];
+
+a = 100; % from dzn
+b = 200; % from dzn
+c = 300; % from dzn
+d = 111; % from dzn

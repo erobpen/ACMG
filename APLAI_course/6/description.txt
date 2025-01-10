@@ -1,0 +1,2 @@
+A bank van had several bags of coins, each containing either 16, 17, 23, 24, 39, or 40 coins (there are multiple bags of the same kind). While the van was parked on the street, thieves stole some bags. A total of 100 coins were lost. It is required to find how many bags were stolen for each type of coin bag.
+

@@ -1,7 +1,9 @@
 
+eventualno potrebni paketi (u terminal upisati: )
+pip install openai
 
 1. Rješavanje problema / program se pokreće u terminalu
-    sa py acmg.py ili u code editoru sa - run code
+    sa "py acmg.py" ili u code editoru sa - run code
 
 2. Prije pokretanja programa mogu se podesiti dvije stvari
    a) verzija gpt-a (3.5 ili 4o) u ai_models.py fileu
@@ -26,3 +28,4 @@
         (npr. ako je b na prvom mjestu, znaći da se base model koristi umjesto recognizera)
     -- ostale stvari koje se daju u run_tasks su za indeksiranje i imenovanje rješenja
 
+4. Nakon pokretanja, u rezultati folderu će se početi pojavljivati indeksirana rješenja
