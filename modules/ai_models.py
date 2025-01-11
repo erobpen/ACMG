@@ -38,6 +38,34 @@ class base_model():
         self.id = "gpt-4o-mini-2024-07-18"
 
 
-# popunjavanje input data sa izvucenim podatcima - tko radi? parser ili general?
+# class recognizer():
+
+#     def __init__(self):
+#         self.id = "ft:gpt-3.5-turbo-0125:personal::AWqPKV4b"
+#         # self.id = "gpt-3.5-turbo"
+
+
+# class generator():
+#     def __init__(self):
+#         self.id = "ft:gpt-3.5-turbo-0125:personal::AWqFX3C0"
+#         # self.id = "gpt-3.5-turbo"
+
+# class parser():
+
+#     # odvajati tasks, model
+#     # izvlaciti semanticke entitete
+
+#     def __init__(self):
+#         self.id = "ft:gpt-3.5-turbo-0125:personal::AWqSSqaU"
+#         # self.id = "gpt-3.5-turbo"
+
+# class base_model():
+#     def __init__(self):
+#         # self.id = "gpt-3.5-turbo"
+
+#         #generator
+#         self.id = "gpt-3.5-turbo"
+
+
 
 
