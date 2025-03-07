@@ -3,31 +3,42 @@
 Solution(floors=[3, 2, 4, 5, 1], _checker='')
 ___________
 ```minizinc
-int: num_floors;
-array[1..num_floors] of var 1..num_floors: floors; % floors assigned to individuals
+int: Floors = 5; % Number of floors
+int: Individuals = 5; % Number of individuals
+
+% Variables representing the floors occupied by each individual
+array[1..Individuals] of var 1..Floors: floors;
 
 % Individuals
-var int: baker = floors[1];
-var int: cooper = floors[2];
-var int: fletcher = floors[3];
-var int: miller = floors[4];
-var int: smith = floors[5];
+int: Baker = 1;
+int: Cooper = 2;
+int: Fletcher = 3;
+int: Miller = 4;
+int: Smith = 5;
 
 % Constraints
-constraint baker != 5;                      % Baker does not live on the fifth floor
-constraint cooper != 1;                     % Cooper does not live on the first floor
-constraint fletcher != 1 /\ fletcher != 5; % Fletcher does not live on the fifth or first floor
-constraint miller > cooper;                  % Miller lives on a higher floor than Cooper
-constraint abs(smith - fletcher) > 1;       % Smith does not live on a floor adjacent to Fletcher's
-constraint abs(fletcher - cooper) > 1;      % Fletcher does not live on a floor adjacent to Cooper's
-constraint all_different([baker, cooper, fletcher, miller, smith]); % All live on different floors
+constraint floors[Baker] != 5; % Baker cannot be on the fifth floor
+constraint floors[Cooper] != 1; % Cooper cannot be on the first floor
+constraint floors[Fletcher] != 1; % Fletcher cannot be on the first floor
+constraint floors[Fletcher] != 5; % Fletcher cannot be on the fifth floor
+constraint floors[Miller] > floors[Cooper]; % Miller must be above Cooper
+constraint abs(floors[Smith] - floors[Fletcher]) > 1; % Smith cannot be adjacent to Fletcher
+constraint abs(floors[Fletcher] - floors[Cooper]) > 1; % Fletcher cannot be adjacent to Cooper
+
+% Ensure all individuals are assigned to different floors
+constraint all_different(floors);
 
 solve satisfy;
 
-output [ show(baker) ++ " " ++ show(cooper) ++ " " ++ show(fletcher) ++ " " ++ show(miller) ++ " " ++ show(smith) ];
+output ["Baker: ", show(floors[Baker]), "\n",
+        "Cooper: ", show(floors[Cooper]), "\n",
+        "Fletcher: ", show(floors[Fletcher]), "\n",
+        "Miller: ", show(floors[Miller]), "\n",
+        "Smith: ", show(floors[Smith]), "\n"];
 ```
 ___________
 ```dzn
-num_floors = 5;
+Floors = 5;
+Individuals = 5;
 ```
 ==============================

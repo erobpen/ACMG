@@ -1,2 +1,15 @@
 
 num_floors = 5;
+Floors = 1..num_floors;
+Individuals = {"Baker", "Cooper", "Fletcher", "Miller", "Smith"};
+
+% Constraints based on the problem statement
+floor_assignment = [1, 2, 3, 4, 5]; % Initial values, to be determined by the solver
+
+% Additional constraints based on the input task
+constraint_baker_not_on_fifth = floor_assignment["Baker"] != 5;
+constraint_cooper_not_on_first = floor_assignment["Cooper"] != 1;
+constraint_fletcher_not_on_fifth_or_first = (floor_assignment["Fletcher"] != 5) /\ (floor_assignment["Fletcher"] != 1);
+constraint_miller_higher_than_cooper = floor_assignment["Miller"] > floor_assignment["Cooper"];
+constraint_smith_not_adjacent_to_fletcher = abs(floor_assignment["Smith"] - floor_assignment["Fletcher"]) > 1;
+constraint_fletcher_not_adjacent_to_cooper = abs(floor_assignment["Fletcher"] - floor_assignment["Cooper"]) > 1;

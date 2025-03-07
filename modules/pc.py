@@ -6,6 +6,7 @@ from models import gpt_new
 import time
 import threading
 
+#TODO PC is now ORCH
 class pc:
 
     def __init__(self, minizinc_solver, recognizer, generator, mem : mem):
@@ -49,6 +50,7 @@ class pc:
 
         return response, messages
 
+#TODO naming is not good as you fetched contol prompt not data
     def fetch_data(self, prompt_id) -> str:
         try:
             data = self.mem.return_data(prompt_id)

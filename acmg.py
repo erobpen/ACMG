@@ -10,7 +10,6 @@ from modules import ai_models
 from modules.pc import pc 
 from modules.mem import mem
 from modules.submodules.tree import node
-from PrettyPrint import PrettyPrintTree
 from modules.submodules.recognizer import recognizer
 from modules.submodules.generator import generator
 from modules.submodules.minizinc_solver import minizinc_solver
@@ -95,6 +94,7 @@ class acmg:
 
         # self.user_input = self.pc.get_user_prompt()
         self.user_input = text
+        # prompt should be called control_prompt
         prompt = self.pc.fetch_data("assess_user_input")
 
         provided, self.messages = self.pc.get_llm_response(prompt.format(input=self.user_input), self.parser_model, self.messages)
@@ -125,12 +125,14 @@ class acmg:
         prompt_generate = self.pc.fetch_data("generate")
         subsequent_prompt = self.pc.fetch_data("generate_again") # ok
         prompt_recognize = self.pc.fetch_data("recognize").format(input=self.model)
+        #TODO rename RFS into Input prepration poin 7 in figure short version IP
         prompt_reformat = self.pc.fetch_data("RFS_new")
 
         # naming of the model
 
         stored_models = self.pc.fetch_data("stored_models")
         text = "\n".join([key for key in stored_models.keys()])
+        #TODO remove or comment out CFS and all relate to CFS
         prompt = self.pc.fetch_data("CFS")
         classification, self.messages = self.pc.get_llm_response(prompt.format(stored_models=text, input=self.user_input), self.recognizer_model, self.messages)
         classification = "false"
@@ -156,6 +158,7 @@ class acmg:
 
             for i in range(3):
                 recognized, self.messages = self.pc.get_llm_response(prompt_recognize, self.recognizer_model, self.messages)
+                #TODO control prompt
                 prompt = prompt_generate.format(model=self.model, recognized=recognized)
                 result = None
                 warnings = None
@@ -168,6 +171,7 @@ class acmg:
                     mini_zinc_model, self.messages = self.pc.get_llm_response(prompt, self.generator_model, self.messages)
                     # print(prompt)
 
+                    #TODO reformat i.e. IP should be done after we get valid MiniZinc model when syntax in verified with MiniZinc solver, move this code on right place
                     # reformat data.dzn
                     self.task_dzn, self.messages = self.pc.get_llm_response(prompt_reformat.format(model=mini_zinc_model, input=self.task), self.generator_model, self.messages)
                     self.pc.mem.store_new_format(self.model_name + "_RFS", self.task)
@@ -269,6 +273,16 @@ class acmg:
                     
 if __name__ == "__main__":
 
+    # Get the value of the OPENAI_API_KEY environment variable
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+
+    # Print the value
+    if openai_api_key:
+        print("OPENAI_API_KEY is set.")
+        print(f"Value: {openai_api_key}")
+    else:
+        print("OPENAI_API_KEY is not set.")
+    
     mem1 = mem()
     acmg1 = acmg()
 
@@ -295,9 +309,11 @@ if __name__ == "__main__":
 
     history = "_"
 
+
     for j in range(len(models)):
 
             for i in range(1,14):
+                #TODO remove debuging code
                 if j == 1 and i <= 9:
                     continue
                 else:
