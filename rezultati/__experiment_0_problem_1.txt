@@ -1,44 +1,77 @@
-[{"attempt": "0_0", "status": true, "solutions": "Solution(floors=[3, 2, 4, 5, 1], _checker='')"}]
+[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "Solution(floors=[3, 2, 4, 5, 1], _checker='')"}]
 
-Solution(floors=[3, 2, 4, 5, 1], _checker='')
+None
 ___________
 ```minizinc
-int: Floors = 5; % Number of floors
-int: Individuals = 5; % Number of individuals
+int: Baker;
+int: Cooper;
+int: Fletcher;
+int: Miller;
+int: Smith;
 
-% Variables representing the floors occupied by each individual
-array[1..Individuals] of var 1..Floors: floors;
-
-% Individuals
-int: Baker = 1;
-int: Cooper = 2;
-int: Fletcher = 3;
-int: Miller = 4;
-int: Smith = 5;
+array[1..5] of var 1..5: floors;
 
 % Constraints
-constraint floors[Baker] != 5; % Baker cannot be on the fifth floor
-constraint floors[Cooper] != 1; % Cooper cannot be on the first floor
-constraint floors[Fletcher] != 1; % Fletcher cannot be on the first floor
-constraint floors[Fletcher] != 5; % Fletcher cannot be on the fifth floor
-constraint floors[Miller] > floors[Cooper]; % Miller must be above Cooper
-constraint abs(floors[Smith] - floors[Fletcher]) > 1; % Smith cannot be adjacent to Fletcher
-constraint abs(floors[Fletcher] - floors[Cooper]) > 1; % Fletcher cannot be adjacent to Cooper
+constraint Baker != 5;
+constraint Cooper != 1;
+constraint Fletcher != 1 /\ Fletcher != 5;
+constraint Miller > Cooper;
+constraint abs(Smith - Fletcher) > 1;
+constraint abs(Fletcher - Cooper) > 1;
 
-% Ensure all individuals are assigned to different floors
-constraint all_different(floors);
+% Unique floors for each person
+constraint all_different([Baker, Cooper, Fletcher, Miller, Smith]);
 
 solve satisfy;
 
-output ["Baker: ", show(floors[Baker]), "\n",
-        "Cooper: ", show(floors[Cooper]), "\n",
-        "Fletcher: ", show(floors[Fletcher]), "\n",
-        "Miller: ", show(floors[Miller]), "\n",
-        "Smith: ", show(floors[Smith]), "\n"];
+output ["Baker: ", show(Baker), "\n",
+        "Cooper: ", show(Cooper), "\n",
+        "Fletcher: ", show(Fletcher), "\n",
+        "Miller: ", show(Miller), "\n",
+        "Smith: ", show(Smith), "\n"];
 ```
 ___________
 ```dzn
-Floors = 5;
-Individuals = 5;
+Baker = 1;
+Cooper = 2;
+Fletcher = 3;
+Miller = 4;
+Smith = 5;
+
+floors = [Baker, Cooper, Fletcher, Miller, Smith];
+```
+==============================Solution(floors=[3, 2, 4, 5, 1], _checker='')
+___________
+```minizinc
+int: num_floors = 5; % from dzn
+array[1..num_floors] of var 1..num_floors: floors; % from dzn
+
+% Each person occupies a unique floor
+set of int: persons = {1, 2, 3, 4, 5}; % 1: Baker, 2: Cooper, 3: Fletcher, 4: Miller, 5: Smith
+
+% Constraints
+constraint
+    % Baker does not live on the fifth floor
+    floors[1] != 5 /\
+    % Cooper does not live on the first floor
+    floors[2] != 1 /\
+    % Fletcher does not live on the fifth or first floors
+    floors[3] != 5 /\ floors[3] != 1 /\
+    % Miller lives on a higher floor than Cooper
+    floors[4] > floors[2] /\
+    % Smith does not live on a floor adjacent to Fletcher's
+    abs(floors[5] - floors[3]) > 1 /\
+    % Fletcher does not live on a floor adjacent to Cooper’s
+    abs(floors[3] - floors[2]) > 1 /\
+    % All floors are unique
+    all_different(floors);
+
+solve satisfy;
+
+output [ show(floors) ];
+```
+___________
+```dzn
+num_floors = 5;
 ```
 ==============================

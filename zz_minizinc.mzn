@@ -1,23 +1,32 @@
 include "alldifferent.mzn";
 
 
-int: num_floors = 5;
-set of int: Floors = 1..num_floors;
-set of string: Individuals = {"Baker", "Cooper", "Fletcher", "Miller", "Smith"};
+int: num_floors; % from dzn
+int: num_people; % from dzn
 
-array[Individuals] of var Floors: floor_assignment;
+array[1..num_people] of int: floors; % from dzn
+array[1..num_people] of set of int: cannot_occupy; % from dzn
+array[1..num_people, 1..num_people] of bool: higher_than; % from dzn
+array[1..num_people, 1..num_people] of bool: cannot_be_adjacent; % from dzn
 
-% Each person lives on a different floor
-constraint forall(i, j in Individuals where i != j) (
-    floor_assignment[i] != floor_assignment[j]
+% Each person must occupy a specific floor
+array[1..num_people] of var 1..num_floors: assigned_floors;
+
+% Constraint: Each person cannot occupy certain floors
+constraint forall(p in 1..num_people)(
+    assigned_floors[p] not in cannot_occupy[p]
 );
 
-% Adjacency conditions (example conditions can be added based on the problem specifics)
-% This is just a placeholder for adjacency constraints
-% constraint abs(floor_assignment["Baker"] - floor_assignment["Cooper"]) == 1; 
+% Constraint: Relative positions must be maintained
+constraint forall(p1, p2 in 1..num_people where p1 != p2)(
+    (higher_than[p1, p2] -> assigned_floors[p1] > assigned_floors[p2]) /\
+    (higher_than[p2, p1] -> assigned_floors[p2] > assigned_floors[p1])
+);
 
-% Relative floor position conditions (example conditions can be added based on the problem specifics)
-% constraint floor_assignment["Fletcher"] < floor_assignment["Miller"];
+% Constraint: No adjacency between certain individuals
+constraint forall(p1, p2 in 1..num_people where p1 != p2)(
+    (cannot_be_adjacent[p1, p2] -> abs(assigned_floors[p1] - assigned_floors[p2]) > 1)
+);
 
 solve satisfy;
 

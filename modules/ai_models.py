@@ -1,4 +1,5 @@
 
+# extracts relevant semantic entities from the paresed the Model (not task)
 class recognizer():
 
     def __init__(self):
@@ -8,9 +9,7 @@ class recognizer():
 
         # self.id = "gpt-4o-mini-2024-07-18"
 
-
-
-
+#generates MiniZinc model based on output from the Recignizer and control prompt
 class generator():
     def __init__(self):
 
@@ -19,8 +18,10 @@ class generator():
 
         # self.id = "gpt-4o-mini-2024-07-18"
 
+#parses user input mesage into the Task and the Model
 class parser():
 
+#this is wrong, recognizer does this not parser
     # odvajati tasks, model
     # izvlaciti semanticke entitete
 
@@ -30,8 +31,6 @@ class parser():
         self.id = "ft:gpt-4o-mini-2024-07-18:personal::AZaTc6po"
 
         # self.id = "gpt-4o-mini-2024-07-18"
-
-
 
 class base_model():
     def __init__(self):
