@@ -1,36 +1,3 @@
 
-num_floors = 5;
-num_people = 5;
-
-floors = [1, 2, 3, 4, 5];
-
-cannot_occupy = [
-    {5},   % Baker cannot live on the fifth floor
-    {1},   % Cooper cannot live on the first floor
-    {1, 5},% Fletcher cannot live on the first or fifth floor
-    {},    % Miller has no restrictions
-    {}     % Smith has no restrictions
-];
-
-higher_than = [
-    [false, false, false, false, false],  % Baker
-    [false, false, false, false, false],  % Cooper
-    [false, false, false, false, false],  % Fletcher
-    [false, false, false, false, false],  % Miller
-    [false, false, false, false, false]   % Smith
-];
-
-higher_than[4, 2] = true;  % Miller lives on a higher floor than Cooper
-
-cannot_be_adjacent = [
-    [false, false, false, false, false],  % Baker
-    [false, false, false, false, false],  % Cooper
-    [false, false, false, false, false],  % Fletcher
-    [false, false, false, false, false],  % Miller
-    [false, false, false, false, false]   % Smith
-];
-
-cannot_be_adjacent[3, 2] = true;  % Fletcher cannot be adjacent to Cooper
-cannot_be_adjacent[2, 3] = true;  % Cooper cannot be adjacent to Fletcher
-cannot_be_adjacent[3, 5] = true;  % Smith cannot be adjacent to Fletcher
-cannot_be_adjacent[5, 3] = true;  % Fletcher cannot be adjacent to Smith
+n = 5;  % Example number of variables
+total = 25;  % Example total for the sum of x

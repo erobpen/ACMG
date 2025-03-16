@@ -14,6 +14,14 @@ from modules.submodules.recognizer import recognizer
 from modules.submodules.generator import generator
 from modules.submodules.minizinc_solver import minizinc_solver
 
+from enum import Enum
+
+class ParsedMessageType(Enum):
+    TASK = 'Task'
+    MODEL = 'Model'
+    BOTH = 'Both'
+    NONE = 'None'
+
 def filter_string(input_string):
     pattern = r'[a-zA-Z0-9_]+'
     matches = re.findall(pattern, input_string)
@@ -101,28 +109,25 @@ class acmg:
         provided, self.messages = self.orch.get_llm_response(prompt.format(input=self.user_input), self.parser_model, self.messages)
         print("Provided: \n", provided)
 
-        # provided = "Both"
-        # TODO Task, Model Both should be enums, enums are numbers, conditional checks are faster then
-        if provided == 'Task':
+        if provided == ParsedMessageType.TASK:
             # zatrazi model
             self.task = self.user_input
             print("Enter the problem rules:")
             # self.model = self.pc.get_user_prompt()
             self.model = self.user_input
-        elif (provided == 'Model'):
+        elif provided == ParsedMessageType.MODEL:
             # zatrazi task
             self.model = self.user_input
             print("Enter the problem input information:")
             # self.task = self.pc.get_user_prompt()
             self.task = self.user_input
-        elif provided == 'Both':
+        elif provided == ParsedMessageType.BOTH:
             self.subroutine_both()
-        elif 'None' in provided or 'none' in provided:
+        elif provided == ParsedMessageType.NONE:
             # return False
             self.task = self.user_input
             self.model = self.user_input
             self.subroutine_both()
-
         
         prompt_generate = self.orch.fetch_data("generate")
         subsequent_prompt = self.orch.fetch_data("generate_again") # ok
