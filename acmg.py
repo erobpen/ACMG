@@ -87,14 +87,8 @@ class acmg:
         self.parser_model = models[2]
         self.base_model = models[3]
     
-    def print_tree(self, x, parrent_id):
-        n = node(parrent_id + "0", x, None, [])
-        self.tree.add_nodes_to_tree(self.tree, parrent_id, [n])
-        PrettyPrintTree(lambda x: x.branches, lambda x: x.task)(self.tree)
-        print("\n\n")
     
-    # TODO map flow of this function  to the ACMG flow with comments
-    def start_execution(self, text, mode, index, messages):
+    def start_execution(self, text, experiment_number, index, messages):
 
         self.messages = messages
         self.task = None
@@ -104,11 +98,13 @@ class acmg:
         # self.user_input = self.pc.get_user_prompt()
         self.user_input = text
         # prompt should be called control_prompt
-        prompt = self.orch.fetch_data("assess_user_input")
+        prompt = self.orch.fetch_control_prompt("assess_user_input")
 
+        # STEP 1: determine the contents of hte user input
         provided, self.messages = self.orch.get_llm_response(prompt.format(input=self.user_input), self.parser_model, self.messages)
         print("Provided: \n", provided)
 
+        # STEP 2: determine the task and model
         if provided == ParsedMessageType.TASK:
             # zatrazi model
             self.task = self.user_input
@@ -129,49 +125,49 @@ class acmg:
             self.model = self.user_input
             self.subroutine_both()
         
-        prompt_generate = self.orch.fetch_data("generate")
-        subsequent_prompt = self.orch.fetch_data("generate_again") # ok
-        prompt_recognize = self.orch.fetch_data("recognize").format(input=self.model)
-        #TODO rename RFS into Input prepration poin 7 in figure short version IP
-        prompt_reformat = self.orch.fetch_data("RFS_new")
+        prompt_generate = self.orch.fetch_control_prompt("generate")
+        subsequent_prompt = self.orch.fetch_control_prompt("generate_again")
+        prompt_recognize = self.orch.fetch_control_prompt("recognize").format(input=self.model)
+        prompt_reformat = self.orch.fetch_control_prompt("input_preparation")
 
         # naming of the model
 
         stored_models = self.orch.fetch_data("stored_models")
         text = "\n".join([key for key in stored_models.keys()])
-        #TODO remove or comment out CFS and all relate to CFS
-        prompt = self.orch.fetch_data("CFS")
+        prompt = self.orch.fetch_control_prompt("classify_model")
         classification, self.messages = self.orch.get_llm_response(prompt.format(stored_models=text, input=self.user_input), self.recognizer_model, self.messages)
         classification = "false"
 
-        # ovo bi trebao biti model name
+        # this shold be the given model name
         print("Already existing: ", classification)
 
         if ('false' not in classification and 'False' not in classification):
             # model exists and can be used as well as the task format
             self.model_name = classification
             
-            prompt = self.orch.fetch_data(self.model_name + "_RFS")
+            prompt = self.orch.fetch_control_prompt(self.model_name + "_reformat")
             self.task_dzn, self.messages = self.orch.get_llm_response(prompt.format(input=self.task), self.base_model, self.messages)
             # print("Reformated task: ", self.task_dzn)
 
         else:
             # model does not exist and needs to be created, task formatting is created based on the minizinc model
-            self.model_name, self.messages = self.orch.get_llm_response(self.orch.fetch_data("name_model").format(input=self.model), self.base_model, self.messages)
+            self.model_name, self.messages = self.orch.get_llm_response(self.orch.fetch_control_prompt("name_model").format(input=self.model), self.base_model, self.messages)
             status = False
             results = []
             minizinc_models = ""
             warnings = None
 
-            # TODO 3 should be a constant
             for i in range(3):
+
+                # STEP 3
+                # recognizer extracts relevant semantic entities from the model part of the prompt
                 recognized, self.messages = self.orch.get_llm_response(prompt_recognize, self.recognizer_model, self.messages)
-                #TODO control prompt
                 prompt = prompt_generate.format(model=self.model, recognized=recognized)
                 result = None
                 warnings = None
 
-                # generate (3 attempts)
+                
+                # STEP 4: generate (3 attempts)
                 for j in range(3):
                     # print("=========================================================================")
                     print("Warnings for attempt " + str(j + 1) + ": ", warnings)
@@ -179,12 +175,11 @@ class acmg:
                     mini_zinc_model, self.messages = self.orch.get_llm_response(prompt, self.generator_model, self.messages)
                     # print(prompt)
 
-                    #TODO reformat i.e. IP should be done after we get valid MiniZinc model when syntax in verified with MiniZinc solver, move this code on right place
-                    # reformat data.dzn
+                    # STEP 7: required input preparation for testing the minizinc model
                     self.task_dzn, self.messages = self.orch.get_llm_response(prompt_reformat.format(model=mini_zinc_model, input=self.task), self.generator_model, self.messages)
-                    self.orch.mem.store_new_format(self.model_name + "_RFS", self.task)
+                    self.orch.mem.store_new_format(self.model_name + "_reformat", self.task)
 
-                    # evaluate
+                    # STEP 5: evaluate
                     status, result, warnings = self.orch.minizinc_solver.evaluate(mini_zinc_model, self.model_name, self.task_dzn)
                     print("-"*50)
                     # print("\n\nminizinc model:\n", mini_zinc_model)
@@ -208,10 +203,11 @@ class acmg:
                         except Exception as e:
                             results.append({"attempt" : str(i) + "_" + str(j), "status" : status, "solutions" : "None"})   
 
-                    # provjeri ove uvjete jel se ispunjavaju dobro 
                     if (result != None):
                         print("Satisfiable: ", result.status)
                     if (result != None) and (str(result.status) == 'SATISFIED'):
+
+                        # STEP 6: store the model
                         self.orch.mem.store_new_model(self.model_name, mini_zinc_model)
                         break
                     # n = input(">>>>> ")
@@ -219,31 +215,28 @@ class acmg:
                 if (result != None) and (str(result.status) == 'SATISFIED'):
                     print("CONDITION MET")
                     break
+
+            # for a single problem, store the results
+            # --------------------------------------------------------------------------------------------------------------  
             print("-" * 50)
-            print("FILENAME: " + "rezultati\\" + history + "_" + "experiment_" + str(mode) +"_problem_" + str(index) +  ".txt")
+            print("FILENAME: " + "rezultati\\" + history + "_" + "experiment_" + str(experiment_number) +"_problem_" + str(index) +  ".txt")
             print("-" * 50)
-            with open("rezultati\\" + history + "_" + "experiment_" + str(mode) +"_problem_" + str(index) +  ".txt", "w") as file:
+            with open("rezultati\\" + history + "_" + "experiment_" + str(experiment_number) +"_problem_" + str(index) +  ".txt", "w") as file:
                 json.dump(results, file)
                 
                 if results == []:
                     print("No results\n")
-            with open("rezultati\\" + history + "_" + "experiment_" + str(mode) +"_problem_" + str(index) +  ".txt", "a") as file:
+            with open("rezultati\\" + history + "_" + "experiment_" + str(experiment_number) +"_problem_" + str(index) +  ".txt", "a") as file:
                 file.write("\n\n")
                 file.write(minizinc_models)
+             # --------------------------------------------------------------------------------------------------------------
             
-
-        
-        #5 model look up
+        # STEP 8: solve the problem
 
         # minizinc_model = self.pc.fetch_model(self.model_name)
         minizinc_model = mini_zinc_model
         self.orch.minizinc_solver.load_data(self.model_name, minizinc_model, self.task_dzn)
 
-        # 6 assign
-        # assignment is done in the sequential minizinc code generation attempts
-
-        # 7 solve
-        
         status, result, warnings = self.orch.minizinc_solver.solve()
         return status, result
 
@@ -251,7 +244,7 @@ class acmg:
     def subroutine_both(self):
         print("subroutine both")
 
-        prompt = self.orch.fetch_data("both") # ok
+        prompt = self.orch.fetch_control_prompt("both") # ok
         extracted_data, self.messages = self.orch.get_llm_response(prompt.format(input=self.user_input), self.parser_model, self.messages)
         extracted_data = self.extract_task_model(extracted_data)
         if extracted_data:
@@ -274,9 +267,9 @@ class acmg:
             return False
         
     # TODO what is mode?
-    def run_tasks(self, text, mode, models, history, messages, i):
+    def run_tasks(self, text, experiment_number, models, history, messages, i):
             self.set_models(models)
-            status, result = self.start_execution(text, mode, i, messages)
+            status, result = self.start_execution(text, experiment_number, i, messages)
                     
 if __name__ == "__main__":
 
@@ -290,12 +283,7 @@ if __name__ == "__main__":
     #else:
     #    print("OPENAI_API_KEY is not set.")
 
-# Why mem1 and acmg1.mem?
-    mem1 = mem()
     acmg1 = acmg()
-
-# what is T
-    T = 3
 
     data = pandas.read_excel("tasks.xlsx", header=None)
     data_array = data.to_numpy()
@@ -317,15 +305,13 @@ if __name__ == "__main__":
 
     for j in range(len(models)):
             for i in range(1,14):
-                #TODO remove debuging code
-                if j == 1 and i <= 9:
-                    continue
-                else:
                     path = f"APLAI_course/{i}/description.txt"
                     with open(path, "r") as file:
                         text = file.read()
                         print(i, text, '\n\n')
                         messages = None
+
+                        # j is the number of the experiment
                         acmg1.run_tasks(text, j, models[j], history, messages, i)
 
 

@@ -1,77 +1,24 @@
-[{"attempt": "0_0", "status": true, "solutions": "None"}, {"attempt": "0_2", "status": true, "solutions": "Solution(floors=[3, 2, 4, 5, 1], _checker='')"}]
+[{"attempt": "1_1", "status": true, "solutions": "Solution(_checker='')"}]
 
-None
+Solution(_checker='')
 ___________
 ```minizinc
-int: Baker;
-int: Cooper;
-int: Fletcher;
-int: Miller;
-int: Smith;
-
-array[1..5] of var 1..5: floors;
+% MiniZinc model
+int: a; % from dzn
+int: b; % from dzn
 
 % Constraints
-constraint Baker != 5;
-constraint Cooper != 1;
-constraint Fletcher != 1 /\ Fletcher != 5;
-constraint Miller > Cooper;
-constraint abs(Smith - Fletcher) > 1;
-constraint abs(Fletcher - Cooper) > 1;
+constraint a + b <= 10;
 
-% Unique floors for each person
-constraint all_different([Baker, Cooper, Fletcher, Miller, Smith]);
-
+% Solve statement
 solve satisfy;
 
-output ["Baker: ", show(Baker), "\n",
-        "Cooper: ", show(Cooper), "\n",
-        "Fletcher: ", show(Fletcher), "\n",
-        "Miller: ", show(Miller), "\n",
-        "Smith: ", show(Smith), "\n"];
+% Output
+output [show(a), show(b)];
 ```
 ___________
 ```dzn
-Baker = 1;
-Cooper = 2;
-Fletcher = 3;
-Miller = 4;
-Smith = 5;
-
-floors = [Baker, Cooper, Fletcher, Miller, Smith];
-```
-==============================Solution(floors=[3, 2, 4, 5, 1], _checker='')
-___________
-```minizinc
-int: num_floors = 5; % from dzn
-array[1..num_floors] of var 1..num_floors: floors; % from dzn
-
-% Each person occupies a unique floor
-set of int: persons = {1, 2, 3, 4, 5}; % 1: Baker, 2: Cooper, 3: Fletcher, 4: Miller, 5: Smith
-
-% Constraints
-constraint
-    % Baker does not live on the fifth floor
-    floors[1] != 5 /\
-    % Cooper does not live on the first floor
-    floors[2] != 1 /\
-    % Fletcher does not live on the fifth or first floors
-    floors[3] != 5 /\ floors[3] != 1 /\
-    % Miller lives on a higher floor than Cooper
-    floors[4] > floors[2] /\
-    % Smith does not live on a floor adjacent to Fletcher's
-    abs(floors[5] - floors[3]) > 1 /\
-    % Fletcher does not live on a floor adjacent to Cooper’s
-    abs(floors[3] - floors[2]) > 1 /\
-    % All floors are unique
-    all_different(floors);
-
-solve satisfy;
-
-output [ show(floors) ];
-```
-___________
-```dzn
-num_floors = 5;
+a = 0; % Example value, can be replaced
+b = 0; % Example value, can be replaced
 ```
 ==============================

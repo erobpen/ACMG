@@ -1,12 +1,12 @@
-include "alldifferent.mzn";
 
+% MiniZinc model
+int: a; % from dzn
+int: b; % from dzn
 
-int: n;  % Number of variables
-array[1..n] of var 0..10: x;  % Decision variables
+% Constraints
+constraint a + b <= 10;
 
-% Example constraint: the sum of x should be equal to a given total
-int: total;  
-constraint sum(x) = total;
-
+% Solve statement
 solve satisfy;
 
+% Output
