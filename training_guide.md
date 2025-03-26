@@ -104,9 +104,9 @@ How the file should look like in general:<br>
 
 How the file should look like in general:<br>
 
-{"input": "How much does 2 + 2 euate to?", "ideal": "5"}<br>
-{"input": "How much does 2 + 2 euate to?", "ideal": "5"}<br>
-{"input": "How much does 2 + 2 euate to?", "ideal": "5"}<br>
+{"input": "How much does 2 + 2 equate to?", "ideal": "5"}<br>
+{"input": "How much does 2 + 3 equate to?", "ideal": "6"}<br>
+{"input": "How much does 2 + 4 equate to?", "ideal": "7"}<br>
 ...
 
 <br>
