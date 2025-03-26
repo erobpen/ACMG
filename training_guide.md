@@ -1,4 +1,7 @@
 
+
+<!-- Read this guide by right clicking on the training_guide file and open with Markdown Preview-->
+
 Chat GPT Training guide
 <hr><br>
 
