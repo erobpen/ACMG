@@ -304,7 +304,9 @@ if __name__ == "__main__":
     history = "_"
 
     for j in range(len(models)):
+            # TODO what is 14
             for i in range(1,14):
+                    # TODO what is I do not want to feed it course but some other data?
                     path = f"APLAI_course/{i}/description.txt"
                     with open(path, "r") as file:
                         text = file.read()

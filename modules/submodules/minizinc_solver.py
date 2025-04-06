@@ -39,6 +39,7 @@ class minizinc_solver:
     def __init__(self):
         self.model_data = None
         self.path = None
+        #TODO remove pass
         pass
 
     def load_data(self, model_id, minizinc_model, task):
